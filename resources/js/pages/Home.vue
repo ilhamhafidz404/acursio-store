@@ -37,6 +37,7 @@ const getValue = (type) => {
         computedData[type].rank = matches[1];
         computedData[type].level = matches[2];
     }
+
     computedData[type].star = formData[type].star;
 
     if (computedData.begin.rank == "Grand Master") {
@@ -304,6 +305,19 @@ const total = computed(() => {
 
     return `Total: ${formatRupiah(computedData.total)}`;
 });
+
+const filteredRanks = computed(() => {
+    if (computedData.begin.rank && computedData.begin.level) {
+        const foundRank = ranks.find(
+            (rank) =>
+                rank.value ===
+                computedData.begin.rank + " " + computedData.begin.level
+        );
+        return ranks.filter((rank) => {
+            return rank.index >= foundRank.index;
+        });
+    }
+});
 </script>
 
 <template>
@@ -350,7 +364,7 @@ const total = computed(() => {
                     >
                         <option hidden>Pilih rank Tujuan Kamu</option>
                         <option
-                            v-for="(rank, index) in ranks"
+                            v-for="(rank, index) in filteredRanks"
                             :key="index"
                             :value="rank.value"
                         >
