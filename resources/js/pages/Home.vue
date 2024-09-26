@@ -13,7 +13,23 @@ const computedData = reactive({
     total: "",
 });
 
-const regex = /(Grand Master|Epic|Legends)\s+(\d+)/;
+const reset = () => {
+    computedData.begin.level = "";
+    computedData.begin.rank = "";
+    computedData.begin.star = "";
+    computedData.objective.level = "";
+    computedData.objective.rank = "";
+    computedData.objective.star = "";
+    computedData.total = "";
+
+    //
+    formData.begin.rank = "";
+    formData.begin.star = "";
+    formData.objective.rank = "";
+    formData.objective.star = "";
+};
+
+const regex = /(Grand Master|Epic|Legend)\s+(\d+)/;
 
 const getValue = (type) => {
     const matches = formData[type].rank.match(regex);
@@ -29,39 +45,16 @@ const getValue = (type) => {
                 computedData.begin.level - computedData.objective.level;
 
             if (beginToObjectiveLevel == 0) {
-                console.log("1 level");
-                console.log(
-                    (computedData.objective.star - computedData.begin.star) *
-                        6000
-                );
-
                 computedData.total =
                     (computedData.objective.star - computedData.begin.star) *
                     6000;
             } else if (beginToObjectiveLevel == 1) {
-                console.log("2 level");
-                console.log(
-                    (5 -
-                        computedData.begin.star +
-                        computedData.objective.star) *
-                        6000
-                );
-
                 computedData.total =
                     (5 -
                         computedData.begin.star +
                         computedData.objective.star) *
                     6000;
             } else if (beginToObjectiveLevel == 2) {
-                console.log("3 level");
-                console.log(
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        computedData.objective.star) *
-                        6000
-                );
-
                 computedData.total =
                     (5 -
                         computedData.begin.star +
@@ -69,16 +62,6 @@ const getValue = (type) => {
                         computedData.objective.star) *
                     6000;
             } else if (beginToObjectiveLevel == 3) {
-                console.log("4 level");
-                console.log(
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        5 +
-                        computedData.objective.star) *
-                        6000
-                );
-
                 computedData.total =
                     (5 -
                         computedData.begin.star +
@@ -87,17 +70,6 @@ const getValue = (type) => {
                         computedData.objective.star) *
                     6000;
             } else if (beginToObjectiveLevel == 4) {
-                console.log("5 level");
-                console.log(
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        5 +
-                        5 +
-                        computedData.objective.star) *
-                        6000
-                );
-
                 computedData.total =
                     (5 -
                         computedData.begin.star +
@@ -109,88 +81,83 @@ const getValue = (type) => {
             }
         }
         if (computedData.objective.rank == "Epic") {
-            const beginToObjectiveLevel =
-                computedData.begin.level - computedData.objective.level;
-
-            if (beginToObjectiveLevel == 0) {
-                console.log("1 level");
-                console.log(
-                    (computedData.objective.star - computedData.begin.star) *
-                        6000
-                );
-
-                computedData.total =
-                    (computedData.objective.star - computedData.begin.star) *
-                    6000;
-            } else if (beginToObjectiveLevel == 1) {
-                console.log("2 level");
-                console.log(
-                    (5 -
-                        computedData.begin.star +
-                        computedData.objective.star) *
-                        6000
-                );
-
-                computedData.total =
-                    (5 -
-                        computedData.begin.star +
-                        computedData.objective.star) *
-                    6000;
-            } else if (beginToObjectiveLevel == 2) {
-                console.log("3 level");
-                console.log(
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        computedData.objective.star) *
-                        6000
-                );
-
-                computedData.total =
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        computedData.objective.star) *
-                    6000;
-            } else if (beginToObjectiveLevel == 3) {
-                console.log("4 level");
-                console.log(
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        5 +
-                        computedData.objective.star) *
-                        6000
-                );
-
-                computedData.total =
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        5 +
-                        computedData.objective.star) *
-                    6000;
-            } else if (beginToObjectiveLevel == 4) {
-                console.log("5 level");
-                console.log(
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        5 +
-                        5 +
-                        computedData.objective.star) *
-                        6000
-                );
-
-                computedData.total =
-                    (5 -
-                        computedData.begin.star +
-                        5 +
-                        5 +
-                        5 +
-                        computedData.objective.star) *
-                    6000;
+            let beginRank;
+            let GMStarPrice;
+            if (computedData.begin.level == 5) {
+                beginRank = 1;
+                GMStarPrice =
+                    (5 + 5 + 5 + 5 + (5 - computedData.begin.star)) * 6000;
+            } else if (computedData.begin.level == 4) {
+                beginRank = 2;
+                GMStarPrice =
+                    (5 + 5 + 5 + (5 - computedData.begin.star)) * 6000;
+            } else if (computedData.begin.level == 3) {
+                beginRank = 3;
+                GMStarPrice = (5 + 5 + (5 - computedData.begin.star)) * 6000;
+            } else if (computedData.begin.level == 2) {
+                beginRank = 4;
+                GMStarPrice = (5 + (5 - computedData.begin.star)) * 6000;
+            } else if (computedData.begin.level == 1) {
+                beginRank = 5;
+                GMStarPrice = (5 - computedData.begin.star) * 6000;
             }
+
+            let objectiveRank;
+            let EpicStarPrice;
+            if (computedData.objective.level == 5) {
+                objectiveRank = 1;
+                EpicStarPrice = computedData.objective.star * 7000;
+            } else if (computedData.objective.level == 4) {
+                objectiveRank = 2;
+                EpicStarPrice = (5 + computedData.objective.star) * 7000;
+            } else if (computedData.objective.level == 3) {
+                objectiveRank = 3;
+                EpicStarPrice = (5 + 5 + computedData.objective.star) * 7000;
+            } else if (computedData.objective.level == 2) {
+                objectiveRank = 4;
+                EpicStarPrice =
+                    (5 + 5 + 5 + computedData.objective.star) * 7000;
+            } else if (computedData.objective.level == 1) {
+                objectiveRank = 5;
+                EpicStarPrice =
+                    (5 + 5 + 5 + 5 + computedData.objective.star) * 7000;
+            }
+
+            computedData.total = GMStarPrice + EpicStarPrice;
+        }
+
+        if (computedData.objective.rank == "Legend") {
+            let GMStarPrice;
+            if (computedData.begin.level == 5) {
+                GMStarPrice =
+                    (5 + 5 + 5 + 5 + (5 - computedData.begin.star)) * 6000;
+            } else if (computedData.begin.level == 4) {
+                GMStarPrice =
+                    (5 + 5 + 5 + (5 - computedData.begin.star)) * 6000;
+            } else if (computedData.begin.level == 3) {
+                GMStarPrice = (5 + 5 + (5 - computedData.begin.star)) * 6000;
+            } else if (computedData.begin.level == 2) {
+                GMStarPrice = (5 + (5 - computedData.begin.star)) * 6000;
+            } else if (computedData.begin.level == 1) {
+                GMStarPrice = (5 - computedData.begin.star) * 6000;
+            }
+
+            let LegendStarPrice;
+            if (computedData.objective.level == 5) {
+                LegendStarPrice = computedData.objective.star * 8000;
+            } else if (computedData.objective.level == 4) {
+                LegendStarPrice = (5 + computedData.objective.star) * 8000;
+            } else if (computedData.objective.level == 3) {
+                LegendStarPrice = (5 + 5 + computedData.objective.star) * 8000;
+            } else if (computedData.objective.level == 2) {
+                LegendStarPrice =
+                    (5 + 5 + 5 + computedData.objective.star) * 8000;
+            } else if (computedData.objective.level == 1) {
+                LegendStarPrice =
+                    (5 + 5 + 5 + 5 + computedData.objective.star) * 8000;
+            }
+
+            computedData.total = GMStarPrice + 175000 + LegendStarPrice;
         }
     }
 };
@@ -213,11 +180,20 @@ watch(
     }
 );
 
-const total = computed(() => `Total : ${computedData.total}`);
+const total = computed(() => {
+    const formatRupiah = (number) => {
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+        }).format(number);
+    };
+
+    return `Total: ${formatRupiah(computedData.total)}`;
+});
 </script>
 
 <template>
-    <div class="border rounded-lg">
+    <div class="border rounded-lg p-5">
         <h1 class="text-2xl text-center mt-4">Mau Dijoki Sampe Mana?</h1>
         <form class="p-3">
             <div>
@@ -268,6 +244,20 @@ const total = computed(() => `Total : ${computedData.total}`);
                         </option>
                     </select>
                 </div>
+            </div>
+            <br /><br />
+            <div class="flex gap-3">
+                <button
+                    class="bg-indigo-500 px-5 py-2 rounded text-white hover:bg-indigo-400"
+                >
+                    Submit
+                </button>
+                <button
+                    class="bg-red-500 px-5 py-2 rounded text-white hover:bg-red-400"
+                    @click.prevent="reset"
+                >
+                    Reset
+                </button>
             </div>
         </form>
         <br />
