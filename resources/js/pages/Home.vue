@@ -321,76 +321,376 @@ const filteredRanks = computed(() => {
 </script>
 
 <template>
-    <div class="border rounded-lg p-5">
-        <h1 class="text-2xl text-center mt-4">Mau Dijoki Sampe Mana?</h1>
-        <form class="p-3">
+    <!-- <img src="./../asset/background-top.svg" alt="" /> -->
+    <main class="grid grid-cols-3 gap-5 pt-20">
+        <aside class="bg-neutral shadow p-5 rounded relative overflow-hidden">
+            <div class="flex items-center gap-2">
+                <img
+                    src="./../asset/mobile-legends.webp"
+                    alt="Mobile Legends"
+                    class="w-[60px] rounded-md"
+                />
+                <h3 class="text-xl font-semibold">Joki MLBB</h3>
+            </div>
+
+            <hr class="my-5" />
+
             <div>
-                <label>Rank Awalmu</label>
-                <div class="flex items-center gap-3">
-                    <input
-                        v-model="formData.begin.star"
-                        class="border py-3 px-2 rounded w-[200px]"
-                        type="number"
-                    />
-                    <select
-                        v-model="formData.begin.rank"
-                        @change="getValue('begin')"
-                        class="border py-3 px-2 rounded w-[200px]"
-                    >
-                        <option hidden>Pilih rank kamu sekarang</option>
-                        <option
-                            v-for="(rank, index) in ranks"
-                            :key="index"
-                            :value="rank.value"
-                        >
-                            {{ rank.placeholder }}
-                        </option>
-                    </select>
+                <h3 class="font-medium mb-3 text-gray-100">Cara Order Joki</h3>
+                <ol class="list-decimal pl-5">
+                    <li class="text-sm text-gray-200">Masukkan Email</li>
+                    <li class="text-sm text-gray-200">
+                        Pilih Produk yang kamu inginkan
+                    </li>
+                    <li class="text-sm text-gray-200">Selesaikan pembayaran</li>
+                    <li class="text-sm text-gray-200">
+                        Contact CS melalui whatsapp untuk memberikan detail data
+                        login beserta dengan Order ID Cth : P123456789
+                    </li>
+                </ol>
+            </div>
+
+            <div class="grid grid-cols-2 gap-5 mt-10">
+                <div class="shadow rounded-md overflow-hidden bg-[#1d232a]">
+                    <div class="p-2 flex items-center gap-3">
+                        <img
+                            src="./../asset/tier/grandmaster.webp"
+                            alt=""
+                            class="w-[40px]"
+                        />
+                        <p class="font-medium">Grandmaster</p>
+                    </div>
+                    <div class="bg-gray-700 py-2 px-2 flex gap-1 items-end">
+                        <p class="text-primary font-semibold">Rp 6.000</p>
+                        <span class="text-xs text-gray-300">/ Bintang</span>
+                    </div>
+                </div>
+                <div class="shadow rounded-md overflow-hidden bg-[#1d232a]">
+                    <div class="p-2 flex items-center gap-3">
+                        <img
+                            src="./../asset/tier/epic.webp"
+                            alt=""
+                            class="w-[40px]"
+                        />
+                        <p class="font-medium">Epic</p>
+                    </div>
+                    <div class="bg-gray-700 py-2 px-2 flex gap-1 items-end">
+                        <p class="text-primary font-semibold">Rp 7.000</p>
+                        <span class="text-xs text-gray-300">/ Bintang</span>
+                    </div>
+                </div>
+                <div class="shadow rounded-md overflow-hidden bg-[#1d232a]">
+                    <div class="p-2 flex items-center gap-3">
+                        <img
+                            src="./../asset/tier/legend.webp"
+                            alt=""
+                            class="w-[40px]"
+                        />
+                        <p class="font-medium">Legend</p>
+                    </div>
+                    <div class="bg-gray-700 py-2 px-2 flex gap-1 items-end">
+                        <p class="text-primary font-semibold">Rp 8.000</p>
+                        <span class="text-xs text-gray-300">/ Bintang</span>
+                    </div>
+                </div>
+                <div class="shadow rounded-md overflow-hidden bg-[#1d232a]">
+                    <div class="p-2 flex items-center gap-3">
+                        <img
+                            src="./../asset/tier/mythic.webp"
+                            alt=""
+                            class="w-[40px]"
+                        />
+                        <p class="font-medium">Mythic</p>
+                    </div>
+                    <div class="bg-gray-700 py-2 px-2 flex gap-1 items-end">
+                        <p class="text-primary font-semibold">Rp 10.000</p>
+                        <span class="text-xs text-gray-300">/ Bintang</span>
+                    </div>
+                </div>
+                <div class="shadow rounded-md overflow-hidden bg-[#1d232a]">
+                    <div class="p-2 flex items-center gap-3">
+                        <img
+                            src="./../asset/tier/mythical-honor.webp"
+                            alt=""
+                            class="w-[40px]"
+                        />
+                        <p class="font-medium">Mythical Honor</p>
+                    </div>
+                    <div class="bg-gray-700 py-2 px-2 flex gap-1 items-end">
+                        <p class="text-primary font-semibold">Rp ?.000</p>
+                        <span class="text-xs text-gray-300">/ Bintang</span>
+                    </div>
+                </div>
+                <div class="shadow rounded-md overflow-hidden bg-[#1d232a]">
+                    <div class="p-2 flex items-center gap-3">
+                        <img
+                            src="./../asset/tier/mythical-glory.webp"
+                            alt=""
+                            class="w-[40px]"
+                        />
+                        <p class="font-medium">Mythical Glory</p>
+                    </div>
+                    <div class="bg-gray-700 py-2 px-2 flex gap-1 items-end">
+                        <p class="text-primary font-semibold">Rp ?.000</p>
+                        <span class="text-xs text-gray-300">/ Bintang</span>
+                    </div>
+                </div>
+                <div class="shadow rounded-md overflow-hidden bg-[#1d232a]">
+                    <div class="p-2 flex items-center gap-3">
+                        <img
+                            src="./../asset/tier/mythical-immortal.webp"
+                            alt=""
+                            class="w-[40px]"
+                        />
+                        <p class="font-medium">Mythical Immortal</p>
+                    </div>
+                    <div class="bg-gray-700 py-2 px-2 flex gap-1 items-end">
+                        <p class="text-primary font-semibold">Rp 10.000</p>
+                        <span class="text-xs text-gray-300">/ Bintang</span>
+                    </div>
                 </div>
             </div>
-            <br />
-            <div>
-                <label>Rank Tujuanmu</label>
-                <div class="flex items-center gap-3">
-                    <input
-                        v-model="formData.objective.star"
-                        class="border py-3 px-2 rounded w-[200px]"
-                        type="number"
-                    />
-                    <select
-                        v-model="formData.objective.rank"
-                        @change="getValue('objective')"
-                        class="border py-3 px-2 rounded w-[200px]"
+
+            <span
+                class="absolute bg-success text-white top-5 right-[-80px] py-2 px-20 rotate-45 text-xs"
+                >100% Aman</span
+            >
+        </aside>
+        <div class="bg-neutral col-span-2 shadow rounded-lg p-5">
+            <h1 class="text-2xl font-semibold mt-4 uppercase">Order Joki</h1>
+
+            <section class="mt-10">
+                <div class="flex items-center gap-3 mb-5">
+                    <span
+                        class="bg-primary inline-flex w-[30px] h-[30px] text-white text-xl font-semibold items-center justify-center rounded-full"
+                        >1</span
                     >
-                        <option hidden>Pilih rank Tujuan Kamu</option>
-                        <option
-                            v-for="(rank, index) in filteredRanks"
-                            :key="index"
-                            :value="rank.value"
-                        >
-                            {{ rank.placeholder }}
-                        </option>
-                    </select>
+                    <p class="font-medium">Joki dari mana sampe mana?</p>
                 </div>
-            </div>
-            <br /><br />
-            <div class="flex gap-3">
-                <button
-                    class="bg-indigo-500 px-5 py-2 rounded text-white hover:bg-indigo-400"
-                >
-                    Submit
-                </button>
-                <button
-                    class="bg-red-500 px-5 py-2 rounded text-white hover:bg-red-400"
-                    @click.prevent="reset"
-                >
-                    Reset
-                </button>
-            </div>
-        </form>
-        <br />
-        <h1 class="text-xl font-bold">{{ total }}</h1>
-    </div>
+                <form class="p-3">
+                    <div>
+                        <label>Rank Awalmu</label>
+                        <div class="grid grid-cols-2 items-center gap-3">
+                            <label
+                                class="input input-bordered flex items-center gap-2"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    class="size-4 text-warning"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                        clip-rule="evenodd"
+                                    />
+                                </svg>
+
+                                <input
+                                    class="grow"
+                                    placeholder="Bintang Sekarang"
+                                    v-model="formData.begin.star"
+                                    type="number"
+                                />
+                            </label>
+
+                            <!-- <input
+                                v-model="formData.begin.star"
+                                type="number"
+                                class="border py-3 px-2 rounded w-[200px]"
+                            /> -->
+                            <select
+                                v-model="formData.begin.rank"
+                                @change="getValue('begin')"
+                                class="select select-bordered w-full"
+                            >
+                                <option hidden selected value="">
+                                    Tier Sekarang
+                                </option>
+                                <option
+                                    v-for="(rank, index) in ranks"
+                                    :key="index"
+                                    :value="rank.value"
+                                >
+                                    {{ rank.placeholder }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        <label>Rank Tujuanmu</label>
+                        <div class="grid grid-cols-2 items-center gap-3">
+                            <label
+                                class="input input-bordered flex items-center gap-2"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    class="size-4 text-warning"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                        clip-rule="evenodd"
+                                    />
+                                </svg>
+
+                                <input
+                                    class="grow"
+                                    placeholder="Bintang Tujuan"
+                                    v-model="formData.objective.star"
+                                    type="number"
+                                />
+                            </label>
+                            <!-- <input
+                                v-model="formData.objective.star"
+                                class="border py-3 px-2 rounded w-[200px]"
+                                type="number"
+                            /> -->
+                            <select
+                                v-model="formData.objective.rank"
+                                @change="getValue('objective')"
+                                class="select select-bordered w-full"
+                            >
+                                <option hidden value="">
+                                    Pilih rank Tujuan Kamu
+                                </option>
+                                <option
+                                    v-for="(rank, index) in filteredRanks"
+                                    :key="index"
+                                    :value="rank.value"
+                                >
+                                    {{ rank.placeholder }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                    <div
+                        class="flex justify-evenly bg-[#1d232a] rounded-lg pt-5 pb-20 items-center relative"
+                        v-if="computedData.begin.rank"
+                    >
+                        <div
+                            class="flex items-center gap-4"
+                            v-if="computedData.begin.rank"
+                        >
+                            <div>
+                                <img
+                                    src="./../asset/tier/epic.webp"
+                                    class="w-[100px]"
+                                />
+                            </div>
+                            <div>
+                                <p class="text-2xl font-medium">EPIC V</p>
+                                <p
+                                    class="flex items-center text-xl font-medium gap-1"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        class="size-5 text-warning"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    0
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center" v-if="computedData.begin.rank">
+                            <p class="text-xl font-semibold uppercase mb-2">
+                                Joki Ke
+                            </p>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                class="size-6 mx-auto"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M13.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L11.69 12 4.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
+                                    clip-rule="evenodd"
+                                />
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M19.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06L17.69 12l-6.97-6.97a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </div>
+                        <div
+                            class="flex items-center gap-4"
+                            v-if="computedData.objective.rank"
+                        >
+                            <div>
+                                <img
+                                    src="./../asset/tier/legend.webp"
+                                    class="w-[100px]"
+                                />
+                            </div>
+                            <div>
+                                <p class="text-2xl font-medium">Legend I</p>
+                                <p
+                                    class="flex items-center text-xl font-medium gap-1"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        class="size-5 text-warning"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    5
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            role="alert"
+                            class="alert alert-success absolute bottom-0"
+                            v-if="
+                                computedData.begin.rank &&
+                                computedData.objective.rank
+                            "
+                        >
+                            <p class="text-white text-xl font-bold">
+                                {{ total }}
+                            </p>
+                        </div>
+                    </div>
+                    <br /><br />
+                    <!-- <div class="flex gap-3">
+                        <button class="btn btn-primary">Submit</button>
+                        <button class="btn btn-error" @click.prevent="reset">
+                            Reset
+                        </button>
+                    </div> -->
+                </form>
+            </section>
+            <section>
+                <div class="flex items-center gap-3 mb-5">
+                    <span
+                        class="bg-primary inline-flex w-[30px] h-[30px] text-white text-xl font-semibold items-center justify-center rounded-full"
+                        >2</span
+                    >
+                    <p class="font-medium">Masukkan ID Mobile Legend</p>
+                </div>
+            </section>
+        </div>
+    </main>
 </template>
 
 <!-- // console.log(

@@ -1,5 +1,5 @@
 <template>
-    <h1>Test</h1>
+    <!-- <h1>Test</h1> -->
     <!-- <router-link to="/">Home</router-link>
     <router-link to="/about">About</router-link> -->
     <div class="container px-20">
