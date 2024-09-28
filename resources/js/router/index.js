@@ -7,9 +7,9 @@ const routes = [
         component: () => import("@/pages/Home.vue"),
     },
     {
-        path: "/about",
-        name: "About",
-        component: () => import("@/pages/About.vue"),
+        path: "/account-store",
+        name: "AccountStore",
+        component: () => import("@/pages/AccountStore.vue"),
     },
 ];
 
