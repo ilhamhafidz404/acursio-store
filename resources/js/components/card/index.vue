@@ -1,31 +1,54 @@
+<script setup>
+import calculateDiscount from "../../tools/calculateDiscount";
+import formatRupiah from "../../tools/formatRupiah";
+</script>
 <template>
     <div className="card bg-neutral shadow-xl relative overflow-hidden">
         <figure>
             <img
-                src="https://rapspoint.com/_next/image?url=http%3A%2F%2Flangit.rapscruel.com%2Fstorage%2Faccounts%2Fmobile-legends%2Fml-28967-249k-s1-1727525540.webp&w=384&q=75"
+                :src="'http://127.0.0.1:8000/storage/' + account.image"
                 alt="Jubel Akun ML"
                 class="w-full h-[300px] object-cover"
             />
         </figure>
         <div className="card-body">
-            <h2 className="card-title">Ling Dragon Tamer</h2>
+            <h2 className="card-title">{{ account.title }}</h2>
             <div class="flex items-end gap-2">
-                <del>
-                    <p class="text-gray-400 font-bold">Rp 90.000</p>
+                <del v-if="account.discount" class="text-gray-400 font-bold">
+                    {{ formatRupiah(account.price) }}
                 </del>
-                <p class="text-primary text-2xl font-bold">Rp 50.000</p>
+                <p class="text-primary text-2xl font-bold">
+                    {{
+                        formatRupiah(
+                            account.discount
+                                ? calculateDiscount(
+                                      account.price,
+                                      account.discount
+                                  )
+                                : account.price
+                        )
+                    }}
+                </p>
             </div>
         </div>
 
         <span
+            v-if="account.discount"
             class="absolute bg-error text-white top-5 right-[-80px] py-2 px-20 rotate-45 text-xs font-bold"
-            >Diskon 50%</span
+            >Diskon {{ account.discount }}%</span
         >
     </div>
 </template>
 
 <script>
-export default {};
+export default {
+    props: {
+        account: Object,
+    },
+    mounted() {
+        console.log(this.account);
+    },
+};
 </script>
 
 <style></style>

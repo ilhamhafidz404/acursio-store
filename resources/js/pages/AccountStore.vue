@@ -106,11 +106,36 @@ import Card from "./../components/card/index.vue";
                 >
             </div>
         </aside>
-        <div class="col-span-3 shadow rounded-lg p-5 grid grid-cols-3 gap-5">
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+        <div class="col-span-3 shadow rounded-lg p-5">
+            <div class="grid grid-cols-3 gap-5">
+                <Card
+                    v-for="(account, index) in AccountStores"
+                    :key="index"
+                    :account="account"
+                />
+            </div>
         </div>
     </main>
 </template>
+
+<script>
+import axios from "axios";
+export default {
+    data() {
+        return {
+            AccountStores: [],
+        };
+    },
+
+    mounted() {
+        axios
+            .get("http://127.0.0.1:8000/api/sellingAccounts")
+            .then((res) => {
+                this.AccountStores = res.data.data;
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    },
+};
+</script>
