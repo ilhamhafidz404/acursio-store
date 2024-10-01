@@ -133,6 +133,14 @@ class SellingAccountController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = SellingAccount::find($id);
+        $data->delete();
+
+        return response()->json([
+            "code" => "ACSO-001",
+            'success' => true,
+            'data' => $data,
+            'message' => 'Berhasil Menghapus Akun Jubel'
+        ], 201);
     }
 }
