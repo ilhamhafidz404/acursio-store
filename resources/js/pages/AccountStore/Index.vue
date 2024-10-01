@@ -25,11 +25,6 @@
                                         >Harga Minimal</span
                                     >
                                 </div>
-                                <!-- <input
-                                    type="text"
-                                    class="input input-bordered w-full"
-                                    v-model="filter.minPrice"
-                                /> -->
                                 <input
                                     type="text"
                                     class="input input-bordered w-full mb-2"
@@ -50,11 +45,6 @@
                                         >Harga Maksimal</span
                                     >
                                 </div>
-                                <!-- <input
-                                    type="text"
-                                    class="input input-bordered w-full"
-                                    v-model="filter.maxPrice"
-                                /> -->
                                 <input
                                     type="text"
                                     class="input input-bordered w-full"
@@ -92,20 +82,6 @@
                                 />
                             </label>
                         </div>
-                        <!-- <div class="mb-1">
-                            <label class="form-control w-full">
-                                <div class="label">
-                                    <span class="label-text"
-                                        >Winrate Minimal</span
-                                    >
-                                </div>
-                                <input
-                                    type="text"
-                                    class="input input-bordered w-full"
-                                    v-model="filter.winrate"
-                                />
-                            </label>
-                        </div> -->
                         <div class="mt-7 flex gap-2">
                             <div v-if="isFilterActive" class="w-full">
                                 <button
@@ -171,9 +147,9 @@
 
 <script>
 import axios from "axios";
-import Card from "./../components/card/index.vue";
-import Loader from "./../components/loader/index.vue";
-import formatRupiah from "../tools/formatRupiah";
+import Card from "../../components/card/index.vue";
+import Loader from "../../components/loader/index.vue";
+import formatRupiah from "../../tools/formatRupiah";
 
 export default {
     components: { Card, Loader },

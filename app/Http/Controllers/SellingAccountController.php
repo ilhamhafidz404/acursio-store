@@ -109,7 +109,14 @@ class SellingAccountController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $sellingAccount = SellingAccount::whereId($id)->first();
+
+        return response()->json([
+            "code" => "ACSO-001",
+            'success' => true,
+            'data' => $sellingAccount,
+            'message' => 'Berhasil Ambil Data Akun Jubel'
+        ]);
     }
 
     /**

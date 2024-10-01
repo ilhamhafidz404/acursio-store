@@ -14,7 +14,12 @@ const routes = [
     {
         path: "/account-store",
         name: "AccountStore",
-        component: () => import("@/pages/AccountStore.vue"),
+        component: () => import("@/pages/AccountStore/Index.vue"),
+    },
+    {
+        path: "/account-store/:id",
+        name: "AccountStoreDetail",
+        component: () => import("@/pages/AccountStore/Detail.vue"),
     },
 ];
 

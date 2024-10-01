@@ -12,7 +12,9 @@ import formatRupiah from "../../tools/formatRupiah";
             />
         </figure>
         <div className="card-body p-5">
-            <h2 className="card-title">{{ account.title }}</h2>
+            <router-link :to="'/account-store/' + account.id">
+                <h2 className="card-title">{{ account.title }}</h2>
+            </router-link>
             <div class="flex items-end gap-2">
                 <del v-if="account.discount" class="text-gray-400 font-bold">
                     {{ formatRupiah(account.price) }}
@@ -35,8 +37,9 @@ import formatRupiah from "../../tools/formatRupiah";
         <span
             v-if="account.discount"
             class="absolute bg-error text-white top-5 right-[-80px] py-2 px-20 rotate-45 text-xs font-bold"
-            >Diskon {{ account.discount }}%</span
         >
+            Diskon {{ account.discount }}%
+        </span>
     </div>
 </template>
 
