@@ -256,6 +256,7 @@ export default {
     },
     mounted() {
         this.fetchSellingAccounts();
+        window.scrollTo(0, 0);
     },
 };
 </script>

@@ -1,0 +1,37 @@
+[
+    {
+        "tier": "Grandmaster",
+        "price": 6000,
+        "img": "grandmaster.webp"
+    },
+    {
+        "tier": "Epic",
+        "price": 7000,
+        "img": "epic.webp"
+    },
+    {
+        "tier": "Legend",
+        "price": 8000,
+        "img": "legend.webp"
+    },
+    {
+        "tier": "Mythic",
+        "price": 10000,
+        "img": "mythic.webp"
+    },
+    {
+        "tier": "Mythical Honor",
+        "price": 10000,
+        "img": "mythical-honor.webp"
+    },
+    {
+        "tier": "Mythical Glory",
+        "price": 10000,
+        "img": "mythical-glory.webp"
+    },
+    {
+        "tier": "Mythical Immortal",
+        "price": 10000,
+        "img": "mythical-immortal.webp"
+    }
+]
