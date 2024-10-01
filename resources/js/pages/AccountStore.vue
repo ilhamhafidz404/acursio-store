@@ -1,8 +1,4 @@
-<script setup>
-import Card from "./../components/card/index.vue";
-</script>
 <template>
-    <!-- <img src="./../asset/background-top.svg" alt="" /> -->
     <main class="grid grid-cols-4 gap-5 pt-20">
         <aside class="relative">
             <div
@@ -21,98 +17,150 @@ import Card from "./../components/card/index.vue";
 
                 <div>
                     <h3 class="font-medium mb-3 text-gray-100">Filter</h3>
-                    <form action="">
+                    <form @submit.prevent="filterSearchParams">
                         <div class="mb-1">
-                            <label className="form-control w-full">
-                                <div className="label">
-                                    <span className="label-text"
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text"
                                         >Harga Minimal</span
                                     >
                                 </div>
+                                <!-- <input
+                                    type="text"
+                                    class="input input-bordered w-full"
+                                    v-model="filter.minPrice"
+                                /> -->
                                 <input
                                     type="text"
-                                    placeholder="Rp 100.000"
-                                    className="input input-bordered w-full"
+                                    class="input input-bordered w-full mb-2"
+                                    :value="formatCurrency(filter.minPrice)"
+                                    @input="
+                                        updatePrice(
+                                            $event.target.value,
+                                            'minPrice'
+                                        )
+                                    "
                                 />
                             </label>
                         </div>
                         <div class="mb-1">
-                            <label className="form-control w-full">
-                                <div className="label">
-                                    <span className="label-text"
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text"
                                         >Harga Maksimal</span
                                     >
                                 </div>
+                                <!-- <input
+                                    type="text"
+                                    class="input input-bordered w-full"
+                                    v-model="filter.maxPrice"
+                                /> -->
                                 <input
                                     type="text"
-                                    placeholder="Rp 100.000.000"
-                                    className="input input-bordered w-full"
+                                    class="input input-bordered w-full"
+                                    :value="formatCurrency(filter.maxPrice)"
+                                    @input="
+                                        updatePrice(
+                                            $event.target.value,
+                                            'maxPrice'
+                                        )
+                                    "
                                 />
                             </label>
                         </div>
                         <div class="mb-1">
-                            <label className="form-control w-full">
-                                <div className="label">
-                                    <span className="label-text"
-                                        >Jumlah Hero</span
-                                    >
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text">Jumlah Hero</span>
                                 </div>
                                 <input
                                     type="text"
-                                    placeholder="23"
-                                    className="input input-bordered w-full"
+                                    class="input input-bordered w-full"
+                                    v-model="filter.totalHero"
                                 />
                             </label>
                         </div>
                         <div class="mb-1">
-                            <label className="form-control w-full">
-                                <div className="label">
-                                    <span className="label-text"
-                                        >Jumlah Skin</span
-                                    >
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text">Jumlah Skin</span>
                                 </div>
                                 <input
                                     type="text"
-                                    placeholder="67"
-                                    className="input input-bordered w-full"
+                                    class="input input-bordered w-full"
+                                    v-model="filter.totalSkin"
                                 />
                             </label>
                         </div>
                         <div class="mb-1">
-                            <label className="form-control w-full">
-                                <div className="label">
-                                    <span className="label-text"
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text"
                                         >Winrate Minimal</span
                                     >
                                 </div>
                                 <input
                                     type="text"
-                                    placeholder="70%"
-                                    className="input input-bordered w-full"
+                                    class="input input-bordered w-full"
+                                    v-model="filter.winrate"
                                 />
                             </label>
                         </div>
-                        <div class="mt-7">
-                            <button class="btn btn-primary w-full">
-                                Filter
-                            </button>
+                        <div class="mt-7 flex gap-2">
+                            <div v-if="isFilterActive" class="w-full">
+                                <button
+                                    type="button"
+                                    class="btn btn-error w-full"
+                                    @click="resetFilter"
+                                >
+                                    Reset
+                                </button>
+                            </div>
+                            <div class="w-full">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary w-full"
+                                >
+                                    Filter
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
-
-                <span
-                    class="absolute bg-success text-white top-5 right-[-80px] py-2 px-20 rotate-45 text-xs"
-                    >100% Aman</span
-                >
             </div>
         </aside>
+
         <div class="col-span-3 shadow rounded-lg p-5">
             <div class="grid grid-cols-3 gap-5">
                 <Card
-                    v-for="(account, index) in AccountStores"
-                    :key="index"
+                    v-for="account in AccountStores.data"
+                    :key="account.id"
                     :account="account"
                 />
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-10 flex justify-between items-center mb-20">
+                <button
+                    :disabled="!AccountStores.prev_page_url"
+                    @click="fetchSellingAccounts(AccountStores.prev_page_url)"
+                    class="btn btn-primary"
+                >
+                    Previous
+                </button>
+
+                <span
+                    >Page {{ AccountStores.current_page }} of
+                    {{ AccountStores.last_page }}</span
+                >
+
+                <button
+                    :disabled="!AccountStores.next_page_url"
+                    @click="fetchSellingAccounts(AccountStores.next_page_url)"
+                    class="btn btn-primary"
+                >
+                    Next
+                </button>
             </div>
         </div>
     </main>
@@ -120,22 +168,77 @@ import Card from "./../components/card/index.vue";
 
 <script>
 import axios from "axios";
+import Card from "./../components/card/index.vue";
+import formatRupiah from "../tools/formatRupiah";
+
 export default {
+    components: { Card },
     data() {
         return {
-            AccountStores: [],
+            AccountStores: {
+                data: [],
+                current_page: 1,
+                last_page: 1,
+                prev_page_url: null,
+                next_page_url: null,
+            },
+            filter: {
+                minPrice: "",
+                maxPrice: "",
+                totalHero: "",
+                totalSkin: "",
+                winrate: "",
+            },
         };
     },
-
+    methods: {
+        formatCurrency(value) {
+            return formatRupiah(value);
+        },
+        updatePrice(value, field) {
+            const numericValue = value.replace(/\D/g, "");
+            this.filter[field] = numericValue ? parseInt(numericValue) : 0;
+        },
+        fetchSellingAccounts(
+            url = "http://127.0.0.1:8000/api/sellingAccounts"
+        ) {
+            axios
+                .get(url, {
+                    params: this.filter,
+                })
+                .then((res) => {
+                    this.AccountStores = res.data.result;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        resetFilter() {
+            this.filter.minPrice = "";
+            this.filter.maxPrice = "";
+            this.filter.totalHero = "";
+            this.filter.totalSkin = "";
+            this.filter.winrate = "";
+            //
+            this.fetchSellingAccounts();
+        },
+        filterSearchParams() {
+            this.fetchSellingAccounts();
+        },
+    },
+    computed: {
+        isFilterActive() {
+            return (
+                this.filter.minPrice ||
+                this.filter.maxPrice ||
+                this.filter.totalHero ||
+                this.filter.totalSkin ||
+                this.filter.winrate
+            );
+        },
+    },
     mounted() {
-        axios
-            .get("http://127.0.0.1:8000/api/sellingAccounts")
-            .then((res) => {
-                this.AccountStores = res.data.data;
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+        this.fetchSellingAccounts();
     },
 };
 </script>

@@ -10,17 +10,47 @@ class SellingAccountController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $sellingAccounts = SellingAccount::latest()->get();
+    public function index(){
+        $minPrice = request('minPrice');
+        $maxPrice = request('maxPrice');
+        $totalHero = request('totalHero');
+        $totalSkin = request('totalSkin');
+        $winrate = request('winrate');
 
+
+        $query = SellingAccount::query();
+
+        if ($minPrice) {
+            $query->where('price', '>=', $minPrice);
+        }
+
+        if ($maxPrice) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        if ($totalHero) {
+            $query->where('total_hero', '>=', $totalHero);
+        }
+
+        if ($totalSkin) {
+            $query->where('total_skin', '>=', $totalSkin);
+        }
+
+        // if ($winrate) {
+        //     $query->where('winrate', '>=', $winrate);
+        // }
+
+        $sellingAccounts = $query->latest()->paginate(9);
+
+        // Return response dalam bentuk JSON
         return response()->json([
             "code" => "ACSO-001",
-            "success" => false,
+            "success" => true,
             "message" => "success",
-            "data" => $sellingAccounts,
+            "result" => $sellingAccounts,
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -33,7 +63,7 @@ class SellingAccountController extends Controller
             'slug' => 'required|string|max:255|unique:selling_accounts,slug',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'rank' => 'required|string|max:255',
         ]);
 

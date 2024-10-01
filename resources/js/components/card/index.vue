@@ -17,7 +17,7 @@ import formatRupiah from "../../tools/formatRupiah";
                 <del v-if="account.discount" class="text-gray-400 font-bold">
                     {{ formatRupiah(account.price) }}
                 </del>
-                <p class="text-primary text-2xl font-bold">
+                <p class="text-primary text-xl font-bold">
                     {{
                         formatRupiah(
                             account.discount
@@ -44,9 +44,6 @@ import formatRupiah from "../../tools/formatRupiah";
 export default {
     props: {
         account: Object,
-    },
-    mounted() {
-        console.log(this.account);
     },
 };
 </script>
