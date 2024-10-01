@@ -1,14 +1,14 @@
 <template>
-    <!-- <h1>Test</h1> -->
-    <!-- <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link> -->
-    <div class="container px-20">
+    <Navbar />
+    <div class="px-5 md:px-10 xl:px-20">
         <router-view></router-view>
     </div>
 </template>
 
 <script>
+import Navbar from "./components/navbar/index.vue";
 export default {
+    components: { Navbar },
     name: "App",
 };
 </script>

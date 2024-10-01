@@ -1,8 +1,8 @@
 <template>
-    <main class="grid grid-cols-4 gap-5 pt-20">
+    <main class="xl:grid grid-cols-4 gap-5 pt-20">
         <aside class="relative">
             <div
-                class="bg-neutral shadow p-5 rounded overflow-hidden sticky top-[15px]"
+                class="bg-neutral shadow p-5 rounded overflow-hidden sticky top-[100px]"
             >
                 <div class="flex items-center gap-2">
                     <img
@@ -92,7 +92,7 @@
                                 />
                             </label>
                         </div>
-                        <div class="mb-1">
+                        <!-- <div class="mb-1">
                             <label class="form-control w-full">
                                 <div class="label">
                                     <span class="label-text"
@@ -105,7 +105,7 @@
                                     v-model="filter.winrate"
                                 />
                             </label>
-                        </div>
+                        </div> -->
                         <div class="mt-7 flex gap-2">
                             <div v-if="isFilterActive" class="w-full">
                                 <button
@@ -130,8 +130,8 @@
             </div>
         </aside>
 
-        <div class="col-span-3 shadow rounded-lg p-5">
-            <div class="grid grid-cols-3 gap-5">
+        <div v-if="!isLoading" class="col-span-3 shadow rounded-lg p-5">
+            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
                 <Card
                     v-for="account in AccountStores.data"
                     :key="account.id"
@@ -163,18 +163,23 @@
                 </button>
             </div>
         </div>
+        <div v-else class="col-span-3 flex justify-center items-center">
+            <Loader />
+        </div>
     </main>
 </template>
 
 <script>
 import axios from "axios";
 import Card from "./../components/card/index.vue";
+import Loader from "./../components/loader/index.vue";
 import formatRupiah from "../tools/formatRupiah";
 
 export default {
-    components: { Card },
+    components: { Card, Loader },
     data() {
         return {
+            isLoading: false,
             AccountStores: {
                 data: [],
                 current_page: 1,
@@ -189,6 +194,9 @@ export default {
                 totalSkin: "",
                 winrate: "",
             },
+            pagination: {
+                page: 1,
+            },
         };
     },
     methods: {
@@ -202,14 +210,23 @@ export default {
         fetchSellingAccounts(
             url = "http://127.0.0.1:8000/api/sellingAccounts"
         ) {
+            this.isLoading = true;
+            this.$router.push({
+                path: "/account-store",
+                query: { page: this.pagination.page },
+            });
+
             axios
                 .get(url, {
                     params: this.filter,
                 })
                 .then((res) => {
                     this.AccountStores = res.data.result;
+
+                    this.isLoading = false;
                 })
                 .catch((error) => {
+                    this.isLoading = false;
                     console.error(error);
                 });
         },

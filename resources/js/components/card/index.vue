@@ -11,7 +11,7 @@ import formatRupiah from "../../tools/formatRupiah";
                 class="w-full h-[300px] object-cover"
             />
         </figure>
-        <div className="card-body">
+        <div className="card-body p-5">
             <h2 className="card-title">{{ account.title }}</h2>
             <div class="flex items-end gap-2">
                 <del v-if="account.discount" class="text-gray-400 font-bold">
