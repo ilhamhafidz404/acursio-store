@@ -12,7 +12,7 @@ import formatRupiah from "../../tools/formatRupiah";
             />
         </figure>
         <div className="card-body p-5">
-            <router-link :to="'/account-store/' + account.id">
+            <router-link :to="'/account-store/' + account.slug">
                 <h2 className="card-title">{{ account.title }}</h2>
             </router-link>
             <div class="flex items-end gap-2">

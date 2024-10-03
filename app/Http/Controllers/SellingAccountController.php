@@ -58,7 +58,7 @@ class SellingAccountController extends Controller
     public function store(Request $request)
     {
         // Lakukan validasi terlebih dahulu
-        $validated = $request->validate([
+        $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:selling_accounts,slug',
             'price' => 'required|numeric|min:0',
@@ -109,12 +109,12 @@ class SellingAccountController extends Controller
      */
     public function show(string $id)
     {
-        $sellingAccount = SellingAccount::whereId($id)->first();
+        $sellingAccount = SellingAccount::whereId($id)->orWhere("slug", $id)->first();    
 
         return response()->json([
             "code" => "ACSO-001",
             'success' => true,
-            'data' => $sellingAccount,
+            'result' => $sellingAccount,
             'message' => 'Berhasil Ambil Data Akun Jubel'
         ]);
     }
@@ -131,8 +131,44 @@ class SellingAccountController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+    {   
+
+        return response()->json($request);
+
+        try {
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('images', 'public');
+            }
+
+            // Buat akun baru
+            $sellingAccount = SellingAccount::find($id)->update([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'price' => $request->price,
+                'description' => $request->description,
+                'image' => $imagePath,
+                'rank' => $request->rank,
+                'total_heroes' => $request->totalHero,
+                'total_skin' => $request->totalSkin,
+                'discount' => $request->discount,
+            ]);
+
+            return response()->json([
+                "code" => "ACSO-001",
+                'success' => true,
+                'data' => $sellingAccount,
+                'message' => 'Berhasil Membuat Akun Jubel'
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                "code" => "ACSO-003",
+                'success' => false,
+                'message' => 'Gagal Membuat Akun Jubel',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

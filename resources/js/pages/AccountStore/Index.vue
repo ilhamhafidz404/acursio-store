@@ -6,7 +6,7 @@
             >
                 <div class="flex items-center gap-2">
                     <img
-                        src="./../asset/mobile-legends.webp"
+                        src="/resources/js/asset/mobile-legends.webp"
                         alt="Mobile Legends"
                         class="w-[60px] rounded-md"
                     />
@@ -184,7 +184,7 @@ export default {
             this.filter[field] = numericValue ? parseInt(numericValue) : 0;
         },
         fetchSellingAccounts(
-            url = "http://127.0.0.1:8000/api/sellingAccounts"
+            url = "http://127.0.0.1:8000/api/sellingAccounts/"
         ) {
             this.isLoading = true;
             this.$router.push({

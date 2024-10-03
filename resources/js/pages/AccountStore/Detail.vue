@@ -4,7 +4,17 @@ import formatRank from "../../tools/formatRank";
 import formatRupiah from "../../tools/formatRupiah";
 </script>
 <template>
-    <div class="pt-20 grid grid-cols-5 gap-10">
+    <div>
+        <router-link
+            to="/account-store"
+            class="btn btn-ghost btn-sm mt-28 inline-flex text-primary"
+        >
+            <LongArrowLeftIcon myClass="size-6" />
+
+            Kembali
+        </router-link>
+    </div>
+    <div class="mt-10 grid grid-cols-5 gap-10">
         <div v-if="!isLoading" class="col-span-3">
             <div class="flex gap-3 justify-evenly">
                 <img
@@ -72,6 +82,9 @@ import formatRupiah from "../../tools/formatRupiah";
         <div v-else class="col-span-3 flex items-center justify-center">
             <loader />
         </div>
+
+        <!--  -->
+
         <div class="col-span-2 relative">
             <div class="bg-neutral p-5 rounded sticky top-24 overflow-hidden">
                 <div class="flex items-center gap-2">
@@ -124,9 +137,10 @@ import formatRupiah from "../../tools/formatRupiah";
 <script>
 import axios from "axios";
 import Loader from "../../components/loader/index.vue";
+import LongArrowLeftIcon from "../../components/icon/longArrowLeft.vue";
 
 export default {
-    components: { Loader },
+    components: { Loader, LongArrowLeftIcon },
     data() {
         return {
             id: null,
@@ -161,7 +175,7 @@ export default {
             axios
                 .get(url)
                 .then((res) => {
-                    this.accountStore = res.data.data;
+                    this.accountStore = res.data.result;
                     this.isLoading = false;
 
                     console.log(this.accountStore);
