@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\SendEmailSuccessBuyAccount;
 use App\Models\SellingAccount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 
 class BuyAccountController extends Controller
@@ -15,6 +16,26 @@ class BuyAccountController extends Controller
     public function __invoke(Request $request)
     {
 
+        function showDecryptedData($id)
+        {
+            // Ambil data selling_account berdasarkan ID atau slug
+            $sellingAccount = SellingAccount::findOrFail($id);
+
+            // Dekripsi kolom email_account dan password_account
+            $decryptedEmail = Crypt::decryptString($sellingAccount->email_account);
+            $decryptedPassword = Crypt::decryptString($sellingAccount->password_account);
+
+            // Return array yang berisi kedua variabel
+            return [
+                'decryptedEmail' => $decryptedEmail,
+                'decryptedPassword' => $decryptedPassword
+            ];
+        }
+
+        $decryptedAccountData = showDecryptedData($request->accountStore["id"]);
+
+
+
         $mailTo = $request->userData["email"];
         $accountStore = $request->accountStore;
 
@@ -22,8 +43,8 @@ class BuyAccountController extends Controller
             'title' =>  $accountStore["title"],
             'price' =>  $accountStore["price"],
             'rank' =>  $accountStore["rank"],
-            'email' =>  $accountStore["email_account"],
-            'password' =>  $accountStore["password_account"],
+            'email' =>  $decryptedAccountData["decryptedEmail"],
+            'password' =>  $decryptedAccountData["decryptedEmail"],
         ]));
 
         SellingAccount::find($request->accountStore["id"])->update([

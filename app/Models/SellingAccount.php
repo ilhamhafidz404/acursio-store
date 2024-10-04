@@ -22,12 +22,12 @@ class SellingAccount extends Model
     }
 
     // // Accessor untuk mendekripsi data saat diambil
-    public function getEmailAccountAttribute($value) {
-        return $value ? Crypt::decryptString($value) : null;
-    }
-    public function getPasswordAccountAttribute($value) {
-        return $value ? Crypt::decryptString($value) : null;
-    }
+    // public function getEmailAccountAttribute($value) {
+    //     return $value ? Crypt::decryptString($value) : null;
+    // }
+    // public function getPasswordAccountAttribute($value) {
+    //     return $value ? Crypt::decryptString($value) : null;
+    // }
     
 
     protected $guarded = ["id"];
