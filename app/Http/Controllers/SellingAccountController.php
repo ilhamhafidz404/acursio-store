@@ -78,7 +78,7 @@ class SellingAccountController extends Controller
             
             $image2Path = "";
             if ($request->hasFile('image2')) {
-                $image1Path = $request->file('image2')->store('images', 'public');
+                $image2Path = $request->file('image2')->store('images', 'public');
             }
 
             // Buat akun baru
