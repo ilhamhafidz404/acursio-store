@@ -16,7 +16,7 @@ import formatRupiah from "../../tools/formatRupiah";
         </div>
         <figure>
             <img
-                :src="'http://127.0.0.1:8000/storage/' + account.image"
+                :src="'http://127.0.0.1:8000/storage/' + account.image1"
                 alt="Jubel Akun ML"
                 class="w-full h-[300px] object-cover"
             />

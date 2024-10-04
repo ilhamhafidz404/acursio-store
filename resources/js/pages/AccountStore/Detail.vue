@@ -54,12 +54,16 @@ import formatRupiah from "../../tools/formatRupiah";
         <div v-if="!isLoading" class="col-span-3">
             <div class="flex gap-3 justify-evenly">
                 <img
-                    :src="'http://127.0.0.1:8000/storage/' + accountStore.image"
+                    :src="
+                        'http://127.0.0.1:8000/storage/' + accountStore.image1
+                    "
                     alt=""
                     class="rounded"
                 />
                 <img
-                    :src="'http://127.0.0.1:8000/storage/' + accountStore.image"
+                    :src="
+                        'http://127.0.0.1:8000/storage/' + accountStore.image2
+                    "
                     alt=""
                     class="rounded"
                 />
