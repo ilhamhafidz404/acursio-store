@@ -4,6 +4,13 @@ import formatRank from "../../tools/formatRank";
 import formatRupiah from "../../tools/formatRupiah";
 </script>
 <template>
+    <div
+        v-if="isLoadingBuyAccount"
+        class="fixed inset-0 flex items-center justify-center backdrop-blur-md z-20"
+    >
+        <Loader text="Proses pembelian akun" />
+    </div>
+
     <div>
         <router-link
             to="/account-store"
@@ -13,6 +20,35 @@ import formatRupiah from "../../tools/formatRupiah";
 
             Kembali
         </router-link>
+    </div>
+    <div
+        v-if="showAlertSuccess"
+        role="alert"
+        className="bg-success text-neutral p-5 rounded-md my-10 flex-col"
+    >
+        <div class="flex font-bold gap-2">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="size-6"
+            >
+                <path
+                    fill-rule="evenodd"
+                    d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                    clip-rule="evenodd"
+                />
+            </svg>
+
+            <span>Pembelian Berhasil!</span>
+        </div>
+        <div class="mt-2">
+            <p class="text-sm">
+                Berikut adalah email dan password akun-nya:
+                <b>xxspanzie@gmail.com</b> | <b>Password</b>
+            </p>
+            <p class="text-sm">Atau kamu bisa lihat email untuk detailnya</p>
+        </div>
     </div>
     <div class="mt-10 grid grid-cols-5 gap-10">
         <div v-if="!isLoading" class="col-span-3">
@@ -80,16 +116,18 @@ import formatRupiah from "../../tools/formatRupiah";
             <p class="mt-5">{{ accountStore.description }}</p>
         </div>
         <div v-else class="col-span-3 flex items-center justify-center">
-            <loader />
+            <Loader text="Loading..." />
         </div>
 
         <!--  -->
 
         <div class="col-span-2 relative">
-            <form @submit.prevent="submitBuyAccount" method="POST">
-                <div
-                    class="bg-neutral p-5 rounded sticky top-24 overflow-hidden"
-                >
+            <form
+                @submit.prevent="submitBuyAccount"
+                method="POST"
+                class="sticky top-24 overflow-hidden"
+            >
+                <div class="bg-neutral p-5 rounded">
                     <div class="flex items-center gap-2">
                         <img
                             src="./../../asset/mobile-legends.webp"
@@ -132,8 +170,19 @@ import formatRupiah from "../../tools/formatRupiah";
                         </label>
                     </div>
                     <div class="mb-1 mt-5">
-                        <button type="submit" class="btn btn-primary w-full">
+                        <button
+                            v-if="accountStore.status == 'available'"
+                            type="submit"
+                            class="btn btn-primary w-full"
+                        >
                             Beli Akun
+                        </button>
+                        <button
+                            v-else
+                            type="reset"
+                            class="btn btn-error w-full"
+                        >
+                            Sold Out
                         </button>
                     </div>
                 </div>
@@ -153,6 +202,8 @@ export default {
         return {
             id: null,
             isLoading: false,
+            isLoadingBuyAccount: false,
+            showAlertSuccess: false,
             accountStore: {
                 created_at: String,
                 description: String,
@@ -194,19 +245,19 @@ export default {
                 });
         },
         submitBuyAccount() {
+            this.isLoadingBuyAccount = true;
             axios
                 .post(`http://127.0.0.1:8000/api/buyAccount`, {
                     accountStore: this.accountStore,
                     userData: this.userData,
                 })
                 .then((res) => {
-                    this.accountStore = res.data.result;
-                    this.isLoading = false;
-
-                    console.log(this.accountStore);
+                    console.log(res);
+                    this.isLoadingBuyAccount = false;
+                    this.showAlertSuccess = true;
                 })
                 .catch((error) => {
-                    this.isLoading = false;
+                    this.isLoadingBuyAccount = false;
                     console.error(error);
                 });
         },

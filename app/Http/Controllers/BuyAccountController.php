@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendEmailSuccessBuyAccount;
+use App\Models\SellingAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -24,6 +25,10 @@ class BuyAccountController extends Controller
             'email' =>  $accountStore["email_account"],
             'password' =>  $accountStore["password_account"],
         ]));
+
+        SellingAccount::find($request->accountStore["id"])->update([
+            "status" => "sold out"
+        ]);
 
         return response()->json([
             "code" => "ACSO-001",

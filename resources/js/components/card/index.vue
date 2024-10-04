@@ -4,6 +4,16 @@ import formatRupiah from "../../tools/formatRupiah";
 </script>
 <template>
     <div className="card bg-neutral shadow-xl relative overflow-hidden">
+        <div
+            v-if="account.status == 'sold out'"
+            class="absolute inset-0 bg-black/50 flex items-center justify-center z-10"
+        >
+            <p
+                class="bg-error w-full text-center py-3 text-gray-200 font-bold text-xl"
+            >
+                SOLD OUT
+            </p>
+        </div>
         <figure>
             <img
                 :src="'http://127.0.0.1:8000/storage/' + account.image"

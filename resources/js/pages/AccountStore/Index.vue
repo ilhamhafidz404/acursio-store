@@ -106,7 +106,7 @@
             </div>
         </aside>
 
-        <div v-if="!isLoading" class="col-span-3 shadow rounded-lg p-5">
+        <div v-if="!isLoading" class="col-span-3 rounded-lg p-5">
             <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
                 <Card
                     v-for="account in AccountStores.data"
@@ -140,7 +140,7 @@
             </div>
         </div>
         <div v-else class="col-span-3 flex justify-center items-center">
-            <Loader />
+            <Loader text="Loading..." />
         </div>
     </main>
 </template>

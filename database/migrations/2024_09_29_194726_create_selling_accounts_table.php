@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer("price");
             $table->string("image");
             $table->text("description");
-            $table->enum("status", ["available ", "not available"])->default("available");
+            $table->enum("status", ["available ", "sold out"])->default("available");
             $table->string("rank");
             $table->integer("total_heroes")->nullable();
             $table->integer("total_skin")->nullable();

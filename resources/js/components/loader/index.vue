@@ -1,12 +1,14 @@
 <template>
-    <div>
-        <div class="loader"></div>
-        <p class="mt-3">Loading...</p>
+    <div class="text-center">
+        <div class="loader mx-auto"></div>
+        <p class="mt-3 font-medium">{{ text }}...</p>
     </div>
 </template>
 
 <script>
-export default {};
+export default {
+    props: { text: "Loading" },
+};
 </script>
 
 <style>
