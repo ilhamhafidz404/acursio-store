@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BuyAccountController;
 use App\Http\Controllers\SellingAccountController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource("/sellingAccounts", SellingAccountController::class);
+Route::post("/buyAccount", BuyAccountController::class);

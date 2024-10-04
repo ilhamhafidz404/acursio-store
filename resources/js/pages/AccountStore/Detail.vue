@@ -86,50 +86,58 @@ import formatRupiah from "../../tools/formatRupiah";
         <!--  -->
 
         <div class="col-span-2 relative">
-            <div class="bg-neutral p-5 rounded sticky top-24 overflow-hidden">
-                <div class="flex items-center gap-2">
-                    <img
-                        src="./../../asset/mobile-legends.webp"
-                        alt="Mobile Legends"
-                        class="w-[60px] rounded-md"
-                    />
-                    <h3 class="text-xl font-semibold">Jubel Akun MLBB</h3>
-                </div>
-
-                <span
-                    class="absolute bg-success text-white top-5 right-[-80px] py-2 px-20 rotate-45 text-xs"
+            <form @submit.prevent="submitBuyAccount" method="POST">
+                <div
+                    class="bg-neutral p-5 rounded sticky top-24 overflow-hidden"
                 >
-                    100% Aman
-                </span>
-
-                <hr class="my-5" />
-
-                <div class="mb-1">
-                    <label class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text">Masukkan Email</span>
-                        </div>
-                        <input
-                            type="text"
-                            class="input input-bordered w-full"
+                    <div class="flex items-center gap-2">
+                        <img
+                            src="./../../asset/mobile-legends.webp"
+                            alt="Mobile Legends"
+                            class="w-[60px] rounded-md"
                         />
-                    </label>
+                        <h3 class="text-xl font-semibold">Jubel Akun MLBB</h3>
+                    </div>
+
+                    <span
+                        class="absolute bg-success text-white top-5 right-[-80px] py-2 px-20 rotate-45 text-xs"
+                    >
+                        100% Aman
+                    </span>
+
+                    <hr class="my-5" />
+
+                    <div class="mb-1">
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Masukkan Email</span>
+                            </div>
+                            <input
+                                type="text"
+                                class="input input-bordered w-full"
+                                v-model="userData.email"
+                            />
+                        </label>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text">Masukkan No HP</span>
+                            </div>
+                            <input
+                                type="text"
+                                class="input input-bordered w-full"
+                                v-model="userData.phone"
+                            />
+                        </label>
+                    </div>
+                    <div class="mb-1 mt-5">
+                        <button type="submit" class="btn btn-primary w-full">
+                            Beli Akun
+                        </button>
+                    </div>
                 </div>
-                <div class="mb-1">
-                    <label class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text">Masukkan No HP</span>
-                        </div>
-                        <input
-                            type="text"
-                            class="input input-bordered w-full"
-                        />
-                    </label>
-                </div>
-                <div class="mb-1 mt-5">
-                    <button class="btn btn-primary w-full">Beli Akun</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </template>
@@ -160,6 +168,10 @@ export default {
                 total_skin: Number,
                 update_at: String,
             },
+            userData: {
+                email: "",
+                phone: "",
+            },
         };
     },
     methods: {
@@ -167,13 +179,26 @@ export default {
             url = `http://127.0.0.1:8000/api/sellingAccounts/${this.id}`
         ) {
             this.isLoading = true;
-            // this.$router.push({
-            //     path: "/account-store",
-            //     query: { page: this.pagination.page },
-            // });
 
             axios
                 .get(url)
+                .then((res) => {
+                    this.accountStore = res.data.result;
+                    this.isLoading = false;
+
+                    console.log(this.accountStore);
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    console.error(error);
+                });
+        },
+        submitBuyAccount() {
+            axios
+                .post(`http://127.0.0.1:8000/api/buyAccount`, {
+                    accountStore: this.accountStore,
+                    userData: this.userData,
+                })
                 .then((res) => {
                     this.accountStore = res.data.result;
                     this.isLoading = false;
