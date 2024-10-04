@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string("title");
             $table->string("slug");
             $table->integer("price");
-            $table->string("image");
+            $table->string("image1");
+            $table->string("image2")->nullable();
             $table->text("description");
             $table->enum("status", ["available ", "sold out"])->default("available");
             $table->string("rank");

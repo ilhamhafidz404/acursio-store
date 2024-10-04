@@ -63,16 +63,22 @@ class SellingAccountController extends Controller
             'slug' => 'required|string|max:255|unique:selling_accounts,slug',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image1' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'rank' => 'required|string|max:255',
             'accountEmail' => 'required|string',
             'accountPassword' => 'required|string',
         ]);
 
         try {
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('images', 'public');
+            $image1Path = null;
+            if ($request->hasFile('image1')) {
+                $image1Path = $request->file('image1')->store('images', 'public');
+            }
+            
+            $image2Path = "";
+            if ($request->hasFile('image2')) {
+                $image1Path = $request->file('image2')->store('images', 'public');
             }
 
             // Buat akun baru
@@ -81,7 +87,8 @@ class SellingAccountController extends Controller
                 'slug' => $request->slug,
                 'price' => $request->price,
                 'description' => $request->description,
-                'image' => $imagePath,
+                'image1' => $image1Path,
+                'image2' => $image2Path,
                 'rank' => $request->rank,
                 'total_heroes' => $request->totalHero,
                 'total_skin' => $request->totalSkin,
