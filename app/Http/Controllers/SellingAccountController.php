@@ -65,6 +65,8 @@ class SellingAccountController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'rank' => 'required|string|max:255',
+            'accountEmail' => 'required|string',
+            'accountPassword' => 'required|string',
         ]);
 
         try {
@@ -84,6 +86,8 @@ class SellingAccountController extends Controller
                 'total_heroes' => $request->totalHero,
                 'total_skin' => $request->totalSkin,
                 'discount' => $request->discount,
+                'email_account' => $request->accountEmail,
+                'password_account' => $request->accountPassword,
             ]);
 
             return response()->json([
