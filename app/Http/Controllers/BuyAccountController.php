@@ -18,14 +18,11 @@ class BuyAccountController extends Controller
 
         function showDecryptedData($id)
         {
-            // Ambil data selling_account berdasarkan ID atau slug
             $sellingAccount = SellingAccount::findOrFail($id);
 
-            // Dekripsi kolom email_account dan password_account
             $decryptedEmail = Crypt::decryptString($sellingAccount->email_account);
             $decryptedPassword = Crypt::decryptString($sellingAccount->password_account);
 
-            // Return array yang berisi kedua variabel
             return [
                 'decryptedEmail' => $decryptedEmail,
                 'decryptedPassword' => $decryptedPassword
@@ -44,7 +41,7 @@ class BuyAccountController extends Controller
             'price' =>  $accountStore["price"],
             'rank' =>  $accountStore["rank"],
             'email' =>  $decryptedAccountData["decryptedEmail"],
-            'password' =>  $decryptedAccountData["decryptedEmail"],
+            'password' =>  $decryptedAccountData["decryptedPassword"],
         ]));
 
         SellingAccount::find($request->accountStore["id"])->update([
@@ -54,7 +51,10 @@ class BuyAccountController extends Controller
         return response()->json([
             "code" => "ACSO-001",
             'success' => true,
-            'result' => [],
+            'result' => [
+                "email" => $decryptedAccountData["decryptedEmail"],
+                "password" => $decryptedAccountData["decryptedPassword"],
+            ],
             'message' => 'Berhasil Beli Akun'
         ]);
     }
