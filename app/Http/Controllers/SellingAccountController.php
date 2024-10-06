@@ -58,6 +58,7 @@ class SellingAccountController extends Controller
      */
     public function store(Request $request)
     {
+
         // Lakukan validasi terlebih dahulu
         $request->validate([
             'title' => 'required|string|max:255',
@@ -142,24 +143,19 @@ class SellingAccountController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $slug)
     {   
-
-        return response()->json($request);
-
         try {
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('images', 'public');
-            }
+            // $imagePath = null;
+            // if ($request->hasFile('image')) {
+            //     $imagePath = $request->file('image')->store('images', 'public');
+            // }
 
             // Buat akun baru
-            $sellingAccount = SellingAccount::find($id)->update([
+            $sellingAccount = SellingAccount::whereSlug($slug)->first()->update([
                 'title' => $request->title,
-                'slug' => $request->slug,
                 'price' => $request->price,
                 'description' => $request->description,
-                'image' => $imagePath,
                 'rank' => $request->rank,
                 'total_heroes' => $request->totalHero,
                 'total_skin' => $request->totalSkin,
@@ -170,14 +166,14 @@ class SellingAccountController extends Controller
                 "code" => "ACSO-001",
                 'success' => true,
                 'data' => $sellingAccount,
-                'message' => 'Berhasil Membuat Akun Jubel'
+                'message' => 'Berhasil Mengedit Akun Jubel'
             ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
                 "code" => "ACSO-003",
                 'success' => false,
-                'message' => 'Gagal Membuat Akun Jubel',
+                'message' => 'Gagal Mengedit Akun Jubel',
                 'error' => $e->getMessage(),
             ], 500);
         }

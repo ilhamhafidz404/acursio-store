@@ -39,8 +39,8 @@ import formatRupiah from "../../tools/formatRupiah";
             <p class="text-sm">Atau kamu bisa lihat email untuk detailnya</p>
         </div>
     </div>
-    <div class="mt-10 grid grid-cols-5 gap-10">
-        <div v-if="!isLoading" class="col-span-3">
+    <div class="mt-10 grid md:grid-cols-5 gap-10">
+        <div v-if="!isLoading" class="md:col-span-3">
             <div class="flex gap-3 justify-evenly">
                 <img
                     :src="
@@ -108,13 +108,13 @@ import formatRupiah from "../../tools/formatRupiah";
             </div>
             <p class="mt-5">{{ accountStore.description }}</p>
         </div>
-        <div v-else class="col-span-3 flex items-center justify-center">
+        <div v-else class="md:col-span-3 flex items-center justify-center">
             <Loader text="Loading..." />
         </div>
 
         <!--  -->
 
-        <div class="col-span-2 relative">
+        <div class="md:col-span-2 relative">
             <form
                 @submit.prevent="submitBuyAccount"
                 method="POST"

@@ -58,7 +58,7 @@
                                 />
                             </label>
                         </div>
-                        <div class="mb-1">
+                        <!-- <div class="mb-1">
                             <label class="form-control w-full">
                                 <div class="label">
                                     <span class="label-text">Jumlah Hero</span>
@@ -81,7 +81,7 @@
                                     v-model="filter.totalSkin"
                                 />
                             </label>
-                        </div>
+                        </div> -->
                         <div class="mt-7 flex gap-2">
                             <div v-if="isFilterActive" class="w-full">
                                 <button
