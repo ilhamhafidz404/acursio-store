@@ -146,8 +146,14 @@ import formatRupiah from "../../tools/formatRupiah";
                             <input
                                 type="text"
                                 class="input input-bordered w-full"
+                                :class="{ 'border-error': errorUserData.email }"
                                 v-model="userData.email"
                             />
+                            <div class="label" v-if="errorUserData.email">
+                                <span class="label-text text-sm text-error">
+                                    {{ errorUserData.email }}
+                                </span>
+                            </div>
                         </label>
                     </div>
                     <div class="mb-1">
@@ -158,8 +164,14 @@ import formatRupiah from "../../tools/formatRupiah";
                             <input
                                 type="text"
                                 class="input input-bordered w-full"
+                                :class="{ 'border-error': errorUserData.phone }"
                                 v-model="userData.phone"
                             />
+                            <div class="label" v-if="errorUserData.phone">
+                                <span class="label-text text-sm text-error">
+                                    {{ errorUserData.phone }}
+                                </span>
+                            </div>
                         </label>
                     </div>
                     <div class="mb-1 mt-5">
@@ -182,6 +194,21 @@ import formatRupiah from "../../tools/formatRupiah";
             </form>
         </div>
     </div>
+
+    <dialog id="confirmationBuy" class="modal">
+        <div class="modal-box">
+            <h3 class="text-lg font-bold">Konfirmasi Pembelian</h3>
+            <p class="py-4">Pastikan Email dan Nomor HP anda sudah benar!</p>
+            <div class="modal-action">
+                <form method="dialog" class="flex gap-3">
+                    <button class="btn">Batal</button>
+                    <button class="btn btn-primary" @click="postBuyAccount">
+                        Lanjut Bayar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </dialog>
 </template>
 
 <script>
@@ -216,6 +243,10 @@ export default {
                 email: "",
                 phone: "",
             },
+            errorUserData: {
+                email: "",
+                phone: "",
+            },
             isLoadingBuyAccount: false,
             purchasedAccount: {
                 email: String,
@@ -243,6 +274,32 @@ export default {
                 });
         },
         submitBuyAccount() {
+            const { email, phone } = this.userData;
+            const isValidEmail = (email) =>
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+            const isValidPhone = (phone) =>
+                /^(?:\+62|62|0)8[1-9][0-9]{6,11}$/.test(phone);
+
+            this.errorUserData = { email: "", phone: "" };
+
+            if (!email) {
+                this.errorUserData.email = "Harap isi email sebelum membeli!";
+            } else if (!isValidEmail(email)) {
+                this.errorUserData.email = "Masukkan email dengan benar";
+            }
+
+            if (!phone) {
+                this.errorUserData.phone = "Harap isi no HP sebelum membeli!";
+            } else if (!isValidPhone(phone)) {
+                this.errorUserData.phone = "Harap isi no HP dengan benar!";
+            }
+
+            if (!this.errorUserData.email && !this.errorUserData.phone) {
+                confirmationBuy.showModal();
+            }
+        },
+        postBuyAccount() {
             this.isLoadingBuyAccount = true;
             axios
                 .post(`http://127.0.0.1:8000/api/buyAccount`, {
@@ -250,7 +307,7 @@ export default {
                     userData: this.userData,
                 })
                 .then((res) => {
-                    console.log(res);
+                    window.open(res.data.payment_url, "_blank");
                     this.purchasedAccount.email = res.data.result.email;
                     this.purchasedAccount.password = res.data.result.password;
                     this.isLoadingBuyAccount = false;
