@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendEmailSuccessBuyAccount;
 use App\Models\SellingAccount;
+use App\Models\TransactionAccount;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class BuyAccountController extends Controller
 {
@@ -18,6 +21,7 @@ class BuyAccountController extends Controller
     {
 
         $accountStore = $request->accountStore;
+        $userData = $request->userData;
 
         // Set konfigurasi Midtrans
         \Midtrans\Config::$serverKey = config("midtrans.serverKey");
@@ -25,14 +29,38 @@ class BuyAccountController extends Controller
         \Midtrans\Config::$isSanitized = config("midtrans.isSanitized");
         \Midtrans\Config::$is3ds = config("midtrans.is3Ds");
 
+        // Generate OrderID / INVOICE
+        $datePart = Carbon::now()->format('Ymd');
+        $uniquePart = Str::random(6);
+        $orderID = 'ACS-' . $datePart . '.' . $uniquePart;
+
         // Siapkan parameter transaksi
         $params = [
             'transaction_details' => [
-                'order_id' => 'ORDER-' . uniqid(), // Pastikan unik
-                'gross_amount' => $accountStore["price"],
+                'order_id'      => $orderID, 
+                'gross_amount'  => $accountStore["price"], 
             ],
-            // Tambahkan detail lain jika diperlukan
+            "item_details" => [
+                [
+                    "id"            => $accountStore["slug"],
+                    'name'          => $accountStore["title"],
+                    'price'         => $accountStore["price"],
+                    'quantity'      => 1, 
+                ]
+            ],
+            "customer_details" => [
+                'phone'         => $userData["phone"],
+                'email'         => $userData["email"],
+            ]
         ];
+
+        TransactionAccount::create([
+            "invoice" => $orderID,
+            "selling_account_id" => $accountStore["id"],
+            "pay" => $accountStore["price"],
+            "status" => "pending"
+        ]);
+        
 
         try {
             // Buat transaksi dan dapatkan URL pembayaran
