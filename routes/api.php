@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BuyAccountController;
 use App\Http\Controllers\SellingAccountController;
+use App\Http\Controllers\TransactionAccountController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// JUBEL
 Route::apiResource("/sellingAccounts", SellingAccountController::class);
 Route::post("/buyAccount", BuyAccountController::class);
+Route::apiResource("/transactionAccounts", TransactionAccountController::class);
