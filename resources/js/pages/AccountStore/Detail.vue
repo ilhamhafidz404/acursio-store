@@ -1,7 +1,11 @@
 <script setup>
+// tools
 import calculateDiscount from "../../tools/calculateDiscount";
 import formatRank from "../../tools/formatRank";
 import formatRupiah from "../../tools/formatRupiah";
+
+// apis
+import { getSellingAccountById } from "../../apis/SellingAccount";
 </script>
 <template>
     <div
@@ -50,6 +54,7 @@ import formatRupiah from "../../tools/formatRupiah";
                     class="rounded w-[400px] h-[300px] object-cover"
                 />
                 <img
+                    v-if="accountStore.image2"
                     :src="
                         'http://127.0.0.1:8000/storage/' + accountStore.image2
                     "
@@ -148,6 +153,7 @@ import formatRupiah from "../../tools/formatRupiah";
                                 class="input input-bordered w-full"
                                 :class="{ 'border-error': errorUserData.email }"
                                 v-model="userData.email"
+                                :disabled="accountStore.status != 'available'"
                             />
                             <div class="label" v-if="errorUserData.email">
                                 <span class="label-text text-sm text-error">
@@ -166,6 +172,7 @@ import formatRupiah from "../../tools/formatRupiah";
                                 class="input input-bordered w-full"
                                 :class="{ 'border-error': errorUserData.phone }"
                                 v-model="userData.phone"
+                                :disabled="accountStore.status != 'available'"
                             />
                             <div class="label" v-if="errorUserData.phone">
                                 <span class="label-text text-sm text-error">
@@ -223,6 +230,8 @@ import formatRupiah from "../../tools/formatRupiah";
 
 <script>
 import axios from "axios";
+
+// components
 import Loader from "../../components/loader/index.vue";
 import LongArrowLeftIcon from "../../components/icon/longArrowLeft.vue";
 import SuccessRibbonIcon from "../../components/icon/successRibbon.vue";
@@ -239,7 +248,8 @@ export default {
                 description: String,
                 discount: 0,
                 id: Number,
-                image: String,
+                image1: String,
+                image2: String,
                 price: Number,
                 rank: "",
                 slug: String,
@@ -265,23 +275,22 @@ export default {
         };
     },
     methods: {
-        fetchSellingAccountById(
-            url = `http://127.0.0.1:8000/api/sellingAccounts/${this.id}`
-        ) {
+        async fetchSellingAccountById() {
             this.isLoading = true;
+            try {
+                const result = await getSellingAccountById(this.id);
+                if (result) {
+                    console.log(result);
+                    this.accountStore = result;
+                } else {
+                    console.log("No data found");
+                }
 
-            axios
-                .get(url)
-                .then((res) => {
-                    this.accountStore = res.data.result;
-                    this.isLoading = false;
-
-                    console.log(this.accountStore);
-                })
-                .catch((error) => {
-                    this.isLoading = false;
-                    console.error(error);
-                });
+                this.isLoading = false;
+            } catch (error) {
+                console.error("Error fetching account:", error);
+                this.isLoading = false;
+            }
         },
         submitBuyAccount() {
             const { email, phone } = this.userData;
@@ -327,6 +336,8 @@ export default {
                     this.isLoadingBuyAccount = false;
                     console.error(error);
                 });
+
+            this.fetchSellingAccountById();
         },
     },
     mounted() {
