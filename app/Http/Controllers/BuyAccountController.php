@@ -20,6 +20,7 @@ class BuyAccountController extends Controller
     public function __invoke(Request $request)
     {
 
+        // 
         $accountStore = $request->accountStore;
         $userData = $request->userData;
 
@@ -54,11 +55,17 @@ class BuyAccountController extends Controller
             ]
         ];
 
+        // Buat Transaksi untuk Admin
         TransactionAccount::create([
             "invoice" => $orderID,
             "selling_account_id" => $accountStore["id"],
             "pay" => $accountStore["price"],
             "status" => "pending"
+        ]);
+
+        // Ubah Selling Account menjadi in order
+        SellingAccount::find($accountStore["id"])->update([
+            "status" => "in order"
         ]);
         
 

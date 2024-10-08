@@ -21,9 +21,9 @@
                         <div class="mb-1">
                             <label class="form-control w-full">
                                 <div class="label">
-                                    <span class="label-text"
-                                        >Harga Minimal</span
-                                    >
+                                    <span class="label-text">
+                                        Harga Minimal
+                                    </span>
                                 </div>
                                 <input
                                     type="text"
@@ -41,9 +41,9 @@
                         <div class="mb-1">
                             <label class="form-control w-full">
                                 <div class="label">
-                                    <span class="label-text"
-                                        >Harga Maksimal</span
-                                    >
+                                    <span class="label-text">
+                                        Harga Maksimal
+                                    </span>
                                 </div>
                                 <input
                                     type="text"
@@ -125,10 +125,10 @@
                     Previous
                 </button>
 
-                <span
-                    >Page {{ AccountStores.current_page }} of
-                    {{ AccountStores.last_page }}</span
-                >
+                <span>
+                    Page {{ AccountStores.current_page }} of
+                    {{ AccountStores.last_page }}
+                </span>
 
                 <button
                     :disabled="!AccountStores.next_page_url"

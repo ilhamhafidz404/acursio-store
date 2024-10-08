@@ -5,13 +5,18 @@ import formatRupiah from "../../tools/formatRupiah";
 <template>
     <div className="card bg-neutral shadow-xl relative overflow-hidden">
         <div
-            v-if="account.status == 'sold out'"
+            v-if="account.status == 'sold out' || account.status == 'in order'"
             class="absolute inset-0 bg-black/50 flex items-center justify-center z-10"
         >
             <p
-                class="bg-error w-full text-center py-3 text-gray-200 font-bold text-xl"
+                class="w-full text-center py-3 text-gray-200 font-bold text-xl"
+                :class="
+                    account.status == 'in order' ? 'bg-warning' : 'bg-error'
+                "
             >
-                SOLD OUT
+                {{
+                    account.status == "in order" ? "Dalam Pesanan" : "Sold Out"
+                }}
             </p>
         </div>
         <figure>

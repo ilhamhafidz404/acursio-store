@@ -47,14 +47,14 @@ import formatRupiah from "../../tools/formatRupiah";
                         'http://127.0.0.1:8000/storage/' + accountStore.image1
                     "
                     alt=""
-                    class="rounded"
+                    class="rounded w-[400px] h-[300px] object-cover"
                 />
                 <img
                     :src="
                         'http://127.0.0.1:8000/storage/' + accountStore.image2
                     "
                     alt=""
-                    class="rounded"
+                    class="rounded w-[400px] h-[300px] object-cover"
                 />
             </div>
             <div class="mt-5 flex gap-3 flex-end items-center">

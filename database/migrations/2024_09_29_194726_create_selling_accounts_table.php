@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string("image1");
             $table->string("image2")->nullable();
             $table->text("description");
-            $table->enum("status", ["available ", "sold out"])->default("available");
+            $table->enum("status", ["available", "sold out", "in order"])->default("available");
             $table->string("rank");
             $table->integer("total_heroes")->nullable();
             $table->integer("total_skin")->nullable();
