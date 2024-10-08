@@ -58,10 +58,12 @@ class BuyAccountController extends Controller
     
             // Buat Transaksi untuk Admin
             TransactionAccount::create([
-                "invoice" => $orderID,
-                "selling_account_id" => $accountStore["id"],
-                "pay" => $accountStore["price"],
-                "status" => "pending"
+                "invoice"               => $orderID,
+                "selling_account_id"    => $accountStore["id"],
+                "pay"                   => $accountStore["price"],
+                "status"                => "pending",
+                "user_email"            => $userData["email"],
+                "user_phone"            => $userData["phone"]
             ]);
     
             // Ubah Selling Account menjadi in order

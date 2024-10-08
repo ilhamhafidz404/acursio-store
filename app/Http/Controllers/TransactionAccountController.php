@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SellingAccount;
 use App\Models\TransactionAccount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class TransactionAccountController extends Controller
 {
@@ -14,7 +16,6 @@ class TransactionAccountController extends Controller
     {
         $transactionAccounts= TransactionAccount::with("SellingAccount")->latest()->paginate(9);
 
-        // Return response dalam bentuk JSON
         return response()->json([
             "code" => "ACSO-001",
             "success" => true,
@@ -36,15 +37,69 @@ class TransactionAccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $invoice)
     {
-        //
+
+        function showDecryptedData($id)
+        {
+            $sellingAccount = SellingAccount::findOrFail($id);
+
+            $decryptedEmail = Crypt::decryptString($sellingAccount->email_account);
+            $decryptedPassword = Crypt::decryptString($sellingAccount->password_account);
+
+            return [
+                'decryptedEmail' => $decryptedEmail,
+                'decryptedPassword' => $decryptedPassword
+            ];
+        }
+
+        
+        $transactionAccount = TransactionAccount::with("SellingAccount")->whereInvoice($invoice)->first();
+
+        $decryptedAccountData = showDecryptedData($transactionAccount->id);
+
+        return response()->json($transactionAccount);
+
+
+
+
+        // $mailTo = $request->userData["email"];
+        // $accountStore = $request->accountStore;
+
+        // Mail::to($mailTo)->send(new SendEmailSuccessBuyAccount([
+        //     'title' =>  $accountStore["title"],
+        //     'price' =>  $accountStore["price"],
+        //     'rank' =>  $accountStore["rank"],
+        //     'email' =>  $decryptedAccountData["decryptedEmail"],
+        //     'password' =>  $decryptedAccountData["decryptedPassword"],
+        // ]));
+
+        // SellingAccount::find($request->accountStore["id"])->update([
+        //     "status" => "sold out"
+        // ]);
+
+        // return response()->json([
+        //     "code" => "ACSO-001",
+        //     'success' => true,
+        //     'result' => [
+        //         "email" => $decryptedAccountData["decryptedEmail"],
+        //         "password" => $decryptedAccountData["decryptedPassword"],
+        //     ],
+        //     'message' => 'Berhasil Beli Akun'
+        // ]);
+
+        // return response()->json([
+        //     "code" => "ACSO-001",
+        //     "success" => true,
+        //     "message" => "success",
+        //     "result" => $transactionAccount,
+        // ]);
     }
 
     /**

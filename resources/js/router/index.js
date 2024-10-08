@@ -11,6 +11,13 @@ const routes = [
         name: "JockeyService",
         component: () => import("@/pages/JockeyService.vue"),
     },
+    //
+    {
+        path: "/payment",
+        name: "Payment",
+        component: () => import("@/pages/Payment/Index.vue"),
+    },
+    //
     {
         path: "/account-store",
         name: "AccountStore",
