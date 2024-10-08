@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('app');
 })->name("application");
 
+
+Route::get('/paymentLink', function () {
+    return view('email.paymentLinkBuyAccount');
+})->name("");
+
 Route::get('/{any}', function () {
     return view('app');
 })->where('any', '.*');

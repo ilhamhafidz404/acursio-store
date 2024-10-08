@@ -95,15 +95,15 @@ import formatRupiah from "../../tools/formatRupiah";
                 </p>
                 <p class="text-lg">
                     Total Hero :
-                    <span class="font-medium">{{
-                        accountStore.total_heroes || "-"
-                    }}</span>
+                    <span class="font-medium">
+                        {{ accountStore.total_heroes || "-" }}
+                    </span>
                 </p>
                 <p class="text-lg">
                     Total Skin :
-                    <span class="font-medium">{{
-                        accountStore.total_skin || "-"
-                    }}</span>
+                    <span class="font-medium">
+                        {{ accountStore.total_skin || "-" }}
+                    </span>
                 </p>
             </div>
             <p class="mt-5">{{ accountStore.description }}</p>
@@ -176,18 +176,28 @@ import formatRupiah from "../../tools/formatRupiah";
                     </div>
                     <div class="mb-1 mt-5">
                         <button
-                            v-if="accountStore.status == 'available'"
-                            type="submit"
-                            class="btn btn-primary w-full"
+                            :type="
+                                accountStore.status == 'available'
+                                    ? 'submit'
+                                    : 'reset'
+                            "
+                            :class="{
+                                'btn btn-primary w-full':
+                                    accountStore.status == 'available',
+                                'btn btn-warning w-full':
+                                    accountStore.status == 'in order',
+                                'btn btn-error w-full':
+                                    accountStore.status != 'available' &&
+                                    accountStore.status != 'in order',
+                            }"
                         >
-                            Beli Akun
-                        </button>
-                        <button
-                            v-else
-                            type="reset"
-                            class="btn btn-error w-full"
-                        >
-                            Sold Out
+                            {{
+                                accountStore.status == "available"
+                                    ? "Beli Akun"
+                                    : accountStore.status == "in order"
+                                    ? "In Order"
+                                    : "Sold Out"
+                            }}
                         </button>
                     </div>
                 </div>

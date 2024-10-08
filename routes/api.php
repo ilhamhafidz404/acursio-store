@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BuyAccountController;
+use App\Http\Controllers\CheckStatusTransactionController;
 use App\Http\Controllers\SellingAccountController;
 use App\Http\Controllers\TransactionAccountController;
 use Illuminate\Http\Request;
@@ -25,3 +26,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource("/sellingAccounts", SellingAccountController::class);
 Route::post("/buyAccount", BuyAccountController::class);
 Route::apiResource("/transactionAccounts", TransactionAccountController::class);
+Route::get("/checkStatusTransactions", CheckStatusTransactionController::class);
