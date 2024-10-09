@@ -62,9 +62,15 @@ class TransactionAccountController extends Controller
         
         $transactionAccount = TransactionAccount::with("SellingAccount")->whereInvoice($invoice)->first();
 
-        $decryptedAccountData = showDecryptedData($transactionAccount->id);
+        // $decryptedAccountData = showDecryptedData($transactionAccount->id);
 
-        return response()->json($transactionAccount);
+        // return response()->json($transactionAccount);
+        return response()->json([
+            "code" => "ACSO-001",
+            'success' => true,
+            'result' => $transactionAccount,
+            'message' => 'Berhasil Get By Order ID Transaksi Akun'
+        ], 201);
 
 
 

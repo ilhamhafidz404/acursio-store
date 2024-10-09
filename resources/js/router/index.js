@@ -13,9 +13,9 @@ const routes = [
     },
     //
     {
-        path: "/payment",
-        name: "Payment",
-        component: () => import("@/pages/Payment/Index.vue"),
+        path: "/payment-finish",
+        name: "PaymentFinish",
+        component: () => import("@/pages/Payment/Finish.vue"),
     },
     //
     {

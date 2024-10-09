@@ -25,13 +25,13 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
             Kembali
         </router-link>
     </div>
-    <div
+    <!-- <div
         v-if="showAlertSuccess"
         role="alert"
         className="bg-success text-neutral p-5 rounded-md my-10 flex-col"
     >
         <div class="flex font-bold gap-2">
-            <SucessRibbonIcon myClass="size-6" />
+            <SuccessRibbonIcon myClass="size-6" />
             <span>Pembelian Berhasil!</span>
         </div>
         <div class="mt-2">
@@ -42,7 +42,7 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
             </p>
             <p class="text-sm">Atau kamu bisa lihat email untuk detailnya</p>
         </div>
-    </div>
+    </div> -->
     <div class="mt-10 grid md:grid-cols-5 gap-10">
         <div v-if="!isLoading" class="md:col-span-3">
             <div class="flex gap-3 justify-evenly">
@@ -242,7 +242,7 @@ export default {
         return {
             id: null,
             isLoading: false,
-            showAlertSuccess: false,
+            // showAlertSuccess: false,
             accountStore: {
                 created_at: String,
                 description: String,
@@ -268,10 +268,10 @@ export default {
                 phone: "",
             },
             isLoadingBuyAccount: false,
-            purchasedAccount: {
-                email: String,
-                password: String,
-            },
+            // purchasedAccount: {
+            //     email: String,
+            //     password: String,
+            // },
         };
     },
     methods: {
@@ -280,7 +280,6 @@ export default {
             try {
                 const result = await getSellingAccountById(this.id);
                 if (result) {
-                    console.log(result);
                     this.accountStore = result;
                 } else {
                     console.log("No data found");
@@ -326,11 +325,11 @@ export default {
                     userData: this.userData,
                 })
                 .then((res) => {
-                    window.open(res.data.payment_url, "_blank");
-                    this.purchasedAccount.email = res.data.result.email;
-                    this.purchasedAccount.password = res.data.result.password;
+                    // this.purchasedAccount.email = res.data.result.email;
+                    // this.purchasedAccount.password = res.data.result.password;
                     this.isLoadingBuyAccount = false;
-                    this.showAlertSuccess = true;
+                    window.open(res.data.payment_url, "_blank");
+                    // this.showAlertSuccess = true;
                 })
                 .catch((error) => {
                     this.isLoadingBuyAccount = false;
