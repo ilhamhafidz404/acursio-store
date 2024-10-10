@@ -21,6 +21,7 @@ return new class extends Migration
                   ->onDelete('cascade'); 
             $table->integer("pay");
             $table->enum("status", ["pending", "success", "failed"])->default("pending"); 
+            $table->string("payment_type")->nullable(); 
             $table->timestamps();
         });
         
