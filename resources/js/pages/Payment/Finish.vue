@@ -7,7 +7,7 @@ import { showTransactionAccount } from "../../apis/TransactionAccount";
         role="alert"
         class="text-neutral p-5 rounded-md my-10 flex-col"
         :class="{
-            'bg-success': params.transactionStatus === 'success',
+            'bg-success': params.transactionStatus === 'settlement',
             'bg-warning': params.transactionStatus === 'pending',
         }"
     >
