@@ -263,6 +263,8 @@ export default {
     methods: {
         async fetchSellingAccountById() {
             this.isLoading = true;
+            this.alertContent.isShow = false;
+
             try {
                 const result = await getSellingAccountById(this.id);
                 this.accountStore = result || {};
@@ -337,14 +339,11 @@ export default {
         postBuyAccount() {
             this.isLoadingBuyAccount = true;
             axios
-                // .post(`https://genzedu.id/api/buyAccount`, {
                 .post(`http://127.0.0.1:8000/api/buyAccount`, {
                     accountStore: this.accountStore,
                     userData: this.userData,
                 })
                 .then((res) => {
-                    this.isLoadingBuyAccount = false;
-
                     window.open(res.data.payment_url, "_blank");
 
                     this.setDialogContent(
@@ -364,12 +363,12 @@ export default {
                     );
 
                     informationDialog.showModal();
-
-                    this.isLoadingBuyAccount = false;
                     console.error(error);
+                })
+                .finally(() => {
+                    this.isLoadingBuyAccount = false;
+                    this.fetchSellingAccountById();
                 });
-
-            this.fetchSellingAccountById();
         },
     },
     mounted() {

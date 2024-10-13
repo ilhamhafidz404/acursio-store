@@ -1,3 +1,6 @@
+<script setup>
+import formatRupiah from "../../tools/formatRupiah";
+</script>
 <template>
     <main class="xl:grid grid-cols-4 gap-5 pt-20">
         <aside class="relative">
@@ -28,7 +31,7 @@
                                 <input
                                     type="text"
                                     class="input input-bordered w-full mb-2"
-                                    :value="formatCurrency(filter.minPrice)"
+                                    :value="formatRupiah(filter.minPrice)"
                                     @input="
                                         updatePrice(
                                             $event.target.value,
@@ -48,7 +51,7 @@
                                 <input
                                     type="text"
                                     class="input input-bordered w-full"
-                                    :value="formatCurrency(filter.maxPrice)"
+                                    :value="formatRupiah(filter.maxPrice)"
                                     @input="
                                         updatePrice(
                                             $event.target.value,
@@ -107,6 +110,12 @@
         </aside>
 
         <div v-if="!isLoading" class="col-span-3 rounded-lg p-5">
+            <Alert
+                v-if="alertContent.isShow"
+                :type="alertContent.type"
+                :message="alertContent.message"
+            />
+
             <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
                 <Card
                     v-for="account in AccountStores.data"
@@ -147,12 +156,14 @@
 
 <script>
 import axios from "axios";
+
+// components
 import Card from "../../components/card/index.vue";
 import Loader from "../../components/loader/index.vue";
-import formatRupiah from "../../tools/formatRupiah";
+import Alert from "../../components/alert/index.vue";
 
 export default {
-    components: { Card, Loader },
+    components: { Alert, Card, Loader },
     data() {
         return {
             isLoading: false,
@@ -173,12 +184,14 @@ export default {
             pagination: {
                 page: 1,
             },
+            alertContent: {
+                isShow: false,
+                type: String,
+                message: String,
+            },
         };
     },
     methods: {
-        formatCurrency(value) {
-            return formatRupiah(value);
-        },
         updatePrice(value, field) {
             const numericValue = value.replace(/\D/g, "");
             this.filter[field] = numericValue ? parseInt(numericValue) : 0;
@@ -186,6 +199,8 @@ export default {
         // fetchSellingAccounts(url = `https://genzedu.id/api/sellingAccounts/`) {
         fetchSellingAccounts() {
             this.isLoading = true;
+            this.alertContent.isShow = false;
+
             this.$router.push({
                 path: "/account-store",
                 query: { page: this.pagination.page },
@@ -198,19 +213,38 @@ export default {
                 .then((res) => {
                     this.AccountStores = res.data.result;
 
-                    this.isLoading = false;
+                    if (!this.AccountStores.data.length) {
+                        this.setAlertContent(
+                            true,
+                            "warning",
+                            `Data Akun Kosong`
+                        );
+                    }
                 })
                 .catch((error) => {
-                    this.isLoading = false;
+                    this.setAlertContent(
+                        true,
+                        "error",
+                        `Gagal Memuat Data, Silahkan Coba Lagi`
+                    );
+
                     console.error(error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
                 });
         },
+        setAlertContent(isShow, type, message) {
+            this.alertContent = { isShow, type, message };
+        },
         resetFilter() {
-            this.filter.minPrice = "";
-            this.filter.maxPrice = "";
-            this.filter.totalHero = "";
-            this.filter.totalSkin = "";
-            this.filter.winrate = "";
+            this.filter = {
+                minPrice: "",
+                maxPrice: "",
+                totalHero: "",
+                totalSkin: "",
+                winrate: "",
+            };
             //
             this.fetchSellingAccounts();
         },
@@ -220,15 +254,10 @@ export default {
     },
     computed: {
         isFilterActive() {
-            return (
-                this.filter.minPrice ||
-                this.filter.maxPrice ||
-                this.filter.totalHero ||
-                this.filter.totalSkin ||
-                this.filter.winrate
-            );
+            return Object.values(this.filter).some((value) => value);
         },
     },
+
     mounted() {
         this.fetchSellingAccounts();
         window.scrollTo(0, 0);
