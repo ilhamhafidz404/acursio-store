@@ -124,29 +124,13 @@ import formatRupiah from "../../tools/formatRupiah";
                 />
             </div>
 
-            <!-- Pagination -->
-            <div class="mt-10 flex justify-between items-center mb-20">
-                <button
-                    :disabled="!AccountStores.prev_page_url"
-                    @click="fetchSellingAccounts(AccountStores.prev_page_url)"
-                    class="btn btn-primary"
-                >
-                    Previous
-                </button>
-
-                <span>
-                    Page {{ AccountStores.current_page }} of
-                    {{ AccountStores.last_page }}
-                </span>
-
-                <button
-                    :disabled="!AccountStores.next_page_url"
-                    @click="fetchSellingAccounts(AccountStores.next_page_url)"
-                    class="btn btn-primary"
-                >
-                    Next
-                </button>
-            </div>
+            <Pagination
+                :prevPageUrl="AccountStores.prev_page_url"
+                :nextPageUrl="AccountStores.next_page_url"
+                :currentPage="AccountStores.current_page"
+                :lastPage="AccountStores.last_page"
+                @inAction="fetchSellingAccounts"
+            />
         </div>
         <div v-else class="col-span-3 flex justify-center items-center">
             <Loader text="Loading..." />
@@ -159,11 +143,12 @@ import axios from "axios";
 
 // components
 import Card from "../../components/card/index.vue";
+import Pagination from "../../components/pagination/index.vue";
 import Loader from "../../components/loader/index.vue";
 import Alert from "../../components/alert/index.vue";
 
 export default {
-    components: { Alert, Card, Loader },
+    components: { Alert, Card, Loader, Pagination },
     data() {
         return {
             isLoading: false,
@@ -197,7 +182,9 @@ export default {
             this.filter[field] = numericValue ? parseInt(numericValue) : 0;
         },
         // fetchSellingAccounts(url = `https://genzedu.id/api/sellingAccounts/`) {
-        fetchSellingAccounts() {
+        fetchSellingAccounts(
+            url = `http://127.0.0.1:8000/api/sellingAccounts/`
+        ) {
             this.isLoading = true;
             this.alertContent.isShow = false;
 
@@ -207,7 +194,7 @@ export default {
             });
 
             axios
-                .get(`http://127.0.0.1:8000/api/sellingAccounts/`, {
+                .get(url, {
                     params: this.filter,
                 })
                 .then((res) => {
