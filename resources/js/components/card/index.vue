@@ -21,7 +21,7 @@ import formatRupiah from "../../tools/formatRupiah";
         </div>
         <figure>
             <img
-                :src="'https://genzedu.id/storage/' + account.image1"
+                :src="'https://genzedu.id/images/' + account.image1"
                 alt="Jubel Akun ML"
                 class="w-full h-[300px] object-cover"
             />

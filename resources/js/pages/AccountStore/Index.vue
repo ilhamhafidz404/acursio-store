@@ -273,6 +273,8 @@ export default {
                 query: { page: this.pagination.page },
             });
 
+            window.scrollTo(0, 0);
+
             axios
                 .get(url, {
                     params: this.filter,
