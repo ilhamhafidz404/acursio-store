@@ -25,18 +25,75 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                 :message="alertContent.message"
             />
 
-            <div class="flex gap-3 justify-evenly">
+            <div
+                class="hidden md:flex md:flex-row flex-col gap-3 justify-evenly"
+            >
                 <img
-                    :src="'https://genzedu.id/storage/' + accountStore.image1"
+                    :src="
+                        'http://127.0.0.1:8000/storage/' + accountStore.image1
+                    "
                     alt=""
-                    class="rounded w-[400px] h-[300px] object-cover"
+                    class="rounded w-full md:w-[400px] h-[300px] object-cover"
                 />
                 <img
                     v-if="accountStore.image2"
-                    :src="'https://genzedu.id/storage/' + accountStore.image2"
+                    :src="
+                        'http://127.0.0.1:8000/storage/' + accountStore.image2
+                    "
                     alt=""
-                    class="rounded w-[400px] h-[300px] object-cover"
+                    class="rounded w-full md:w-[400px] h-[300px] object-cover"
                 />
+            </div>
+            <div class="flex md:hidden gap-3 justify-evenly">
+                <img
+                    :src="'http://127.0.0.1:8000/storage/' + imageActive"
+                    alt=""
+                    class="rounded w-full md:w-[400px] h-[300px] object-cover"
+                />
+            </div>
+            <div class="flex md:hidden gap-3 justify-between items-center mt-5">
+                <div>
+                    <button
+                        class="bg-neutral p-2 rounded"
+                        :class="{
+                            'border border-primary':
+                                imageActive == accountStore.image1,
+                        }"
+                        @click="changeImageActive(accountStore.image1)"
+                    >
+                        <img
+                            :src="
+                                'http://127.0.0.1:8000/storage/' +
+                                accountStore.image1
+                            "
+                            alt=""
+                            class="rounded w-[50px] h-[50px] object-cover"
+                        />
+                    </button>
+                    <button
+                        class="bg-neutral p-2 rounded"
+                        :class="{
+                            'border border-primary':
+                                imageActive == accountStore.image2,
+                        }"
+                        @click="changeImageActive(accountStore.image2)"
+                    >
+                        <img
+                            v-if="accountStore.image2"
+                            :src="
+                                'http://127.0.0.1:8000/storage/' +
+                                accountStore.image2
+                            "
+                            alt=""
+                            class="rounded w-[50px] h-[50px] object-cover"
+                        />
+                    </button>
+                </div>
+                <div>
+                    <a href="#formBuyAccount" class="btn btn-primary">
+                        Beli Akun
+                    </a>
+                </div>
             </div>
             <div class="mt-5 flex gap-3 flex-end items-center">
                 <h1 class="text-3xl font-bold">{{ accountStore.title }}</h1>
@@ -95,7 +152,7 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
 
         <!--  -->
 
-        <div class="md:col-span-2 relative">
+        <div id="formBuyAccount" class="md:col-span-2 relative">
             <form
                 @submit.prevent="submitBuyAccount"
                 method="POST"
@@ -258,6 +315,7 @@ export default {
                 description: String,
                 actionLink: String,
             },
+            imageActive: String,
         };
     },
     methods: {
@@ -271,6 +329,8 @@ export default {
                 const { status } = this.accountStore;
 
                 if (result) {
+                    this.imageActive = this.accountStore.image1;
+
                     if (status === "in order") {
                         this.setAlertContent(
                             true,
@@ -369,6 +429,10 @@ export default {
                     this.isLoadingBuyAccount = false;
                     this.fetchSellingAccountById();
                 });
+        },
+        //
+        changeImageActive(url) {
+            this.imageActive = url;
         },
     },
     mounted() {

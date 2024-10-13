@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-    {
-        path: "/test",
-        name: "Home",
-        component: () => import("@/pages/Home.vue"),
-    },
-    {
-        path: "/jockey-service",
-        name: "JockeyService",
-        component: () => import("@/pages/JockeyService.vue"),
-    },
+    // {
+    //     path: "/test",
+    //     name: "Home",
+    //     component: () => import("@/pages/Home.vue"),
+    // },
+    // {
+    //     path: "/jockey-service",
+    //     name: "JockeyService",
+    //     component: () => import("@/pages/JockeyService.vue"),
+    // },
     //
     {
         path: "/payment-finish",
@@ -19,10 +19,15 @@ const routes = [
     },
     //
     {
-        path: "/account-store",
+        path: "/",
         name: "AccountStore",
         component: () => import("@/pages/AccountStore/Index.vue"),
     },
+    // {
+    //     path: "/account-store",
+    //     name: "AccountStore",
+    //     component: () => import("@/pages/AccountStore/Index.vue"),
+    // },
     {
         path: "/account-store/:id",
         name: "AccountStoreDetail",

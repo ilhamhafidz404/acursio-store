@@ -1,7 +1,7 @@
 <template>
     <div class="pt-28 mb-5">
         <router-link
-            to="/account-store"
+            to="/"
             class="btn btn-ghost btn-sm inline-flex text-primary"
         >
             <LongArrowLeftIcon myClass="size-6" />
