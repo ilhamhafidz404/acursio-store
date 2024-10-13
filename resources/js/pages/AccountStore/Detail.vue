@@ -15,18 +15,16 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
         <Loader text="Proses pembelian akun" />
     </div>
 
-    <div>
-        <router-link
-            to="/account-store"
-            class="btn btn-ghost btn-sm mt-28 inline-flex text-primary"
-        >
-            <LongArrowLeftIcon myClass="size-6" />
+    <Breadcrumb />
 
-            Kembali
-        </router-link>
-    </div>
     <div class="mt-10 grid md:grid-cols-5 gap-10">
         <div v-if="!isLoading" class="md:col-span-3">
+            <Alert
+                v-if="alertContent.isShow"
+                :type="alertContent.type"
+                :message="alertContent.message"
+            />
+
             <div class="flex gap-3 justify-evenly">
                 <img
                     :src="'https://genzedu.id/storage/' + accountStore.image1"
@@ -73,7 +71,7 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                 <p class="text-lg">
                     Rank :
                     <span class="font-medium">
-                        {{ formatRank(accountStore.rank) }}
+                        {{ accountStore.rank && formatRank(accountStore.rank) }}
                     </span>
                 </p>
                 <p class="text-lg">
@@ -193,18 +191,10 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
     <ConfirmationDialog @postBuyAccount="postBuyAccount" />
 
     <InformationDialog
-        id="informationSuccess"
-        icon="success"
-        title="Berhasil Melakukan Pemesanan"
-        description="Silahkan check email untuk melanjutkan pembayaran anda jika tab baru tidak terbuka!"
-        :actionLink="paymentLink"
-    />
-
-    <InformationDialog
-        id="informationError"
-        icon="danger"
-        title="Gagal Melakukan Pemesanan"
-        description="Silahkan coba pesan lagi untuk mengorder"
+        :type="dialogContent.type"
+        :title="dialogContent.title"
+        :description="dialogContent.description"
+        :actionLink="dialogContent.actionLink"
     />
 </template>
 
@@ -213,15 +203,17 @@ import axios from "axios";
 
 // components
 import Loader from "../../components/loader/index.vue";
-import LongArrowLeftIcon from "../../components/icon/longArrowLeft.vue";
+import Alert from "../../components/alert/index.vue";
+import Breadcrumb from "../../components/breadcrumb/index.vue";
 import SuccessRibbonIcon from "../../components/icon/successRibbon.vue";
 import ConfirmationDialog from "../../components/dialog/confirmationDialog.vue";
 import InformationDialog from "../../components/dialog/informationDialog.vue";
 
 export default {
     components: {
+        Alert,
         Loader,
-        LongArrowLeftIcon,
+        Breadcrumb,
         SuccessRibbonIcon,
         ConfirmationDialog,
         InformationDialog,
@@ -255,7 +247,17 @@ export default {
                 phone: "",
             },
             isLoadingBuyAccount: false,
-            paymentLink: String,
+            alertContent: {
+                isShow: false,
+                type: String,
+                message: String,
+            },
+            dialogContent: {
+                type: String,
+                title: String,
+                description: String,
+                actionLink: String,
+            },
         };
     },
     methods: {
@@ -263,18 +265,49 @@ export default {
             this.isLoading = true;
             try {
                 const result = await getSellingAccountById(this.id);
-                if (result) {
-                    this.accountStore = result;
-                } else {
-                    console.log("No data found");
-                }
+                this.accountStore = result || {};
+                const { status } = this.accountStore;
 
-                this.isLoading = false;
+                if (result) {
+                    if (status === "in order") {
+                        this.setAlertContent(
+                            true,
+                            "warning",
+                            "Akun ini sedang dalam pesanan!"
+                        );
+                    } else if (status === "sold out") {
+                        this.setAlertContent(
+                            true,
+                            "error",
+                            "Akun ini sudah terjual!"
+                        );
+                    }
+                } else {
+                    this.setAlertContent(
+                        true,
+                        "error",
+                        `Tidak ada data dengan ID ${this.id}`
+                    );
+                }
             } catch (error) {
+                this.setAlertContent(
+                    true,
+                    "error",
+                    "Gagal memuat data, silahkan refresh atau coba kembali"
+                );
                 console.error("Error fetching account:", error);
+            } finally {
                 this.isLoading = false;
             }
         },
+
+        setAlertContent(isShow, type, message) {
+            this.alertContent = { isShow, type, message };
+        },
+        setDialogContent(type, title, description, actionLink = "") {
+            this.dialogContent = { type, title, description, actionLink };
+        },
+
         submitBuyAccount() {
             const { email, phone } = this.userData;
             const isValidEmail = (email) =>
@@ -312,13 +345,25 @@ export default {
                 .then((res) => {
                     this.isLoadingBuyAccount = false;
 
-                    this.paymentLink = res.data.payment_url;
                     window.open(res.data.payment_url, "_blank");
 
-                    informationSuccess.showModal();
+                    this.setDialogContent(
+                        "success",
+                        "Berhasil Melakukan Pemesanan",
+                        "Silahkan check email untuk melanjutkan pembayaran anda jika tab baru tidak terbuka!",
+                        res.data.payment_url
+                    );
+
+                    informationDialog.showModal();
                 })
                 .catch((error) => {
-                    informationError.showModal();
+                    this.setDialogContent(
+                        "error",
+                        "Gagal Melakukan Pemesanan",
+                        "Silahkan coba pesan lagi untuk mengorder"
+                    );
+
+                    informationDialog.showModal();
 
                     this.isLoadingBuyAccount = false;
                     console.error(error);

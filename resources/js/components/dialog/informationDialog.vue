@@ -1,9 +1,9 @@
 <template>
-    <dialog :id="id" class="modal">
+    <dialog id="informationDialog" class="modal">
         <div class="modal-box">
             <div class="flex gap-2 items-center">
                 <SuccessRibbonIcon
-                    v-if="icon == 'success'"
+                    v-if="type == 'success'"
                     myClass="size-7 text-success"
                 />
                 <ErrorIcon v-else myClass="size-7 text-error" />
@@ -15,7 +15,7 @@
                     <button class="btn btn-sm">Tutup</button>
                     <div class="w-full">
                         <a
-                            v-if="icon == 'success'"
+                            v-if="type == 'success'"
                             :href="actionLink"
                             target="_blank"
                             class="btn btn-success btn-sm w-full"
@@ -37,8 +37,7 @@ import SuccessRibbonIcon from "../icon/successRibbon.vue";
 import ErrorIcon from "../icon/error.vue";
 export default {
     props: {
-        id: String,
-        icon: "success" | "error",
+        type: "success" | "error",
         title: String,
         description: String,
         actionLink: String,
