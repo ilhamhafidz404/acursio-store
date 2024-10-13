@@ -183,9 +183,8 @@ export default {
             const numericValue = value.replace(/\D/g, "");
             this.filter[field] = numericValue ? parseInt(numericValue) : 0;
         },
-        fetchSellingAccounts(
-            url = "http://127.0.0.1:8000/api/sellingAccounts/"
-        ) {
+        // fetchSellingAccounts(url = `https://genzedu.id/api/sellingAccounts/`) {
+        fetchSellingAccounts() {
             this.isLoading = true;
             this.$router.push({
                 path: "/account-store",
@@ -193,7 +192,7 @@ export default {
             });
 
             axios
-                .get(url, {
+                .get(`http://127.0.0.1:8000/api/sellingAccounts/`, {
                     params: this.filter,
                 })
                 .then((res) => {

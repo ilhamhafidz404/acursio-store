@@ -2,6 +2,9 @@ import axios from "axios";
 
 async function showTransactionAccount(invoice: string) {
     try {
+        // const res = await axios.get(
+        //     `https://genzedu.id/api/transactionAccounts/${invoice}`
+        // );
         const res = await axios.get(
             `http://127.0.0.1:8000/api/transactionAccounts/${invoice}`
         );

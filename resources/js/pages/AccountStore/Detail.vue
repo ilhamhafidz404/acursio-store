@@ -25,39 +25,17 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
             Kembali
         </router-link>
     </div>
-    <!-- <div
-        v-if="showAlertSuccess"
-        role="alert"
-        className="bg-success text-neutral p-5 rounded-md my-10 flex-col"
-    >
-        <div class="flex font-bold gap-2">
-            <SuccessRibbonIcon myClass="size-6" />
-            <span>Pembelian Berhasil!</span>
-        </div>
-        <div class="mt-2">
-            <p class="text-sm">
-                Berikut adalah email dan password akun-nya:
-                <b>{{ purchasedAccount.email }}</b> |
-                <b>{{ purchasedAccount.password }}</b>
-            </p>
-            <p class="text-sm">Atau kamu bisa lihat email untuk detailnya</p>
-        </div>
-    </div> -->
     <div class="mt-10 grid md:grid-cols-5 gap-10">
         <div v-if="!isLoading" class="md:col-span-3">
             <div class="flex gap-3 justify-evenly">
                 <img
-                    :src="
-                        'http://127.0.0.1:8000/storage/' + accountStore.image1
-                    "
+                    :src="'https://genzedu.id/storage/' + accountStore.image1"
                     alt=""
                     class="rounded w-[400px] h-[300px] object-cover"
                 />
                 <img
                     v-if="accountStore.image2"
-                    :src="
-                        'http://127.0.0.1:8000/storage/' + accountStore.image2
-                    "
+                    :src="'https://genzedu.id/storage/' + accountStore.image2"
                     alt=""
                     class="rounded w-[400px] h-[300px] object-cover"
                 />
@@ -212,20 +190,22 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
         </div>
     </div>
 
-    <dialog id="confirmationBuy" class="modal">
-        <div class="modal-box">
-            <h3 class="text-lg font-bold">Konfirmasi Pembelian</h3>
-            <p class="py-4">Pastikan Email dan Nomor HP anda sudah benar!</p>
-            <div class="modal-action">
-                <form method="dialog" class="flex gap-3">
-                    <button class="btn">Batal</button>
-                    <button class="btn btn-primary" @click="postBuyAccount">
-                        Lanjut Bayar
-                    </button>
-                </form>
-            </div>
-        </div>
-    </dialog>
+    <ConfirmationDialog @postBuyAccount="postBuyAccount" />
+
+    <InformationDialog
+        id="informationSuccess"
+        icon="success"
+        title="Berhasil Melakukan Pemesanan"
+        description="Silahkan check email untuk melanjutkan pembayaran anda jika tab baru tidak terbuka!"
+        :actionLink="paymentLink"
+    />
+
+    <InformationDialog
+        id="informationError"
+        icon="danger"
+        title="Gagal Melakukan Pemesanan"
+        description="Silahkan coba pesan lagi untuk mengorder"
+    />
 </template>
 
 <script>
@@ -235,14 +215,21 @@ import axios from "axios";
 import Loader from "../../components/loader/index.vue";
 import LongArrowLeftIcon from "../../components/icon/longArrowLeft.vue";
 import SuccessRibbonIcon from "../../components/icon/successRibbon.vue";
+import ConfirmationDialog from "../../components/dialog/confirmationDialog.vue";
+import InformationDialog from "../../components/dialog/informationDialog.vue";
 
 export default {
-    components: { Loader, LongArrowLeftIcon, SuccessRibbonIcon },
+    components: {
+        Loader,
+        LongArrowLeftIcon,
+        SuccessRibbonIcon,
+        ConfirmationDialog,
+        InformationDialog,
+    },
     data() {
         return {
             id: null,
             isLoading: false,
-            // showAlertSuccess: false,
             accountStore: {
                 created_at: String,
                 description: String,
@@ -268,10 +255,7 @@ export default {
                 phone: "",
             },
             isLoadingBuyAccount: false,
-            // purchasedAccount: {
-            //     email: String,
-            //     password: String,
-            // },
+            paymentLink: String,
         };
     },
     methods: {
@@ -320,18 +304,22 @@ export default {
         postBuyAccount() {
             this.isLoadingBuyAccount = true;
             axios
+                // .post(`https://genzedu.id/api/buyAccount`, {
                 .post(`http://127.0.0.1:8000/api/buyAccount`, {
                     accountStore: this.accountStore,
                     userData: this.userData,
                 })
                 .then((res) => {
-                    // this.purchasedAccount.email = res.data.result.email;
-                    // this.purchasedAccount.password = res.data.result.password;
                     this.isLoadingBuyAccount = false;
+
+                    this.paymentLink = res.data.payment_url;
                     window.open(res.data.payment_url, "_blank");
-                    // this.showAlertSuccess = true;
+
+                    informationSuccess.showModal();
                 })
                 .catch((error) => {
+                    informationError.showModal();
+
                     this.isLoadingBuyAccount = false;
                     console.error(error);
                 });
