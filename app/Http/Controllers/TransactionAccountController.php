@@ -59,21 +59,37 @@ class TransactionAccountController extends Controller
             ];
         }
 
-        
-        $transactionAccount = TransactionAccount::with("SellingAccount")->whereInvoice($invoice)->first();
-
-        // $decryptedAccountData = showDecryptedData($transactionAccount->id);
-
-        // return response()->json($transactionAccount);
-        return response()->json([
-            "code" => "ACSO-001",
-            'success' => true,
-            'result' => $transactionAccount,
-            'message' => 'Berhasil Get By Order ID Transaksi Akun'
-        ], 201);
-
-
-
+        try {
+            $transactionAccount = TransactionAccount::with("SellingAccount")->whereInvoice($invoice)->first();
+    
+            // $decryptedAccountData = showDecryptedData($transactionAccount->id);
+    
+            if (!$transactionAccount) {
+                return response()->json([
+                    "code" => "ACSO-002",
+                    'success' => false,
+                    'result' => null,
+                    'message' => 'Data transaksi tidak ditemukan'
+                ], 404);
+            }
+            
+            // $decryptedAccountData = showDecryptedData($transactionAccount->id);
+            
+            return response()->json([
+                "code" => "ACSO-001",
+                'success' => true,
+                'result' => $transactionAccount,
+                'message' => 'Berhasil Get By Order ID Transaksi Akun'
+            ], 200);
+        } catch (\Exception $e) {
+            // Jika terjadi error atau exception
+            return response()->json([
+                "code" => "ACSO-003",
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data',
+                'error' => $e->getMessage()
+            ], 500); // Status 500 (Internal Server Error)
+        }
 
         // $mailTo = $request->userData["email"];
         // $accountStore = $request->accountStore;

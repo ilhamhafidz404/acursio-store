@@ -2,32 +2,20 @@
 import { showTransactionAccount } from "../../apis/TransactionAccount";
 </script>
 <template>
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <div
-        role="alert"
-        class="text-neutral p-5 rounded-md my-10 flex-col"
-        :class="{
-            'bg-success': params.transactionStatus === 'settlement',
-            'bg-warning': params.transactionStatus === 'pending',
-        }"
-    >
-        <div class="flex font-bold gap-2">
-            <SuccessRibbonIcon myClass="size-6" />
-            <span>Pembelian {{ params.transactionStatus }}!</span>
-        </div>
-        <div class="mt-2">
-            <p class="text-sm">
-                PembelianAkun Mobile Legend berhasil, silahkan lihat email
-                terkirim di <b>{{ transactionAccount.user_email }}</b>
-            </p>
-        </div>
-    </div>
+    <br /><br /><br /><br /><br />
+    <Alert
+        v-if="alertContent.isShow"
+        :type="alertContent.type"
+        :message="alertContent.message"
+        :description="alertContent.description"
+    />
 </template>
 
 <script>
+import Alert from "../../components/alert/index.vue";
 import SuccessRibbonIcon from "../../components/icon/successRibbon.vue";
 export default {
-    components: { SuccessRibbonIcon },
+    components: { SuccessRibbonIcon, Alert },
     data() {
         return {
             params: {
@@ -46,36 +34,77 @@ export default {
                 user_email: String,
                 user_phone: String,
             },
+            alertContent: {
+                isShow: false,
+                type: String,
+                message: String,
+                description: "",
+            },
         };
     },
     methods: {
+        setParams() {
+            const { order_id, status_code, transaction_status } =
+                this.$route.query;
+
+            this.params = {
+                orderId: order_id,
+                statusCode: status_code,
+                transactionStatus: transaction_status,
+            };
+
+            const alertMessages = {
+                settlement: [
+                    "success",
+                    "Pembelian Berhasil",
+                    "Pembelian Akun Mobile Legend berhasil, silahkan lihat email anda",
+                ],
+                pending: [
+                    "warning",
+                    "Pembelian Dalam Tahap Pending",
+                    "Pembelian Akun masih dalam tahap pending, lanjutkan pembayaran dengan klik link di email",
+                ],
+            };
+
+            if (alertMessages[transaction_status]) {
+                const [type, title, message] =
+                    alertMessages[transaction_status];
+
+                this.setAlertContent(true, type, title, message);
+            }
+        },
+
         async fetchShowTransactionAccount() {
             try {
                 const result = await showTransactionAccount(
                     this.params.orderId
                 );
 
-                console.log(result);
-
                 if (result) {
-                    console.log(result);
                     this.transactionAccount = result;
-                } else {
-                    console.log("No data found");
                 }
-
-                this.isLoading = false;
             } catch (error) {
-                console.error("Error fetching account:", error);
+                const errorCode = error.response.data.code;
+
+                if (errorCode == "ACSO-002") {
+                    this.setAlertContent(
+                        true,
+                        "warning",
+                        `Tidak ada transaksi dengan kode <b>${this.params.orderId}</b>`
+                    );
+                } else if (errorCode == "ACSO-003") {
+                    this.setAlertContent(true, "error", `Gagal memuat data`);
+                }
+            } finally {
                 this.isLoading = false;
             }
         },
+        setAlertContent(isShow, type, message, description = "") {
+            this.alertContent = { isShow, type, message, description };
+        },
     },
     mounted() {
-        this.params.orderId = this.$route.query.order_id;
-        this.params.statusCode = this.$route.query.status_code;
-        this.params.transactionStatus = this.$route.query.transaction_status;
-
+        this.setParams();
         this.fetchShowTransactionAccount();
     },
 };

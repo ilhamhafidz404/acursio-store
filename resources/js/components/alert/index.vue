@@ -1,19 +1,24 @@
 <template>
     <div
         role="alert"
-        class="alert mb-5"
+        class="alert mb-5 block"
         :class="{
             'alert-error': type == 'error',
             'alert-success': type == 'success',
             'alert-warning': type == 'warning',
         }"
     >
-        <SuccessRibbonIcon
-            v-if="type == 'success'"
-            myClass="size-7 text-white"
-        />
-        <ErrorIcon v-else myClass="size-7 text-white" />
-        <span class="text-white font-medium">{{ message }}</span>
+        <div class="flex font-bold gap-2 md:justify-start justify-center">
+            <SuccessRibbonIcon
+                v-if="type == 'success'"
+                myClass="size-7 text-white"
+            />
+            <ErrorIcon v-else myClass="size-7 text-white" />
+            <span class="text-white font-medium" v-html="message"></span>
+        </div>
+        <div v-if="description" class="mt-3">
+            <p class="text-sm text-gray-100" v-html="description"></p>
+        </div>
     </div>
 </template>
 
@@ -24,6 +29,7 @@ export default {
     props: {
         type: "error" | "success" | "warning",
         message: String,
+        description: "",
     },
     components: { SuccessRibbonIcon, ErrorIcon },
 };
