@@ -125,14 +125,14 @@ import formatRupiah from "../../tools/formatRupiah";
             </div>
         </aside>
 
-        <div v-if="!isLoading" class="col-span-3 rounded-lg p-5">
+        <div v-if="!isLoading" class="col-span-3 rounded-lg md:p-5">
             <Alert
                 v-if="alertContent.isShow"
                 :type="alertContent.type"
                 :message="alertContent.message"
             />
 
-            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div class="grid grid-cols-2 xl:grid-cols-3 md:gap-5 gap-3">
                 <Card
                     v-for="account in AccountStores.data"
                     :key="account.id"

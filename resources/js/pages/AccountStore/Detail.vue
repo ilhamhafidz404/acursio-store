@@ -29,24 +29,20 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                 class="hidden md:flex md:flex-row flex-col gap-3 justify-evenly"
             >
                 <img
-                    :src="
-                        'http://127.0.0.1:8000/storage/' + accountStore.image1
-                    "
+                    :src="'https://genzedu.id/images/' + accountStore.image1"
                     alt=""
                     class="rounded w-full md:w-[400px] h-[300px] object-cover"
                 />
                 <img
                     v-if="accountStore.image2"
-                    :src="
-                        'http://127.0.0.1:8000/storage/' + accountStore.image2
-                    "
+                    :src="'https://genzedu.id/images/' + accountStore.image2"
                     alt=""
                     class="rounded w-full md:w-[400px] h-[300px] object-cover"
                 />
             </div>
             <div class="flex md:hidden gap-3 justify-evenly">
                 <img
-                    :src="'http://127.0.0.1:8000/storage/' + imageActive"
+                    :src="'https://genzedu.id/images/' + imageActive"
                     alt=""
                     class="rounded w-full md:w-[400px] h-[300px] object-cover"
                 />
@@ -63,7 +59,7 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     >
                         <img
                             :src="
-                                'http://127.0.0.1:8000/storage/' +
+                                'https://genzedu.id/images/' +
                                 accountStore.image1
                             "
                             alt=""
@@ -81,7 +77,7 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                         <img
                             v-if="accountStore.image2"
                             :src="
-                                'http://127.0.0.1:8000/storage/' +
+                                'https://genzedu.id/images/' +
                                 accountStore.image2
                             "
                             alt=""
@@ -399,6 +395,7 @@ export default {
         postBuyAccount() {
             this.isLoadingBuyAccount = true;
             axios
+                // .post(`https://genzedu.id/api/buyAccount`, {
                 .post(`http://127.0.0.1:8000/api/buyAccount`, {
                     accountStore: this.accountStore,
                     userData: this.userData,
