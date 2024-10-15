@@ -91,11 +91,15 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     </a>
                 </div>
             </div>
-            <div class="mt-5 flex gap-3 flex-end items-center">
-                <h1 class="text-3xl font-bold">{{ accountStore.title }}</h1>
+            <div
+                class="mt-5 flex md:flex-row flex-col gap-3 flex-end md:items-center items-start"
+            >
+                <h1 class="text-3xl font-bold md:order-1 order-2">
+                    {{ accountStore.title }}
+                </h1>
                 <span
                     v-if="accountStore.discount"
-                    class="badge bg-error text-white"
+                    class="badge bg-error text-white whitespace-nowrap md:order-2 order-1"
                 >
                     Diskon {{ accountStore.discount }}%
                 </span>
