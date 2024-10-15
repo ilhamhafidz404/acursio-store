@@ -57,12 +57,12 @@ export default {
                 settlement: [
                     "success",
                     "Pembelian Berhasil",
-                    "Pembelian Akun Mobile Legend berhasil, silahkan lihat email anda",
+                    "Pembelian akun Mobile Legends berhasil. Silakan periksa email Kamu untuk mendapatkan informasi pembeliannya.",
                 ],
                 pending: [
                     "warning",
                     "Pembelian Dalam Tahap Pending",
-                    "Pembelian Akun masih dalam tahap pending, lanjutkan pembayaran dengan klik link di email",
+                    "Pembelian akun masih dalam status pending. Silakan lanjutkan pembayaran dengan mengklik tautan yang telah dikirimkan ke email Kamu.",
                 ],
             };
 

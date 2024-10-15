@@ -17,7 +17,7 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
 
     <Breadcrumb />
 
-    <div class="mt-10 grid md:grid-cols-5 gap-10">
+    <div class="md:mt-10 mt-5 grid md:grid-cols-5 gap-10">
         <div v-if="!isLoading" class="md:col-span-3">
             <Alert
                 v-if="alertContent.isShow"
@@ -86,7 +86,10 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     </button>
                 </div>
                 <div>
-                    <a href="#formBuyAccount" class="btn btn-primary">
+                    <a
+                        href="#formBuyAccount"
+                        class="btn md:btn-md btn-sm btn-primary md:text-base text-xs"
+                    >
                         Beli Akun
                     </a>
                 </div>
@@ -94,12 +97,12 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
             <div
                 class="mt-5 flex md:flex-row flex-col gap-3 flex-end md:items-center items-start"
             >
-                <h1 class="text-3xl font-bold md:order-1 order-2">
+                <h1 class="md:text-3xl text-xl font-bold md:order-1 order-2">
                     {{ accountStore.title }}
                 </h1>
                 <span
                     v-if="accountStore.discount"
-                    class="badge bg-error text-white whitespace-nowrap md:order-2 order-1"
+                    class="badge bg-error text-white whitespace-nowrap md:order-2 order-1 md:text-base text-xs"
                 >
                     Diskon {{ accountStore.discount }}%
                 </span>
@@ -107,11 +110,11 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
             <div class="flex items-end gap-2">
                 <del
                     v-if="accountStore.discount"
-                    class="text-gray-400 font-bold"
+                    class="text-gray-400 font-bold md:text-base text-sm"
                 >
                     {{ formatRupiah(accountStore.price) }}
                 </del>
-                <p class="text-primary text-xl font-bold">
+                <p class="text-primary md:text-xl font-bold">
                     {{
                         formatRupiah(
                             accountStore.discount
@@ -125,26 +128,28 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                 </p>
             </div>
             <div class="mt-5">
-                <p class="text-lg">
+                <p class="md:text-lg text-sm">
                     Rank :
                     <span class="font-medium">
                         {{ accountStore.rank && formatRank(accountStore.rank) }}
                     </span>
                 </p>
-                <p class="text-lg">
+                <p class="md:text-lg text-sm">
                     Total Hero :
                     <span class="font-medium">
                         {{ accountStore.total_heroes || "-" }}
                     </span>
                 </p>
-                <p class="text-lg">
+                <p class="md:text-lg text-sm">
                     Total Skin :
                     <span class="font-medium">
                         {{ accountStore.total_skin || "-" }}
                     </span>
                 </p>
             </div>
-            <p class="mt-5">{{ accountStore.description }}</p>
+            <p class="mt-5 md:text-base text-sm">
+                {{ accountStore.description }}
+            </p>
         </div>
         <div v-else class="md:col-span-3 flex items-center justify-center">
             <Loader text="Loading..." />
@@ -163,9 +168,11 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                         <img
                             src="./../../asset/mobile-legends.webp"
                             alt="Mobile Legends"
-                            class="w-[60px] rounded-md"
+                            class="md:w-[60px] w-[40px] rounded-md"
                         />
-                        <h3 class="text-xl font-semibold">Jubel Akun MLBB</h3>
+                        <h3 class="md:text-xl font-semibold">
+                            Jubel Akun MLBB
+                        </h3>
                     </div>
 
                     <span
@@ -179,17 +186,21 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     <div class="mb-1">
                         <label class="form-control w-full">
                             <div class="label">
-                                <span class="label-text">Masukkan Email</span>
+                                <span class="label-text md:text-base text-xs"
+                                    >Masukkan Email</span
+                                >
                             </div>
                             <input
                                 type="text"
-                                class="input input-bordered w-full"
+                                class="input input-bordered w-full md:text-base text-xs"
                                 :class="{ 'border-error': errorUserData.email }"
                                 v-model="userData.email"
                                 :disabled="accountStore.status != 'available'"
                             />
                             <div class="label" v-if="errorUserData.email">
-                                <span class="label-text text-sm text-error">
+                                <span
+                                    class="label-text md:text-sm text-xs text-error"
+                                >
                                     {{ errorUserData.email }}
                                 </span>
                             </div>
@@ -198,17 +209,21 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     <div class="mb-1">
                         <label class="form-control w-full">
                             <div class="label">
-                                <span class="label-text">Masukkan No HP</span>
+                                <span class="label-text md:text-base text-xs"
+                                    >Masukkan No HP</span
+                                >
                             </div>
                             <input
                                 type="text"
-                                class="input input-bordered w-full"
+                                class="input input-bordered w-full md:text-base text-xs"
                                 :class="{ 'border-error': errorUserData.phone }"
                                 v-model="userData.phone"
                                 :disabled="accountStore.status != 'available'"
                             />
                             <div class="label" v-if="errorUserData.phone">
-                                <span class="label-text text-sm text-error">
+                                <span
+                                    class="label-text md:text-sm text-xs text-error"
+                                >
                                     {{ errorUserData.phone }}
                                 </span>
                             </div>
@@ -221,12 +236,13 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                                     ? 'submit'
                                     : 'reset'
                             "
+                            class="btn w-full md:text-base text-xs md:btn-md btn-sm"
                             :class="{
-                                'btn btn-primary w-full':
+                                'btn-primary':
                                     accountStore.status == 'available',
-                                'btn btn-warning w-full':
+                                'btn-warning':
                                     accountStore.status == 'in order',
-                                'btn btn-error w-full':
+                                'btn-error':
                                     accountStore.status != 'available' &&
                                     accountStore.status != 'in order',
                             }"
@@ -399,8 +415,8 @@ export default {
         postBuyAccount() {
             this.isLoadingBuyAccount = true;
             axios
-                // .post(`https://genzedu.id/api/buyAccount`, {
-                .post(`http://127.0.0.1:8000/api/buyAccount`, {
+                .post(`https://genzedu.id/api/buyAccount`, {
+                    // .post(`http://127.0.0.1:8000/api/buyAccount`, {
                     accountStore: this.accountStore,
                     userData: this.userData,
                 })

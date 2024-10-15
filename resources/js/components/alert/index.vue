@@ -8,16 +8,24 @@
             'alert-warning': type == 'warning',
         }"
     >
-        <div class="flex font-bold gap-2 md:justify-start justify-center">
+        <div
+            class="flex md:flex-row flex-col font-bold gap-2 md:justify-start justify-center items-center"
+        >
             <SuccessRibbonIcon
                 v-if="type == 'success'"
                 myClass="size-7 text-white"
             />
-            <ErrorIcon v-else myClass="size-7 text-white" />
-            <span class="text-white font-medium" v-html="message"></span>
+            <ErrorIcon v-else myClass="md:size-7 size-6 text-white" />
+            <span
+                class="text-white font-medium md:text-base text-sm"
+                v-html="message"
+            ></span>
         </div>
         <div v-if="description" class="mt-3">
-            <p class="text-sm text-gray-100" v-html="description"></p>
+            <p
+                class="md:text-sm text-xs text-gray-100"
+                v-html="description"
+            ></p>
         </div>
     </div>
 </template>

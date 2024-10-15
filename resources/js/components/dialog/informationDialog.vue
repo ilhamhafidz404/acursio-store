@@ -1,15 +1,17 @@
 <template>
     <dialog id="informationDialog" class="modal">
         <div class="modal-box">
-            <div class="flex gap-2 items-center">
+            <div class="flex md:flex-row flex-col gap-2 items-center">
                 <SuccessRibbonIcon
                     v-if="type == 'success'"
                     myClass="size-7 text-success"
                 />
                 <ErrorIcon v-else myClass="size-7 text-error" />
-                <h3 class="text-xl font-bold">{{ title }}</h3>
+                <h3 class="md:text-xl font-bold">{{ title }}</h3>
             </div>
-            <p class="py-4">{{ description }}</p>
+            <p class="py-4 md:text-base text-sm md:text-left text-center">
+                {{ description }}
+            </p>
             <div class="modal-action">
                 <form method="dialog" class="w-full flex gap-3">
                     <button class="btn btn-sm">Tutup</button>

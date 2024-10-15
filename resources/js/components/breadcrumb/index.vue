@@ -1,10 +1,10 @@
 <template>
-    <div class="pt-28 mb-5">
+    <div class="md:pt-28 pt-24 md:mb-5">
         <router-link
             to="/"
-            class="btn btn-ghost btn-sm inline-flex text-primary"
+            class="btn btn-ghost btn-sm inline-flex text-primary md:text-base text-xs"
         >
-            <LongArrowLeftIcon myClass="size-6" />
+            <LongArrowLeftIcon myClass="md:size-6 size-4" />
 
             Kembali
         </router-link>
