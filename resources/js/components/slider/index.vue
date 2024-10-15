@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 // packages
 import {
   Carousel,
@@ -28,6 +26,7 @@ import 'vue3-carousel/dist/carousel.css';
 import Card from "../../components/card/index.vue";
 
 export default {
+  props: { AccountStores: Array },
   components: {
     Carousel,
     Slide,
@@ -36,13 +35,6 @@ export default {
     Card
   },
   data: () => ({
-    AccountStores: {
-      data: [],
-      current_page: 1,
-      last_page: 1,
-      prev_page_url: null,
-      next_page_url: null,
-    },
     settings: {
       itemsToShow: 2,
       snapAlign: 'center',
@@ -64,25 +56,6 @@ export default {
       },
     },
   }),
-  methods: {
-    fetchSellingAccounts(url = 'http://127.0.0.1:8000/api/sellingAccounts/') {
-      axios
-        .get(url, {
-          params: {
-            condition: 2, 
-          },
-        })
-        .then((res) => {
-          this.AccountStores = res.data.result;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-  },
-  mounted() {
-    this.fetchSellingAccounts(); 
-  },
 };
 </script>
 

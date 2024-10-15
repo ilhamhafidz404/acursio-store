@@ -4,23 +4,7 @@ import formatRupiah from "../../tools/formatRupiah";
 <template>
     <br /><br /><br /><br />
 
-    <div class="flex md:hidden items-center justify-between mb-10 mt-5">
-        <div class="flex items-center gap-2">
-            <img
-                src="/resources/js/asset/mobile-legends.webp"
-                alt="Mobile Legends"
-                class="w-[40px] rounded-md"
-            />
-            <h3 class="font-semibold">Diskon dari Acursio</h3>
-        </div>
-        <div>
-            <button class="btn btn-success btn-sm">100% Aman</button>
-        </div>
-    </div>
-
-    <Slider />
-
-    <hr class="my-10 border-[#2a323c]" />
+    <DiscountAccountsSection />
 
     <main class="xl:grid grid-cols-4 gap-5">
         <aside class="relative">
@@ -211,15 +195,16 @@ import formatRupiah from "../../tools/formatRupiah";
 </template>
 
 <script>
-import axios from "axios";
+import { getSellingAccount } from "../../apis/SellingAccount";
 
 // components
 import Card from "../../components/card/index.vue";
 import Pagination from "../../components/pagination/index.vue";
 import Loader from "../../components/loader/index.vue";
 import Alert from "../../components/alert/index.vue";
-import Slider from "../../components/slider/index.vue";
-import { getSellingAccount } from "../../apis/SellingAccount";
+
+// sections
+import DiscountAccountsSection from "../../sections/AccountStore/DiscountAccounts.vue";
 
 export default {
     components: {
@@ -227,7 +212,8 @@ export default {
         Card,
         Loader,
         Pagination,
-        Slider,
+        //
+        DiscountAccountsSection,
     },
     data() {
         return {
