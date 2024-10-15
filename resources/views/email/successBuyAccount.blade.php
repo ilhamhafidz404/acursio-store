@@ -51,8 +51,10 @@
     <div class="container">
         
         <div class="message">
+            <img src={{asset("/logo.webp")}} width="70" />
             <p>Dear Customer</p>
-            <p>Terimakasih sudah membeli akun ML di <b>Acursio Store</b>. Berikut adalah rinciannya:</p>
+            <br>
+            <p>Terima kasih telah mempercayakan pembelian akun Mobile Legends kamu di <b>Acursio Store</b>. Berikut kami sampaikan detail akun yang telah anda beli:</p>
             <table>
                 <tr>
                     <td>Produk</td>
@@ -77,7 +79,7 @@
                 </tr>
             </table>
 
-            <p>Untuk melakukan login ke akun, silahkan gunakan email dan password berikut: </p>
+            <p>Untuk mengakses akun, Anda dapat login menggunakan email dan password dibawah ini : </p>
 
             <table>
                 <tr>
@@ -96,8 +98,11 @@
                 </tr>
             </table>
 
-            <p>Jika terdapat kesalahan atau kendala boleh dengan menghubungi admin kami di nomor WA <b>083871352030</b></p>
-            <p>Kami tunggu pembelian anda selanjutnya.</p>
+            <p>Jika Anda mengalami kendala atau membutuhkan bantuan lebih lanjut, jangan ragu untuk menghubungi tim kami melalui WhatsApp di nomor <b>083871352030</b>. Kami akan dengan senang hati membantu.</p>
+            <p>Kami sangat menghargai kepercayaan Anda dan menantikan pembelian berikutnya di Acursio Store.</p>
+            
+            <br><br><br>
+            <p>Salam hangat, <br><br><b>Tim Acursio Store</b></p>
         </div>
         
     </div>

@@ -51,10 +51,25 @@
     <div class="container">
         
         <div class="message">
+            <img src={{asset("/logo.webp")}} width="70" />
             <p>Dear Customer</p>
-            <p>Silahkan selesaikan proses pembelian akun <b>{{ $mailData['title'] }}</b> dengan harga Rp {{ number_format($mailData['price'], 0, ',', '.') }} pada link berikut</p>
+            <br>
+            <p>
+                Terima kasih telah memilih untuk membeli akun <b>{{ $mailData['title'] }}</b>. 
+                Silakan selesaikan proses pembayaran dengan total sebesar <b>Rp {{ number_format($mailData['price'], 0, ',', '.') }}</b> melalui tautan berikut:
+            </p>
 
-            <a href={{$mailData["paymentLink"]}}>{{ $mailData["paymentLink"] }}</a>
+            <p>
+                <a href="{{ $mailData['paymentLink'] }}">{{ $mailData['paymentLink'] }}</a>
+            </p>
+
+            <p>
+                Jika Anda memerlukan bantuan lebih lanjut, jangan ragu untuk menghubungi kami. Terima kasih atas kepercayaan Anda kepada kami.
+            </p>
+
+            <br><br><br>
+            <p>Salam hangat, <br><br><b>Tim Acursio Store</b></p>
+
         </div>
         
     </div>
