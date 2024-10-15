@@ -1,16 +1,20 @@
 <template>
     <section v-if="hasDiscountMoreThan3">
-        <div class="flex md:hidden items-center justify-between mb-10 mt-5">
-            <div class="flex items-center gap-2">
+        <div class="flex items-center justify-between mb-10 mt-5">
+            <div class="flex items-center md:gap-4 gap-2">
                 <img
                     src="/resources/js/asset/mobile-legends.webp"
                     alt="Mobile Legends"
-                    class="w-[40px] rounded-md"
+                    class="md:w-[70px] w-[40px] rounded-md"
                 />
-                <h3 class="font-semibold">Diskon dari Acursio</h3>
+                <h3 class="font-semibold md:text-xl">Akun Diskon</h3>
             </div>
             <div>
-                <button class="btn btn-success btn-sm">100% Aman</button>
+                <button
+                    class="btn btn-success md:btn-md btn-sm md:text-base text-xs"
+                >
+                    100% Aman
+                </button>
             </div>
         </div>
 
