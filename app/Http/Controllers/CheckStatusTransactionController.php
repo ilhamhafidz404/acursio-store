@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\SellingAccount;
 use App\Models\TransactionAccount;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class CheckStatusTransactionController extends Controller
 {

@@ -294,7 +294,7 @@ export default {
     data() {
         return {
             id: null,
-            isLoading: false,
+            isLoading: true,
             accountStore: {
                 created_at: String,
                 description: String,
@@ -336,7 +336,7 @@ export default {
     },
     methods: {
         async fetchSellingAccountById() {
-            this.isLoading = true;
+            // this.isLoading = true;
             this.alertContent.isShow = false;
 
             try {
@@ -454,8 +454,14 @@ export default {
     },
     mounted() {
         this.id = this.$route.params.id;
+        // this.fectDataSeelingAccountByID = setInterval(() => {
+        //     this.fetchSellingAccountById();
+        // }, 20000);
         this.fetchSellingAccountById();
         window.scrollTo(0, 0);
+    },
+    beforeDestroy() {
+        clearInterval(this.fectDataSeelingAccountByID);
     },
 };
 </script>
