@@ -81,30 +81,6 @@ import formatRupiah from "../../tools/formatRupiah";
                                 />
                             </label>
                         </div>
-                        <!-- <div class="mb-1">
-                            <label class="form-control w-full">
-                                <div class="label">
-                                    <span class="label-text">Jumlah Hero</span>
-                                </div>
-                                <input
-                                    type="text"
-                                    class="input input-bordered w-full"
-                                    v-model="filter.totalHero"
-                                />
-                            </label>
-                        </div>
-                        <div class="mb-1">
-                            <label class="form-control w-full">
-                                <div class="label">
-                                    <span class="label-text">Jumlah Skin</span>
-                                </div>
-                                <input
-                                    type="text"
-                                    class="input input-bordered w-full"
-                                    v-model="filter.totalSkin"
-                                />
-                            </label>
-                        </div> -->
                         <div class="mt-7 flex gap-2">
                             <div v-if="isFilterActive" class="w-full">
                                 <button
@@ -243,6 +219,7 @@ import Pagination from "../../components/pagination/index.vue";
 import Loader from "../../components/loader/index.vue";
 import Alert from "../../components/alert/index.vue";
 import Slider from "../../components/slider/index.vue";
+import { getSellingAccount } from "../../apis/SellingAccount";
 
 export default {
     components: {
@@ -265,9 +242,7 @@ export default {
             filter: {
                 minPrice: "",
                 maxPrice: "",
-                totalHero: "",
-                totalSkin: "",
-                winrate: "",
+                page: 1,
             },
             pagination: {
                 page: 1,
@@ -284,17 +259,13 @@ export default {
             const numericValue = value.replace(/\D/g, "");
             this.filter[field] = numericValue ? parseInt(numericValue) : 0;
         },
-        // fetchSellingAccounts(url = `https://genzedu.id/api/sellingAccounts/`) {
-        fetchSellingAccounts(
-            url = `http://127.0.0.1:8000/api/sellingAccounts/`
-        ) {
+        async fetchSellingAccounts(page = 1) {
             this.isLoading = true;
             this.alertContent.isShow = false;
 
-            // this.$router.push({
-            //     path: "/account-store",
-            //     query: { page: this.pagination.page },
-            // });
+            this.pagination.page = page;
+            this.filter.page = page;
+
             this.$router.push({
                 path: "/",
                 query: { page: this.pagination.page },
@@ -302,33 +273,24 @@ export default {
 
             window.scrollTo(0, 0);
 
-            axios
-                .get(url, {
-                    params: this.filter,
-                })
-                .then((res) => {
-                    this.AccountStores = res.data.result;
+            try {
+                const result = await getSellingAccount(this.filter);
 
-                    if (!this.AccountStores.data.length) {
-                        this.setAlertContent(
-                            true,
-                            "warning",
-                            `Data Akun Kosong`
-                        );
-                    }
-                })
-                .catch((error) => {
-                    this.setAlertContent(
-                        true,
-                        "error",
-                        `Gagal Memuat Data, Silahkan Coba Lagi`
-                    );
+                this.AccountStores = result || {};
 
-                    console.error(error);
-                })
-                .finally(() => {
-                    this.isLoading = false;
-                });
+                if (!this.AccountStores.data.length) {
+                    this.setAlertContent(true, "warning", `Data Akun Kosong`);
+                }
+            } catch (error) {
+                this.setAlertContent(
+                    true,
+                    "error",
+                    "Gagal memuat data, silahkan refresh atau coba kembali"
+                );
+                console.error("Error fetching account:", error);
+            } finally {
+                this.isLoading = false;
+            }
         },
         setAlertContent(isShow, type, message) {
             this.alertContent = { isShow, type, message };
@@ -342,10 +304,10 @@ export default {
                 winrate: "",
             };
             //
-            this.fetchSellingAccounts();
+            this.fetchSellingAccounts(1);
         },
         filterSearchParams() {
-            this.fetchSellingAccounts();
+            this.fetchSellingAccounts(1);
         },
         showModalFilter() {
             filterModal.showModal();
@@ -358,7 +320,10 @@ export default {
     },
 
     mounted() {
-        this.fetchSellingAccounts();
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = urlParams.get("page");
+
+        this.fetchSellingAccounts(page);
         window.scrollTo(0, 0);
     },
 };

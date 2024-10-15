@@ -92,13 +92,15 @@ export default {
         inAction(page) {
             if (page !== "...") {
                 if (typeof page == "string") {
-                    this.$emit("inAction", page);
+                    const regex = /[?&]page=(\d+)/;
+
+                    const match = page.match(regex);
+
+                    const pageParam = match ? match[1] : 1;
+
+                    this.$emit("inAction", pageParam);
                 } else if (typeof page == "number") {
-                    this.$emit(
-                        "inAction",
-                        `http://127.0.0.1:8000/api/sellingAccounts?page=${page}`
-                        // `https://genzedu.id/api/sellingAccounts?page=${page}`
-                    );
+                    this.$emit("inAction", page);
                 }
             }
         },
