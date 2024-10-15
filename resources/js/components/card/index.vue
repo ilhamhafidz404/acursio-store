@@ -9,7 +9,7 @@ import formatRupiah from "../../tools/formatRupiah";
             class="absolute inset-0 bg-black/50 flex items-center justify-center z-10"
         >
             <p
-                class="w-full text-center py-3 text-gray-200 font-bold text-xl"
+                class="w-full text-center md:py-3 py-2 text-gray-200 font-bold md:text-xl"
                 :class="
                     account.status == 'in order' ? 'bg-warning' : 'bg-error'
                 "

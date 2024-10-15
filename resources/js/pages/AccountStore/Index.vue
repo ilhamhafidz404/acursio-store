@@ -132,7 +132,7 @@ import formatRupiah from "../../tools/formatRupiah";
                 :message="alertContent.message"
             />
 
-            <div class="grid grid-cols-2 xl:grid-cols-3 md:gap-5 gap-3">
+            <div class="grid grid-cols-2 xl:grid-cols-3 md:gap-5 gap-2">
                 <Card
                     v-for="account in AccountStores.data"
                     :key="account.id"
