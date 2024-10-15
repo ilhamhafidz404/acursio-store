@@ -1,49 +1,96 @@
 <template>
-    <Carousel v-bind="settings" :breakpoints="breakpoints" class="grid bg-primary">
-      <Slide v-for="slide in 10" :key="slide" class="w-full bg-red-500">
-        <div class="carousel__item">{{ slide }}</div>
-      </Slide>
-  
-      <template #addons>
-        <Navigation />
-      </template>
-    </Carousel>
-  </template>
-  
-  <script>
-  import { defineComponent } from 'vue'
-  import { Carousel, Navigation, Slide } from 'vue3-carousel'
-  
-  import 'vue3-carousel/dist/carousel.css'
-  
-  export default defineComponent({
-    name: 'Breakpoints',
-    components: {
-      Carousel,
-      Slide,
-      Navigation,
+  <Carousel v-bind="settings" :breakpoints="breakpoints" class="grid">
+    <Slide v-for="account in AccountStores.data" :key="account.id">
+      <div class="carousel__item w-[95%] text-left">
+        <Card :key="account.id" :account="account" />
+      </div>
+    </Slide>
+
+    <template #addons>
+      <PaginationCarausel />
+    </template>
+  </Carousel>
+</template>
+
+<script>
+import axios from 'axios';
+
+// packages
+import {
+  Carousel,
+  Navigation,
+  Slide,
+  Pagination as PaginationCarausel,
+} from 'vue3-carousel';
+import 'vue3-carousel/dist/carousel.css';
+
+// components
+import Card from "../../components/card/index.vue";
+
+export default {
+  components: {
+    Carousel,
+    Slide,
+    Navigation,
+    PaginationCarausel,
+    Card
+  },
+  data: () => ({
+    AccountStores: {
+      data: [],
+      current_page: 1,
+      last_page: 1,
+      prev_page_url: null,
+      next_page_url: null,
     },
-    data: () => ({
-      // carousel settings
-      settings: {
-        itemsToShow: 1,
+    settings: {
+      itemsToShow: 2,
+      snapAlign: 'center',
+      autoplay: 3000,
+      wrapAround: true,
+    },
+    breakpoints: {
+      100: {
+        itemsToShow: 1.8,
         snapAlign: 'center',
       },
-      // breakpoints are mobile first
-      // any settings not specified will fallback to the carousel settings
-      breakpoints: {
-        // 700px and up
-        700: {
-          itemsToShow: 3.5,
-          snapAlign: 'center',
-        },
-        // 1024 and up
-        1024: {
-          itemsToShow: 5,
-          snapAlign: 'start',
-        },
+      700: {
+        itemsToShow: 3.5,
+        snapAlign: 'center',
       },
-    }),
-  })
-  </script>
-  
+      1024: {
+        itemsToShow: 4.5,
+        snapAlign: 'start',
+      },
+    },
+  }),
+  methods: {
+    fetchSellingAccounts(url = 'http://127.0.0.1:8000/api/sellingAccounts/') {
+      axios
+        .get(url, {
+          params: {
+            condition: 2, 
+          },
+        })
+        .then((res) => {
+          this.AccountStores = res.data.result;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+  },
+  mounted() {
+    this.fetchSellingAccounts(); 
+  },
+};
+</script>
+
+<style>
+.carousel__pagination-button::after {
+  background-color: #2a323c !important;
+}
+.carousel__pagination-button--active::after {
+  background-color: #7480ff !important;
+}
+</style>

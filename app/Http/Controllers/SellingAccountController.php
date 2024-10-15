@@ -8,13 +8,12 @@ use Illuminate\Http\Request;
 class SellingAccountController extends Controller
 {
     
-    public function index(){
+    public function index()
+{
+    try {
         $minPrice = request('minPrice');
         $maxPrice = request('maxPrice');
-        $totalHero = request('totalHero');
-        $totalSkin = request('totalSkin');
-        $winrate = request('winrate');
-
+        $condition = request('condition'); // 1 = semua, 2 = hanya yang diskon
 
         $query = SellingAccount::query();
 
@@ -26,28 +25,38 @@ class SellingAccountController extends Controller
             $query->where('price', '<=', $maxPrice);
         }
 
-        if ($totalHero) {
-            $query->where('total_hero', '>=', $totalHero);
+        if ($condition == "2") {
+            $query->where('discount', '>', 0);
         }
-
-        if ($totalSkin) {
-            $query->where('total_skin', '>=', $totalSkin);
-        }
-
-        // if ($winrate) {
-        //     $query->where('winrate', '>=', $winrate);
-        // }
 
         $sellingAccounts = $query->latest()->paginate(9);
 
-        // Return response dalam bentuk JSON
+        if ($sellingAccounts->isEmpty()) {
+            return response()->json([
+                "code" => "ACSO-002",
+                "success" => false,
+                "message" => "No data found",
+                "result" => [],
+            ], 404);
+        }
+
         return response()->json([
             "code" => "ACSO-001",
             "success" => true,
             "message" => "success",
             "result" => $sellingAccounts,
         ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            "code" => "ACSO-003",
+            "success" => false,
+            "message" => "An error occurred: " . $e->getMessage(),
+            "result" => [],
+        ], 500);
     }
+}
+
 
 
     public function store(Request $request)
