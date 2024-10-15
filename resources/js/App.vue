@@ -1,7 +1,7 @@
 <template>
     <div>
         <Navbar />
-        <div class="px-5 md:px-10 xl:px-20 mb-10 min-h-screen">
+        <div class="px-3 md:px-10 xl:px-20 mb-10 min-h-screen">
             <router-view></router-view>
             <Toast
                 v-if="showToast"
@@ -42,7 +42,7 @@ export default {
             this.showToast = true;
             setTimeout(() => {
                 this.showToast = false;
-            }, 3000);
+            }, 4000);
         },
         async fetchTransactionAccount() {
             try {

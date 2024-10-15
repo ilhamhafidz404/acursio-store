@@ -5,7 +5,7 @@
         <div
             class="bg-primary flex items-center justify-center md:w-[80px] md:h-[80px] w-[50px] h-[50px] rounded"
         >
-            <BellIcon myClass="size-7 text-white" />
+            <BellIcon myClass="md:size-7 size-5 text-white" />
         </div>
         <div>
             <h2

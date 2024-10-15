@@ -97,6 +97,7 @@ export default {
                     this.$emit(
                         "inAction",
                         `http://127.0.0.1:8000/api/sellingAccounts?page=${page}`
+                        // `https://genzedu.id/api/sellingAccounts?page=${page}`
                     );
                 }
             }

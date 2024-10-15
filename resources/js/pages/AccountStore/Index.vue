@@ -2,7 +2,37 @@
 import formatRupiah from "../../tools/formatRupiah";
 </script>
 <template>
-    <main class="xl:grid grid-cols-4 gap-5 pt-20">
+    <br /><br /><br /><br />
+
+    <div class="flex md:hidden items-center justify-between mb-10 mt-5">
+        <div class="flex items-center gap-2">
+            <img
+                src="/resources/js/asset/mobile-legends.webp"
+                alt="Mobile Legends"
+                class="w-[40px] rounded-md"
+            />
+            <h3 class="font-semibold">Rekomendasi Acursio</h3>
+        </div>
+        <div>
+            <button class="btn btn-success btn-sm">100% Aman</button>
+        </div>
+    </div>
+
+    <Carousel v-bind="settings" :breakpoints="breakpoints" class="grid">
+        <Slide v-for="account in AccountStores.data" :key="account">
+            <div class="carousel__item w-[95%] text-left">
+                <Card :key="account.id" :account="account" />
+            </div>
+        </Slide>
+
+        <template #addons>
+            <PaginationCarausel />
+        </template>
+    </Carousel>
+
+    <hr class="my-10 border-[#2a323c]" />
+
+    <main class="xl:grid grid-cols-4 gap-5">
         <aside class="relative">
             <div
                 class="bg-neutral shadow p-5 rounded overflow-hidden sticky top-[100px] md:block hidden"
@@ -222,9 +252,27 @@ import Card from "../../components/card/index.vue";
 import Pagination from "../../components/pagination/index.vue";
 import Loader from "../../components/loader/index.vue";
 import Alert from "../../components/alert/index.vue";
+import Slider from "../../components/slider/index.vue";
+
+import {
+    Carousel,
+    Navigation,
+    Slide,
+    Pagination as PaginationCarausel,
+} from "vue3-carousel";
 
 export default {
-    components: { Alert, Card, Loader, Pagination },
+    components: {
+        Alert,
+        Card,
+        Loader,
+        Pagination,
+        Slider,
+        Carousel,
+        Slide,
+        Navigation,
+        PaginationCarausel,
+    },
     data() {
         return {
             isLoading: false,
@@ -249,6 +297,32 @@ export default {
                 isShow: false,
                 type: String,
                 message: String,
+            },
+            //
+            // carousel settings
+            settings: {
+                itemsToShow: 2,
+                snapAlign: "center",
+                autoplay: 3000,
+                wrapAround: true,
+            },
+            // breakpoints are mobile first
+            // any settings not specified will fallback to the carousel settings
+            breakpoints: {
+                // 700px and up
+                100: {
+                    itemsToShow: 1.8,
+                    snapAlign: "center",
+                },
+                700: {
+                    itemsToShow: 3.5,
+                    snapAlign: "center",
+                },
+                // 1024 and up
+                1024: {
+                    itemsToShow: 4.5,
+                    snapAlign: "start",
+                },
             },
         };
     },
@@ -336,3 +410,12 @@ export default {
     },
 };
 </script>
+
+<style>
+.carousel__pagination-button::after {
+    background-color: #2a323c !important;
+}
+.carousel__pagination-button--active::after {
+    background-color: #7480ff !important;
+}
+</style>

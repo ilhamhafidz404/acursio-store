@@ -3,7 +3,7 @@ import axios from "axios";
 async function getTransactionAccount() {
     try {
         // const res = await axios.get(
-        //     `https://genzedu.id/api/transactionAccounts/${invoice}`
+        //     `https://genzedu.id/api/transactionAccounts/`
         // );
         const res = await axios.get(
             `http://127.0.0.1:8000/api/transactionAccounts/`
