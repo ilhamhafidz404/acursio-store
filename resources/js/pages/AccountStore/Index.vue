@@ -98,7 +98,11 @@ import formatRupiah from "../../tools/formatRupiah";
                     <h3 class="font-semibold">Jubel Akun MLBB</h3>
                 </div>
                 <div>
-                    <button class="btn btn-neutral" @click="showModalFilter">
+                    <button
+                        class="btn btn-primary btn-outline"
+                        @click="showModalFilter"
+                    >
+                        <FilterIcon myClass="size-4" />
                         Filter
                     </button>
                 </div>
@@ -202,6 +206,8 @@ import Card from "../../components/card/index.vue";
 import Pagination from "../../components/pagination/index.vue";
 import Loader from "../../components/loader/index.vue";
 import Alert from "../../components/alert/index.vue";
+//
+import FilterIcon from "../../components/icon/filter.vue";
 
 // sections
 import DiscountAccountsSection from "../../sections/AccountStore/DiscountAccounts.vue";
@@ -212,6 +218,8 @@ export default {
         Card,
         Loader,
         Pagination,
+        //
+        FilterIcon,
         //
         DiscountAccountsSection,
     },
