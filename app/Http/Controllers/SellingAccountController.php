@@ -17,6 +17,8 @@ class SellingAccountController extends Controller
 
         $query = SellingAccount::query();
 
+        $query->with('hashtags'); 
+
         if ($minPrice) {
             $query->where('price', '>=', $minPrice);
         }

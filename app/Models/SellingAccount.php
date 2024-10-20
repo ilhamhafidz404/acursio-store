@@ -28,6 +28,11 @@ class SellingAccount extends Model
     // public function getPasswordAccountAttribute($value) {
     //     return $value ? Crypt::decryptString($value) : null;
     // }
+
+    public function hashtags()
+    {
+        return $this->belongsToMany(Hashtag::class, 'hashtag_selling_account');
+    }
     
 
     protected $guarded = ["id"];
