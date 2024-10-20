@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            SellingAccountSeeder::class
+            SellingAccountSeeder::class,
+            HashtagSeeder::class
         ]);
     }
 }

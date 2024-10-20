@@ -3,6 +3,7 @@
 use App\Http\Controllers\BuyAccountController;
 use App\Http\Controllers\CheckStatusTransactionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HashtagController;
 use App\Http\Controllers\PaymentCallbackController;
 use App\Http\Controllers\ResendEmailSuccessBuyAccount;
 use App\Http\Controllers\SellingAccountController;
@@ -31,7 +32,10 @@ Route::get("/dashboard", DashboardController::class);
 // JUBEL
 Route::apiResource("/sellingAccounts", SellingAccountController::class);
 Route::post("/buyAccount", BuyAccountController::class);
+
 Route::apiResource("/transactionAccounts", TransactionAccountController::class);
 Route::get("/checkStatusTransactions", CheckStatusTransactionController::class);
 Route::post("/resendEmailSuccessBuyAccount", ResendEmailSuccessBuyAccount::class);
 Route::post("/paymentCallback", PaymentCallbackController::class);
+
+Route::apiResource("/hashtags", HashtagController::class);
