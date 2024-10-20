@@ -14,7 +14,7 @@ class HashtagController extends Controller
     public function index()
     {
         try {
-            $hashtags = Hashtag::latest()->paginate(9);
+            $hashtags = Hashtag::withCount('sellingAccounts')->latest()->paginate(9);
 
             return response()->json([
                 "code" => "ACSO-001",
