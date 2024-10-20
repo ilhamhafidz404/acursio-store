@@ -123,7 +123,7 @@ class SellingAccountController extends Controller
 
     public function show(string $id)
     {
-        $sellingAccount = SellingAccount::whereId($id)->orWhere("slug", $id)->first();    
+        $sellingAccount = SellingAccount::with("hashtags")->whereId($id)->orWhere("slug", $id)->first();    
 
         return response()->json([
             "code" => "ACSO-001",

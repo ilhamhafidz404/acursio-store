@@ -127,6 +127,15 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     }}
                 </p>
             </div>
+            <div class="mt-5 flex gap-3">
+                <span
+                    v-for="(hashtag, index) in accountStore.hashtags"
+                    :key="index"
+                    class="italic text-warning"
+                >
+                    #{{ hashtag.title }}
+                </span>
+            </div>
             <div class="mt-5">
                 <p class="md:text-lg text-sm">
                     Rank :
@@ -310,6 +319,7 @@ export default {
                 total_heroes: Number,
                 total_skin: Number,
                 update_at: String,
+                hashtags: [],
             },
             userData: {
                 email: "",
