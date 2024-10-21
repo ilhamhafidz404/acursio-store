@@ -15,23 +15,23 @@ class HashtagSeeder extends Seeder
     {
         Hashtag::insert([
             [
-                "title" => "LegendarySkin",
+                "title" => "Legendary Skin",
                 "slug" => "legendary-skin"
             ],
             [
-                "title" => "EpicSkin",
+                "title" => "Epic Skin",
                 "slug" => "epic-skin"
             ],
             [
-                "title" => "EliteSkin",
+                "title" => "Elite Skin",
                 "slug" => "elite-skin"
             ],
             [
-                "title" => "CollectorSkin",
+                "title" => "Collector Skin",
                 "slug" => "collector-skin"
             ],
             [
-                "title" => "SpecialSkin",
+                "title" => "Special Skin",
                 "slug" => "special-skin"
             ],
         ]);        

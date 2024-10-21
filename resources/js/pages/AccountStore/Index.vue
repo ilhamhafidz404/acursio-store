@@ -65,6 +65,29 @@ import formatRupiah from "../../tools/formatRupiah";
                                 />
                             </label>
                         </div>
+                        <div class="mb-1">
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text"> Hashtag </span>
+                                </div>
+                                <select
+                                    class="select select-bordered w-full"
+                                    v-model="filter.hashtag"
+                                >
+                                    <option
+                                        v-if="filter.hashtag"
+                                        value=""
+                                    ></option>
+                                    <option
+                                        v-for="hashtag in Hashtags"
+                                        :key="hashtag.id"
+                                        :value="hashtag.slug"
+                                    >
+                                        {{ hashtag.title }}
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
                         <div class="mt-7 flex gap-2">
                             <div v-if="isFilterActive" class="w-full">
                                 <button
@@ -121,6 +144,7 @@ import formatRupiah from "../../tools/formatRupiah";
                     v-for="account in AccountStores.data"
                     :key="account.id"
                     :account="account"
+                    @handleFilterHastag="filterHashtag"
                 />
             </div>
 
@@ -170,6 +194,26 @@ import formatRupiah from "../../tools/formatRupiah";
                             />
                         </label>
                     </div>
+                    <div class="mb-1">
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text"> Hashtag </span>
+                            </div>
+                            <select
+                                class="select select-bordered w-full"
+                                v-model="filter.hashtag"
+                            >
+                                <option v-if="filter.hashtag" value=""></option>
+                                <option
+                                    v-for="hashtag in Hashtags"
+                                    :key="hashtag.id"
+                                    :value="hashtag.slug"
+                                >
+                                    {{ hashtag.title }}
+                                </option>
+                            </select>
+                        </label>
+                    </div>
                     <div class="mt-7 flex gap-2">
                         <div v-if="isFilterActive" class="w-full">
                             <button
@@ -200,6 +244,7 @@ import formatRupiah from "../../tools/formatRupiah";
 
 <script>
 import { getSellingAccount } from "../../apis/SellingAccount";
+import { getHashtags } from "../../apis/Hashtags";
 
 // components
 import Card from "../../components/card/index.vue";
@@ -233,10 +278,19 @@ export default {
                 prev_page_url: null,
                 next_page_url: null,
             },
+            isLoadingGetHashtag: false,
+            Hashtags: [
+                {
+                    title: String,
+                    slug: String,
+                    description: String,
+                },
+            ],
             filter: {
                 minPrice: "",
                 maxPrice: "",
                 page: 1,
+                hashtag: "",
             },
             pagination: {
                 page: 1,
@@ -253,37 +307,81 @@ export default {
             const numericValue = value.replace(/\D/g, "");
             this.filter[field] = numericValue ? parseInt(numericValue) : 0;
         },
-        async fetchSellingAccounts(page = 1) {
+        async fetchSellingAccounts(
+            page = 1,
+            hashtag = "",
+            minPrice = "",
+            maxPrice = ""
+        ) {
             this.isLoading = true;
             this.alertContent.isShow = false;
 
             this.pagination.page = page;
             this.filter.page = page;
 
-            this.$router.push({
-                path: "/",
-                query: { page: this.pagination.page },
-            });
+            const query = {};
+
+            if (page) {
+                query.page = page;
+            }
+
+            if (minPrice) {
+                query.minPrice = minPrice;
+            }
+
+            if (maxPrice) {
+                query.maxPrice = maxPrice;
+            }
+
+            if (hashtag) {
+                query.hashtag = hashtag;
+            }
+
+            // Lakukan push ke router hanya jika query tidak kosong
+            if (Object.keys(query).length > 0) {
+                this.$router.push({
+                    path: "/",
+                    query: query,
+                });
+            }
 
             window.scrollTo(0, 0);
 
             try {
-                const result = await getSellingAccount(this.filter);
+                const result = await getSellingAccount(query);
 
                 this.AccountStores = result || {};
-
-                if (!this.AccountStores.data.length) {
-                    this.setAlertContent(true, "warning", `Data Akun Kosong`);
+            } catch (error) {
+                if (error.response.data.code == "ACSO-002") {
+                    this.AccountStores = [];
+                    this.setAlertContent(true, "warning", "Data Akun Kosong");
+                } else {
+                    this.setAlertContent(
+                        true,
+                        "error",
+                        "Gagal memuat data, silahkan refresh atau coba kembali"
+                    );
                 }
+                console.error("Error fetching account:", error);
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        async fetchHashtag() {
+            this.isLoadingGetHashtag = true;
+            try {
+                const result = await getHashtags();
+
+                this.Hashtags = result.data || [];
             } catch (error) {
                 this.setAlertContent(
                     true,
                     "error",
-                    "Gagal memuat data, silahkan refresh atau coba kembali"
+                    "Gagal memuat data hashtag, silahkan refresh atau coba kembali"
                 );
                 console.error("Error fetching account:", error);
             } finally {
-                this.isLoading = false;
+                this.isLoadingGetHashtag = false;
             }
         },
         setAlertContent(isShow, type, message) {
@@ -301,7 +399,16 @@ export default {
             this.fetchSellingAccounts(1);
         },
         filterSearchParams() {
-            this.fetchSellingAccounts(1);
+            this.fetchSellingAccounts(
+                this.filter.page,
+                this.filter.hashtag,
+                this.filter.minPrice,
+                this.filter.maxPrice
+            );
+        },
+        filterHashtag(slug) {
+            this.filter.hashtag = slug;
+            this.fetchSellingAccounts(1, slug);
         },
         showModalFilter() {
             filterModal.showModal();
@@ -309,15 +416,30 @@ export default {
     },
     computed: {
         isFilterActive() {
-            return Object.values(this.filter).some((value) => value);
+            // Buat salinan dari filter tanpa properti "page"
+            const { page, ...restFilters } = this.filter;
+
+            // Cek apakah ada filter yang aktif selain "page"
+            return Object.values(restFilters).some((value) => value);
         },
     },
 
     mounted() {
         const urlParams = new URLSearchParams(window.location.search);
         const page = urlParams.get("page");
+        const hashtag = urlParams.get("hashtag");
+        const minPrice = urlParams.get("minPrice");
+        const maxPrice = urlParams.get("maxPrice");
 
-        this.fetchSellingAccounts(page);
+        this.filter = {
+            page: page,
+            hashtag: hashtag,
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+        };
+
+        this.fetchSellingAccounts(page, hashtag, minPrice, maxPrice);
+        this.fetchHashtag();
         window.scrollTo(0, 0);
     },
 };

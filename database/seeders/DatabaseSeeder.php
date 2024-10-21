@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SellingAccountSeeder::class,
-            HashtagSeeder::class
+            HashtagSeeder::class,
+            HashtagSellingAccountSeeder::class
         ]);
     }
 }

@@ -91,6 +91,11 @@ export default {
     methods: {
         inAction(page) {
             if (page !== "...") {
+                const urlParams = new URLSearchParams(window.location.search);
+                const hashtag = urlParams.get("hashtag");
+                const minPrice = urlParams.get("minPrice");
+                const maxPrice = urlParams.get("maxPrice");
+
                 if (typeof page == "string") {
                     const regex = /[?&]page=(\d+)/;
 
@@ -98,9 +103,15 @@ export default {
 
                     const pageParam = match ? match[1] : 1;
 
-                    this.$emit("inAction", pageParam);
+                    this.$emit(
+                        "inAction",
+                        pageParam,
+                        hashtag,
+                        minPrice,
+                        maxPrice
+                    );
                 } else if (typeof page == "number") {
-                    this.$emit("inAction", page);
+                    this.$emit("inAction", page, hashtag, minPrice, maxPrice);
                 }
             }
         },

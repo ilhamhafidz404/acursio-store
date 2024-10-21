@@ -27,6 +27,19 @@ import formatRupiah from "../../tools/formatRupiah";
             />
         </figure>
         <div className="card-body md:px-5 md:py-5 px-3 py-4">
+            <div class="flex gap-2 flex-wrap">
+                <span
+                    class="text-warning text-sm italic -mt-3 mb-1"
+                    v-for="(hastag, index) in account.hashtags"
+                    :key="hastag.id"
+                    @click="requestFilterHastag(hastag.slug)"
+                >
+                    <span v-if="index < 2"> #{{ hastag.title }} </span>
+                    <span class="text-gray-400" v-else-if="index === 2">
+                        & +{{ account.hashtags.length - 2 }} lainnya
+                    </span>
+                </span>
+            </div>
             <router-link :to="'/account-store/' + account.slug">
                 <h2 className="card-title text-base md:text-xl">
                     {{ account.title }}
@@ -67,6 +80,11 @@ import formatRupiah from "../../tools/formatRupiah";
 export default {
     props: {
         account: Object,
+    },
+    methods: {
+        requestFilterHastag(slug) {
+            this.$emit("handleFilterHastag", slug);
+        },
     },
 };
 </script>

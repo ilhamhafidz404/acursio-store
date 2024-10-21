@@ -14,6 +14,7 @@ class SellingAccountController extends Controller
         $minPrice = request('minPrice');
         $maxPrice = request('maxPrice');
         $condition = request('condition'); // 1 = semua, 2 = hanya yang diskon
+        $hashtag = request('hashtag');
 
         $query = SellingAccount::query();
 
@@ -29,6 +30,12 @@ class SellingAccountController extends Controller
 
         if ($condition == "2") {
             $query->where('discount', '>', 0);
+        }
+
+        if ($hashtag) {
+            $query->whereHas('hashtags', function ($query) use ($hashtag) {
+                $query->where('slug', $hashtag);
+            });
         }
 
         $sellingAccounts = $query->latest()->paginate(9);
