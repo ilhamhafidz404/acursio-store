@@ -1,8 +1,8 @@
 <template>
     <footer
-        class="footer bg-neutral text-neutral-content px-5 md:px-10 xl:px-20 py-10 border-t border-primary grid grid-cols-5 gap-20"
+        class="footer bg-neutral text-neutral-content px-5 md:px-10 xl:px-20 py-10 border-t border-primary grid md:grid-cols-5 gap-20"
     >
-        <aside class="col-span-2">
+        <aside class="md:col-span-2">
             <img
                 src="/resources/js/asset/logo.webp"
                 alt="Acursio Logo"

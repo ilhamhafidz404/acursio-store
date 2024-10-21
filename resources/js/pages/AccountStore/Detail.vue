@@ -425,7 +425,7 @@ export default {
         postBuyAccount() {
             this.isLoadingBuyAccount = true;
             axios
-                .post(`https://genzedu.id/api/buyAccount`, {
+                .post(`https://jubel-acursio.store/api/buyAccount`, {
                     // .post(`http://127.0.0.1:8000/api/buyAccount`, {
                     accountStore: this.accountStore,
                     userData: this.userData,

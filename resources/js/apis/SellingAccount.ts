@@ -10,8 +10,8 @@ type SellingAccountParams = {
 async function getSellingAccount(params: { params: SellingAccountParams }) {
     try {
         const res = await axios.get(
-            // `https://genzedu.id/api/sellingAccounts/`,
-            `http://127.0.0.1:8000/api/sellingAccounts/`,
+            `https://jubel-acursio.store/api/sellingAccounts/`,
+            // `http://127.0.0.1:8000/api/sellingAccounts/`,
             {
                 params: params || {},
             }
@@ -26,12 +26,12 @@ async function getSellingAccount(params: { params: SellingAccountParams }) {
 
 async function getSellingAccountById(id: number) {
     try {
-        // const res = await axios.get(
-        //     `https://genzedu.id/api/sellingAccounts/${id}`
-        // );
         const res = await axios.get(
-            `http://127.0.0.1:8000/api/sellingAccounts/${id}`
+            `https://jubel-acursio.store/api/sellingAccounts/${id}`
         );
+        // const res = await axios.get(
+        //     `http://127.0.0.1:8000/api/sellingAccounts/${id}`
+        // );
 
         return res.data.result;
     } catch (error) {
