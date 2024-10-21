@@ -127,11 +127,11 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     }}
                 </p>
             </div>
-            <div class="mt-5 flex gap-3">
+            <div class="mt-5 flex flex-wrap gap-3">
                 <span
                     v-for="(hashtag, index) in accountStore.hashtags"
                     :key="index"
-                    class="italic text-warning"
+                    class="italic text-warning -mt-2"
                 >
                     #{{ hashtag.title }}
                 </span>

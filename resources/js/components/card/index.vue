@@ -19,17 +19,19 @@ import formatRupiah from "../../tools/formatRupiah";
                 }}
             </p>
         </div>
-        <figure>
-            <img
-                :src="'https://genzedu.id/images/' + account.image1"
-                alt="Jubel Akun ML"
-                class="w-full h-[200px] md:h-[300px] object-cover"
-            />
-        </figure>
+        <router-link :to="'/account-store/' + account.slug">
+            <figure>
+                <img
+                    :src="'https://genzedu.id/images/' + account.image1"
+                    alt="Jubel Akun ML"
+                    class="w-full h-[200px] md:h-[300px] object-cover"
+                />
+            </figure>
+        </router-link>
         <div className="card-body md:px-5 md:py-5 px-3 py-4">
             <div class="flex gap-2 flex-wrap">
                 <span
-                    class="text-warning text-sm italic -mt-3 mb-1"
+                    class="text-warning text-sm italic -mt-3 mb-1 cursor-pointer"
                     v-for="(hastag, index) in account.hashtags"
                     :key="hastag.id"
                     @click="requestFilterHastag(hastag.slug)"
