@@ -70,7 +70,6 @@ class SellingAccountController extends Controller
 
     public function store(Request $request)
     {
-
         // Lakukan validasi terlebih dahulu
         $request->validate([
             'title' => 'required|string|max:255',
@@ -110,6 +109,9 @@ class SellingAccountController extends Controller
                 'email_account' => $request->accountEmail,
                 'password_account' => $request->accountPassword,
             ]);
+
+            // Melampirkan atau menambahkan relasi Hashtag
+            $sellingAccount->hashtags()->attach($request->hashtags);
 
             return response()->json([
                 "code" => "ACSO-001",

@@ -31,7 +31,7 @@ import formatRupiah from "../../tools/formatRupiah";
         <div className="card-body md:px-5 md:py-5 px-3 py-4">
             <div class="flex gap-2 flex-wrap">
                 <span
-                    class="text-warning text-sm italic -mt-3 mb-1 cursor-pointer"
+                    class="text-warning md:text-sm text-xs italic -mt-3 mb-1 cursor-pointer"
                     v-for="(hastag, index) in account.hashtags"
                     :key="hastag.id"
                     @click="requestFilterHastag(hastag.slug)"
