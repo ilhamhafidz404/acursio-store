@@ -171,7 +171,7 @@ class SellingAccountController extends Controller
                 'success' => true,
                 'data' => $sellingAccount,
                 'message' => 'Berhasil Mengedit Akun Jubel'
-            ], 201);
+            ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -185,14 +185,33 @@ class SellingAccountController extends Controller
 
     public function destroy(string $id)
     {
-        $data = SellingAccount::find($id);
-        $data->delete();
+        try {
+            $data = SellingAccount::find($id);
+            
+            if (!$data) {
+                return response()->json([
+                    "code" => "ACSO-002",
+                    "success" => false,
+                    "message" => "Akun Jubel tidak ditemukan"
+                ], 404);
+            }
 
-        return response()->json([
-            "code" => "ACSO-001",
-            'success' => true,
-            'data' => $data,
-            'message' => 'Berhasil Menghapus Akun Jubel'
-        ], 201);
+            $data->delete();
+
+            return response()->json([
+                "code" => "ACSO-001",
+                'success' => true,
+                'data' => $data,
+                'message' => 'Berhasil Menghapus Akun Jubel'
+            ], 200);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                "code" => "ACSO-003",
+                "success" => false,
+                "message" => "An error occurred: " . $e->getMessage(),
+                "result" => [],
+            ], 500);
+        }
     }
 }
