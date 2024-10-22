@@ -88,6 +88,17 @@ import formatRupiah from "../../tools/formatRupiah";
                                 </select>
                             </label>
                         </div>
+                        <div class="mb-1 mt-3">
+                            <label class="label cursor-pointer">
+                                <span class="label-text">Full Emblem?</span>
+                                <input
+                                    type="checkbox"
+                                    class="toggle"
+                                    checked="checked"
+                                    v-model="filter.isFullEmblem"
+                                />
+                            </label>
+                        </div>
                         <div class="mt-7 flex gap-2">
                             <div v-if="isFilterActive" class="w-full">
                                 <button
@@ -214,6 +225,17 @@ import formatRupiah from "../../tools/formatRupiah";
                             </select>
                         </label>
                     </div>
+                    <div class="mb-1 mt-3">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Full Emblem?</span>
+                            <input
+                                type="checkbox"
+                                class="toggle"
+                                checked="checked"
+                                v-model="filter.isFullEmblem"
+                            />
+                        </label>
+                    </div>
                     <div class="mt-7 flex gap-2">
                         <div v-if="isFilterActive" class="w-full">
                             <button
@@ -291,6 +313,7 @@ export default {
                 maxPrice: "",
                 page: 1,
                 hashtag: "",
+                isFullEmblem: false,
             },
             pagination: {
                 page: 1,
@@ -311,7 +334,8 @@ export default {
             page = 1,
             hashtag = "",
             minPrice = "",
-            maxPrice = ""
+            maxPrice = "",
+            isFullEmblem = false
         ) {
             this.isLoading = true;
             this.alertContent.isShow = false;
@@ -335,6 +359,10 @@ export default {
 
             if (hashtag) {
                 query.hashtag = hashtag;
+            }
+
+            if (isFullEmblem) {
+                query.isFullEmblem = true;
             }
 
             // Lakukan push ke router hanya jika query tidak kosong
@@ -403,7 +431,8 @@ export default {
                 this.filter.page,
                 this.filter.hashtag,
                 this.filter.minPrice,
-                this.filter.maxPrice
+                this.filter.maxPrice,
+                this.filter.isFullEmblem
             );
         },
         filterHashtag(slug) {

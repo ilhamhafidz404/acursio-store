@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer("total_heroes")->nullable();
             $table->integer("total_skin")->nullable();
             $table->integer("discount")->nullable();
+            $table->boolean("is_full_emblem")->default(false);
             $table->text("email_account");
             $table->text("password_account");
             $table->timestamps();

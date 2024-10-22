@@ -15,6 +15,7 @@ class SellingAccountController extends Controller
         $maxPrice = request('maxPrice');
         $condition = request('condition'); // 1 = semua, 2 = hanya yang diskon
         $hashtag = request('hashtag');
+        $isFullEmblem = request('isFullEmblem');
 
         $query = SellingAccount::query();
 
@@ -36,6 +37,10 @@ class SellingAccountController extends Controller
             $query->whereHas('hashtags', function ($query) use ($hashtag) {
                 $query->where('slug', $hashtag);
             });
+        }
+        
+        if ($isFullEmblem) {
+            $query->where("is_full_emblem", 1);
         }
 
         $sellingAccounts = $query->latest()->paginate(9);

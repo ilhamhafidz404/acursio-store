@@ -52,6 +52,7 @@ class SellingAccountSeeder extends Seeder
                 "total_heroes"      => rand(5, 20), // Total hero acak antara 5 dan 20
                 "total_skin"        => rand(5, 20),   // Total skin acak antara 5 dan 20
                 "discount"          => $discount,     // Diskon acak antara 0% dan 50%
+                "is_full_emblem"    => rand(0, 1),     
                 "image1"            => $images[array_rand($images)],
                 "image2"            => $images[array_rand($images)],
                 "email_account"     => "user" . $i . "@gmail.com",
