@@ -26,6 +26,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// GLOBAL
+// Route::post("/uploadImage", _UploadImageController::class);
+
+
 // Dashboard
 Route::get("/dashboard", DashboardController::class);
 

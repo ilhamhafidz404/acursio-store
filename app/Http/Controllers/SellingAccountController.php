@@ -9,67 +9,67 @@ class SellingAccountController extends Controller
 {
     
     public function index()
-{
-    try {
-        $minPrice = request('minPrice');
-        $maxPrice = request('maxPrice');
-        $condition = request('condition'); // 1 = semua, 2 = hanya yang diskon
-        $hashtag = request('hashtag');
-        $isFullEmblem = request('isFullEmblem');
+    {
+        try {
+            $minPrice = request('minPrice');
+            $maxPrice = request('maxPrice');
+            $condition = request('condition'); // 1 = semua, 2 = hanya yang diskon
+            $hashtag = request('hashtag');
+            $isFullEmblem = request('isFullEmblem');
 
-        $query = SellingAccount::query();
+            $query = SellingAccount::query();
 
-        $query->with('hashtags'); 
+            $query->with('hashtags'); 
 
-        if ($minPrice) {
-            $query->where('price', '>=', $minPrice);
-        }
+            if ($minPrice) {
+                $query->where('price', '>=', $minPrice);
+            }
 
-        if ($maxPrice) {
-            $query->where('price', '<=', $maxPrice);
-        }
+            if ($maxPrice) {
+                $query->where('price', '<=', $maxPrice);
+            }
 
-        if ($condition == "2") {
-            $query->where('discount', '>', 0);
-        }
+            if ($condition == "2") {
+                $query->where('discount', '>', 0);
+            }
 
-        if ($hashtag) {
-            $query->whereHas('hashtags', function ($query) use ($hashtag) {
-                $query->where('slug', $hashtag);
-            });
-        }
-        
-        if ($isFullEmblem) {
-            $query->where("is_full_emblem", 1);
-        }
+            if ($hashtag) {
+                $query->whereHas('hashtags', function ($query) use ($hashtag) {
+                    $query->where('slug', $hashtag);
+                });
+            }
+            
+            if ($isFullEmblem) {
+                $query->where("is_full_emblem", 1);
+            }
 
-        $sellingAccounts = $query->latest()->paginate(9);
+            $sellingAccounts = $query->latest()->paginate(9);
 
-        if ($sellingAccounts->isEmpty()) {
+            if ($sellingAccounts->isEmpty()) {
+                return response()->json([
+                    "code" => "ACSO-002",
+                    "success" => false,
+                    "message" => "No data found",
+                    "result" => [],
+                ], 404);
+            }
+
             return response()->json([
-                "code" => "ACSO-002",
+                "code" => "ACSO-001",
+                "success" => true,
+                "message" => "success",
+                "result" => $sellingAccounts,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                "code" => "ACSO-003",
                 "success" => false,
-                "message" => "No data found",
+                "message" => "An error occurred: " . $e->getMessage(),
                 "result" => [],
-            ], 404);
+            ], 500);
         }
-
-        return response()->json([
-            "code" => "ACSO-001",
-            "success" => true,
-            "message" => "success",
-            "result" => $sellingAccounts,
-        ]);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            "code" => "ACSO-003",
-            "success" => false,
-            "message" => "An error occurred: " . $e->getMessage(),
-            "result" => [],
-        ], 500);
     }
-}
 
 
 
@@ -81,23 +81,23 @@ class SellingAccountController extends Controller
             'slug' => 'required|string|max:255|unique:selling_accounts,slug',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'image1' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            // 'image1' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            // 'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'rank' => 'required|string|max:255',
             'accountEmail' => 'required|string',
             'accountPassword' => 'required|string',
         ]);
 
         try {
-            $image1Path = null;
-            if ($request->hasFile('image1')) {
-                $image1Path = $request->file('image1')->store('images', 'public');
-            }
+            // $image1Path = null;
+            // if ($request->hasFile('image1')) {
+            //     $image1Path = $request->file('image1')->store('images', 'public');
+            // }
             
-            $image2Path = "";
-            if ($request->hasFile('image2')) {
-                $image2Path = $request->file('image2')->store('images', 'public');
-            }
+            // $image2Path = "";
+            // if ($request->hasFile('image2')) {
+            //     $image2Path = $request->file('image2')->store('images', 'public');
+            // }
 
             // Buat akun baru
             $sellingAccount = SellingAccount::create([
@@ -105,18 +105,22 @@ class SellingAccountController extends Controller
                 'slug' => $request->slug,
                 'price' => $request->price,
                 'description' => $request->description,
-                'image1' => $image1Path,
-                'image2' => $image2Path,
+                'image1' => "/",
+                'image2' => "/",
                 'rank' => $request->rank,
                 'total_heroes' => $request->totalHero,
                 'total_skin' => $request->totalSkin,
                 'discount' => $request->discount,
                 'email_account' => $request->accountEmail,
                 'password_account' => $request->accountPassword,
+                "is_full_emblem" => $request->isFullEmblem,
             ]);
 
             // Melampirkan atau menambahkan relasi Hashtag
-            $sellingAccount->hashtags()->attach($request->hashtags);
+            // $sellingAccount->hashtags()->attach($request->hashtags->);
+
+            $hashtags = collect($request->hashtags)->pluck('value');
+            $sellingAccount->hashtags()->attach($hashtags);
 
             return response()->json([
                 "code" => "ACSO-001",
