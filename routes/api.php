@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\_UploadImageController;
 use App\Http\Controllers\BuyAccountController;
 use App\Http\Controllers\CheckStatusTransactionController;
 use App\Http\Controllers\DashboardController;
@@ -27,7 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // GLOBAL
-// Route::post("/uploadImage", _UploadImageController::class);
+Route::post("/uploadImage", _UploadImageController::class);
 
 
 // Dashboard

@@ -81,32 +81,22 @@ class SellingAccountController extends Controller
             'slug' => 'required|string|max:255|unique:selling_accounts,slug',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            // 'image1' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            // 'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image1' => 'required|string',
+            'image2' => 'nullable',
             'rank' => 'required|string|max:255',
             'accountEmail' => 'required|string',
             'accountPassword' => 'required|string',
         ]);
 
         try {
-            // $image1Path = null;
-            // if ($request->hasFile('image1')) {
-            //     $image1Path = $request->file('image1')->store('images', 'public');
-            // }
-            
-            // $image2Path = "";
-            // if ($request->hasFile('image2')) {
-            //     $image2Path = $request->file('image2')->store('images', 'public');
-            // }
-
             // Buat akun baru
             $sellingAccount = SellingAccount::create([
                 'title' => $request->title,
                 'slug' => $request->slug,
                 'price' => $request->price,
                 'description' => $request->description,
-                'image1' => "/",
-                'image2' => "/",
+                'image1' => $request->image1,
+                'image2' => $request->image2,
                 'rank' => $request->rank,
                 'total_heroes' => $request->totalHero,
                 'total_skin' => $request->totalSkin,
@@ -115,9 +105,6 @@ class SellingAccountController extends Controller
                 'password_account' => $request->accountPassword,
                 "is_full_emblem" => $request->isFullEmblem,
             ]);
-
-            // Melampirkan atau menambahkan relasi Hashtag
-            // $sellingAccount->hashtags()->attach($request->hashtags->);
 
             $hashtags = collect($request->hashtags)->pluck('value');
             $sellingAccount->hashtags()->attach($hashtags);
