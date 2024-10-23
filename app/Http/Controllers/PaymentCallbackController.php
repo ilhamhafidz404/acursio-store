@@ -50,6 +50,28 @@ class PaymentCallbackController extends Controller
                     "payment_type" => $request->payment_type,
                     "status" => "pending"
                 ]);
+            }  elseif ($request->transaction_status === "expire") {
+                // Update transaction status to pending
+                $transactionAccount->update([
+                    "updated_at" => $request->transaction_time,
+                    "payment_type" => $request->payment_type,
+                    "status" => "failed"
+                ]);
+
+                SellingAccount::find($transactionAccount->selling_account_id)->update([
+                    "status" => "available"
+                ]);
+            } elseif ($request->transaction_status === "abandoned") {
+                // Update transaction status to pending
+                $transactionAccount->update([
+                    "updated_at" => $request->transaction_time,
+                    "payment_type" => $request->payment_type,
+                    "status" => "failed"
+                ]);
+
+                SellingAccount::find($transactionAccount->selling_account_id)->update([
+                    "status" => "available"
+                ]);
             }
 
             // Return success response

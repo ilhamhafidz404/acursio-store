@@ -346,7 +346,7 @@ export default {
     },
     methods: {
         async fetchSellingAccountById() {
-            // this.isLoading = true;
+            this.isLoading = true;
             this.alertContent.isShow = false;
 
             try {
@@ -435,8 +435,8 @@ export default {
 
                     this.setDialogContent(
                         "success",
-                        "Berhasil Melakukan Pemesanan",
-                        "Silahkan check email untuk melanjutkan pembayaran anda jika tab baru tidak terbuka!",
+                        "Pemesanan Berhasil",
+                        "Silakan cek email Anda untuk menyelesaikan pembayaran. Jika tab baru tidak terbuka, klik 'Lanjut Bayar' untuk melanjutkan pembayaran:",
                         res.data.payment_url
                     );
 
@@ -464,9 +464,7 @@ export default {
     },
     mounted() {
         this.id = this.$route.params.id;
-        // this.fectDataSeelingAccountByID = setInterval(() => {
-        //     this.fetchSellingAccountById();
-        // }, 20000);
+
         this.fetchSellingAccountById();
         window.scrollTo(0, 0);
     },

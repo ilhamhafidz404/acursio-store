@@ -57,12 +57,22 @@ export default {
                 settlement: [
                     "success",
                     "Pembelian Berhasil",
-                    "Pembelian akun Mobile Legends berhasil. Silakan periksa email Kamu untuk mendapatkan informasi pembeliannya.",
+                    "Pembelian akun Mobile Legends Anda telah berhasil. Silakan cek email Anda untuk detail pembelian lebih lanjut.",
                 ],
                 pending: [
                     "warning",
-                    "Pembelian Dalam Tahap Pending",
-                    "Pembelian akun masih dalam status pending. Silakan lanjutkan pembayaran dengan mengklik tautan yang telah dikirimkan ke email Kamu.",
+                    "Pembayaran Tertunda",
+                    "Pembelian akun Anda masih dalam proses. Mohon selesaikan pembayaran melalui tautan yang telah dikirimkan ke email Anda.",
+                ],
+                expire: [
+                    "error",
+                    "Pembelian Kadaluarsa",
+                    "Masa berlaku pembayaran telah berakhir. Silakan lakukan pemesanan ulang jika masih berminat untuk membeli akun.",
+                ],
+                abandoned: [
+                    "error",
+                    "Pembelian Dibatalkan",
+                    "Pembayaran tidak diselesaikan dan telah dibatalkan. Jika Anda masih ingin membeli akun, silakan buat pesanan baru.",
                 ],
             };
 
