@@ -17,6 +17,16 @@ const routes = [
         name: "PaymentFinish",
         component: () => import("@/pages/Payment/Finish.vue"),
     },
+    {
+        path: "/payment-unfinish",
+        name: "PaymentUnfinish",
+        component: () => import("@/pages/Payment/Unfinish.vue"),
+    },
+    {
+        path: "/payment-error",
+        name: "PaymentError",
+        component: () => import("@/pages/Payment/Error.vue"),
+    },
     //
     {
         path: "/",
