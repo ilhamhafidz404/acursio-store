@@ -146,8 +146,11 @@ class SellingAccountController extends Controller
             //     $imagePath = $request->file('image')->store('images', 'public');
             // }
 
-            // Buat akun baru
-            $sellingAccount = SellingAccount::whereSlug($slug)->first()->update([
+            // Get Selling account
+            $sellingAccount = SellingAccount::whereSlug($slug)->first();
+            
+            // Update akun baru
+            $sellingAccount->update([
                 'title' => $request->title,
                 'price' => $request->price,
                 'description' => $request->description,
@@ -155,7 +158,13 @@ class SellingAccountController extends Controller
                 'total_heroes' => $request->totalHero,
                 'total_skin' => $request->totalSkin,
                 'discount' => $request->discount,
+                "is_full_emblem" => $request->isFullEmblem,
             ]);
+
+            // attach hashtags
+            $hashtags = collect($request->hashtags)->pluck('value');
+            $sellingAccount->hashtags()->detach();
+            $sellingAccount->hashtags()->attach($hashtags);
 
             return response()->json([
                 "code" => "ACSO-001",
