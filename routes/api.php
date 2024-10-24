@@ -8,6 +8,7 @@ use App\Http\Controllers\HashtagController;
 use App\Http\Controllers\PaymentCallbackController;
 use App\Http\Controllers\ResendEmailSuccessBuyAccount;
 use App\Http\Controllers\SellingAccountController;
+use App\Http\Controllers\SkinCategoryController;
 use App\Http\Controllers\TransactionAccountController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,3 +45,4 @@ Route::post("/resendEmailSuccessBuyAccount", ResendEmailSuccessBuyAccount::class
 Route::post("/paymentCallback", PaymentCallbackController::class);
 
 Route::apiResource("/hashtags", HashtagController::class);
+Route::apiResource("/skinCategories", SkinCategoryController::class);

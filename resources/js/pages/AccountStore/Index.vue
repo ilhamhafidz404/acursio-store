@@ -68,18 +68,43 @@ import formatRupiah from "../../tools/formatRupiah";
                         <div class="mb-1">
                             <label class="form-control w-full">
                                 <div class="label">
-                                    <span class="label-text"> Hashtag </span>
+                                    <span class="label-text">
+                                        Kategori Skin
+                                    </span>
                                 </div>
                                 <select
                                     class="select select-bordered w-full"
-                                    v-model="filter.hashtag"
+                                    v-model="filter.skinCategory"
                                 >
                                     <option
-                                        v-if="filter.hashtag"
+                                        v-if="filter.skinCategory"
                                         value=""
                                     ></option>
                                     <option
-                                        v-for="hashtag in Hashtags"
+                                        v-for="category in SkinCategories"
+                                        :key="category.id"
+                                        :value="category.slug"
+                                    >
+                                        {{ category.title }}
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="mb-1" v-if="filter.skinCategory">
+                            <label class="form-control w-full">
+                                <div class="label">
+                                    <span class="label-text"> Skin </span>
+                                </div>
+                                <select
+                                    class="select select-bordered w-full"
+                                    v-model="filter.skin"
+                                >
+                                    <option
+                                        v-if="filteredSkin"
+                                        value=""
+                                    ></option>
+                                    <option
+                                        v-for="hashtag in filteredSkin"
                                         :key="hashtag.id"
                                         :value="hashtag.slug"
                                     >
@@ -267,6 +292,7 @@ import formatRupiah from "../../tools/formatRupiah";
 <script>
 import { getSellingAccount } from "../../apis/SellingAccount";
 import { getHashtags } from "../../apis/Hashtags";
+import { getSkinCategories } from "../../apis/SkinCategory";
 
 // components
 import Card from "../../components/card/index.vue";
@@ -308,11 +334,19 @@ export default {
                     description: String,
                 },
             ],
+            isLoadingGetSkinCategories: false,
+            SkinCategories: [
+                {
+                    title: String,
+                    slug: String,
+                },
+            ],
             filter: {
                 minPrice: "",
                 maxPrice: "",
                 page: 1,
-                hashtag: "",
+                skinCategory: "",
+                skin: "",
                 isFullEmblem: false,
             },
             pagination: {
@@ -332,7 +366,8 @@ export default {
         },
         async fetchSellingAccounts(
             page = 1,
-            hashtag = "",
+            skinCategory = "",
+            skin = "",
             minPrice = "",
             maxPrice = "",
             isFullEmblem = false
@@ -357,8 +392,12 @@ export default {
                 query.maxPrice = maxPrice;
             }
 
-            if (hashtag) {
-                query.hashtag = hashtag;
+            if (skinCategory) {
+                query.skinCategory = skinCategory;
+            }
+
+            if (skin) {
+                query.skin = skin;
             }
 
             if (isFullEmblem) {
@@ -412,6 +451,23 @@ export default {
                 this.isLoadingGetHashtag = false;
             }
         },
+        async fetchSkinCategory() {
+            this.isLoadingGetSkinCategories = true;
+            try {
+                const result = await getSkinCategories();
+
+                this.SkinCategories = result.data || [];
+            } catch (error) {
+                this.setAlertContent(
+                    true,
+                    "error",
+                    "Gagal memuat data kategori skin, silahkan refresh atau coba kembali"
+                );
+                console.error("Error fetching account:", error);
+            } finally {
+                this.isLoadingGetSkinCategories = false;
+            }
+        },
         setAlertContent(isShow, type, message) {
             this.alertContent = { isShow, type, message };
         },
@@ -429,14 +485,15 @@ export default {
         filterSearchParams() {
             this.fetchSellingAccounts(
                 this.filter.page,
-                this.filter.hashtag,
+                this.filter.skinCategory,
+                this.filter.skin,
                 this.filter.minPrice,
                 this.filter.maxPrice,
                 this.filter.isFullEmblem
             );
         },
         filterHashtag(slug) {
-            this.filter.hashtag = slug;
+            this.filter.skin = slug;
             this.fetchSellingAccounts(1, slug);
         },
         showModalFilter() {
@@ -451,23 +508,32 @@ export default {
             // Cek apakah ada filter yang aktif selain "page"
             return Object.values(restFilters).some((value) => value);
         },
+        filteredSkin() {
+            return this.Hashtags.filter(
+                (hashtag) =>
+                    hashtag.skin_category.slug === this.filter.skinCategory
+            );
+        },
     },
 
     mounted() {
         const urlParams = new URLSearchParams(window.location.search);
         const page = urlParams.get("page");
-        const hashtag = urlParams.get("hashtag");
+        const skinCategory = urlParams.get("skinCategory");
+        const skin = urlParams.get("skin");
         const minPrice = urlParams.get("minPrice");
         const maxPrice = urlParams.get("maxPrice");
 
         this.filter = {
             page: page,
-            hashtag: hashtag,
             minPrice: minPrice,
             maxPrice: maxPrice,
+            skinCategory: skinCategory,
+            skin: skin,
         };
 
-        this.fetchSellingAccounts(page, hashtag, minPrice, maxPrice);
+        this.fetchSellingAccounts(page, skinCategory, skin, minPrice, maxPrice);
+        this.fetchSkinCategory();
         this.fetchHashtag();
         window.scrollTo(0, 0);
     },

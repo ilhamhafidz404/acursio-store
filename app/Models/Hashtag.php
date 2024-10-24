@@ -18,6 +18,6 @@ class Hashtag extends Model
     
     public function skinCategory()
     {
-        return $this->belongsTo(SkinCategories::class, 'skin_category_id');
+        return $this->belongsTo(SkinCategory::class, 'skin_category_id');
     }
 }
