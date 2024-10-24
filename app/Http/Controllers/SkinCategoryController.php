@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SkinCategories;
 use App\Models\SkinCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class SkinCategoryController extends Controller
 {
@@ -50,7 +51,28 @@ class SkinCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            
+            $skinCategory= SkinCategory::create([
+                "title" => Str::slug($request->title),
+                "slug" => $request->slug,
+            ]);
+
+            return response()->json([
+                "code" => "ACSO-001",
+                "success" => true,
+                "message" => "success create skin category",
+                "result" => $skinCategory,
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                "code" => "ACSO-003",
+                "success" => false,
+                "message" => "An error occurred: " . $e->getMessage(),
+                "result" => [],
+            ], 500);
+        }
     }
 
     /**
@@ -82,6 +104,32 @@ class SkinCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $data = SkinCategory::find($id);
+            
+            if (!$data) {
+                return response()->json([
+                    "code" => "ACSO-002",
+                    "success" => false,
+                    "message" => "Kategori Skin tidak ditemukan"
+                ], 404);
+            }
+
+            $data->delete();
+
+            return response()->json([
+                "code" => "ACSO-001",
+                'success' => true,
+                'data' => $data,
+                'message' => 'Berhasil Menghapus Kategori Skin'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "code" => "ACSO-003",
+                "success" => false,
+                "message" => "An error occurred: " . $e->getMessage(),
+                "result" => [],
+            ], 500);
+        }
     }
 }

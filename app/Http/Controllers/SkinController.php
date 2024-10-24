@@ -25,7 +25,7 @@ class SkinController extends Controller
                     });
                 })
                 ->with("skinCategory")
-                ->withCount('skinCategory')
+                ->withCount('sellingAccounts')
                 ->latest()
                 ->paginate($limit);
 
@@ -62,17 +62,18 @@ class SkinController extends Controller
     {
         try {
             
-            $hashtag= Skin::create([
+            $skin= Skin::create([
                 "title" => Str::slug($request->title),
                 "slug" => $request->slug,
                 "description" => $request->description,
+                "skin_category_id" => $request->skin_category_id
             ]);
 
             return response()->json([
                 "code" => "ACSO-001",
                 "success" => true,
-                "message" => "success create hashtag",
-                "result" => $hashtag,
+                "message" => "success create skin",
+                "result" => $skin,
             ]);
 
         } catch (\Exception $e) {
@@ -121,7 +122,7 @@ class SkinController extends Controller
                 return response()->json([
                     "code" => "ACSO-002",
                     "success" => false,
-                    "message" => "Hashtag tidak ditemukan"
+                    "message" => "skin tidak ditemukan"
                 ], 404);
             }
 
@@ -131,7 +132,7 @@ class SkinController extends Controller
                 "code" => "ACSO-001",
                 'success' => true,
                 'data' => $data,
-                'message' => 'Berhasil Menghapus Hashtag'
+                'message' => 'Berhasil Menghapus skin'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

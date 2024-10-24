@@ -13,7 +13,7 @@ class Skin extends Model
 
     public function sellingAccounts()
     {
-        return $this->belongsToMany(SellingAccount::class, 'hashtag_selling_account');
+        return $this->belongsToMany(SellingAccount::class, 'selling_account_skin');
     }
     
     public function skinCategory()
