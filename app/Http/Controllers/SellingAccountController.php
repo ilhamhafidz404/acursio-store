@@ -14,12 +14,12 @@ class SellingAccountController extends Controller
             $minPrice = request('minPrice');
             $maxPrice = request('maxPrice');
             $condition = request('condition'); // 1 = semua, 2 = hanya yang diskon
-            $hashtag = request('hashtag');
+            $skin = request('skin');
             $isFullEmblem = request('isFullEmblem');
 
             $query = SellingAccount::query();
 
-            $query->with('hashtags'); 
+            $query->with('skins'); 
 
             if ($minPrice) {
                 $query->where('price', '>=', $minPrice);
@@ -33,9 +33,9 @@ class SellingAccountController extends Controller
                 $query->where('discount', '>', 0);
             }
 
-            if ($hashtag) {
-                $query->whereHas('hashtags', function ($query) use ($hashtag) {
-                    $query->where('slug', $hashtag);
+            if ($skin) {
+                $query->whereHas('skins', function ($query) use ($skin) {
+                    $query->where('slug', $skin);
                 });
             }
             
@@ -106,8 +106,8 @@ class SellingAccountController extends Controller
                 "is_full_emblem" => $request->isFullEmblem,
             ]);
 
-            $hashtags = collect($request->hashtags)->pluck('value');
-            $sellingAccount->hashtags()->attach($hashtags);
+            $skins = collect($request->skins)->pluck('value');
+            $sellingAccount->skins()->attach($skins);
 
             return response()->json([
                 "code" => "ACSO-001",
@@ -128,7 +128,7 @@ class SellingAccountController extends Controller
 
     public function show(string $id)
     {
-        $sellingAccount = SellingAccount::with("hashtags")->whereId($id)->orWhere("slug", $id)->first();    
+        $sellingAccount = SellingAccount::with("skins")->whereId($id)->orWhere("slug", $id)->first();    
 
         return response()->json([
             "code" => "ACSO-001",
@@ -161,10 +161,10 @@ class SellingAccountController extends Controller
                 "is_full_emblem" => $request->isFullEmblem,
             ]);
 
-            // attach hashtags
-            $hashtags = collect($request->hashtags)->pluck('value');
-            $sellingAccount->hashtags()->detach();
-            $sellingAccount->hashtags()->attach($hashtags);
+            // attach skins
+            $skins = collect($request->skins)->pluck('value');
+            $sellingAccount->skins()->detach();
+            $sellingAccount->skins()->attach($skins);
 
             return response()->json([
                 "code" => "ACSO-001",

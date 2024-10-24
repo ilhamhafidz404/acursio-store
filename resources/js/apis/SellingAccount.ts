@@ -5,6 +5,8 @@ type SellingAccountParams = {
     minPrice?: string;
     maxPrice?: string;
     condition?: string;
+    skin?: string;
+    skinCategory?: string;
 };
 
 async function getSellingAccount(params: { params: SellingAccountParams }) {

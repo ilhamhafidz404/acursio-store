@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hashtag_selling_account', function (Blueprint $table) {
+        Schema::create('skins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('selling_account_id')->constrained()->onDelete('cascade');
-            $table->foreignId('hashtag_id')->constrained()->onDelete('cascade');
+            $table->string("title");
+            $table->string("slug")->unique();
+            $table->text("description")->nullable();
+            $table->unsignedBigInteger('skin_category_id');
             $table->timestamps();
+
+            $table->foreign('skin_category_id')->references('id')->on('skin_categories')->onDelete('cascade');
         });
     }
 
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hashtag_selling_account');
+        Schema::dropIfExists('skins');
     }
 };

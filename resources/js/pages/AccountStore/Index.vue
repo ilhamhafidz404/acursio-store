@@ -104,11 +104,11 @@ import formatRupiah from "../../tools/formatRupiah";
                                         value=""
                                     ></option>
                                     <option
-                                        v-for="hashtag in filteredSkin"
-                                        :key="hashtag.id"
-                                        :value="hashtag.slug"
+                                        v-for="skin in filteredSkin"
+                                        :key="skin.id"
+                                        :value="skin.slug"
                                     >
-                                        {{ hashtag.title }}
+                                        {{ skin.title }}
                                     </option>
                                 </select>
                             </label>
@@ -180,7 +180,7 @@ import formatRupiah from "../../tools/formatRupiah";
                     v-for="account in AccountStores.data"
                     :key="account.id"
                     :account="account"
-                    @handleFilterHastag="filterHashtag"
+                    @handleFilterSkin="filterSkin"
                 />
             </div>
 
@@ -291,7 +291,7 @@ import formatRupiah from "../../tools/formatRupiah";
 
 <script>
 import { getSellingAccount } from "../../apis/SellingAccount";
-import { getHashtags } from "../../apis/Hashtags";
+import { getSkins } from "../../apis/Skin";
 import { getSkinCategories } from "../../apis/SkinCategory";
 
 // components
@@ -326,8 +326,8 @@ export default {
                 prev_page_url: null,
                 next_page_url: null,
             },
-            isLoadingGetHashtag: false,
-            Hashtags: [
+            isLoadingGetSkins: false,
+            Skins: [
                 {
                     title: String,
                     slug: String,
@@ -435,11 +435,11 @@ export default {
             }
         },
         async fetchHashtag() {
-            this.isLoadingGetHashtag = true;
+            this.isLoadingGetSkins = true;
             try {
-                const result = await getHashtags();
+                const result = await getSkins();
 
-                this.Hashtags = result.data || [];
+                this.Skins = result.data || [];
             } catch (error) {
                 this.setAlertContent(
                     true,
@@ -448,7 +448,7 @@ export default {
                 );
                 console.error("Error fetching account:", error);
             } finally {
-                this.isLoadingGetHashtag = false;
+                this.isLoadingGetSkins = false;
             }
         },
         async fetchSkinCategory() {
@@ -492,7 +492,7 @@ export default {
                 this.filter.isFullEmblem
             );
         },
-        filterHashtag(slug) {
+        filterSkin(slug) {
             this.filter.skin = slug;
             this.fetchSellingAccounts(1, slug);
         },
@@ -509,9 +509,8 @@ export default {
             return Object.values(restFilters).some((value) => value);
         },
         filteredSkin() {
-            return this.Hashtags.filter(
-                (hashtag) =>
-                    hashtag.skin_category.slug === this.filter.skinCategory
+            return this.Skins.filter(
+                (skin) => skin.skin_category.slug === this.filter.skinCategory
             );
         },
     },

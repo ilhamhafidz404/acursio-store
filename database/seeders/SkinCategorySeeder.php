@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\SkinCategories;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\SkinCategory;
 use Illuminate\Database\Seeder;
 
 class SkinCategorySeeder extends Seeder
@@ -13,7 +12,7 @@ class SkinCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        SkinCategories::insert([
+        SkinCategory::insert([
             [
                 "title" => "Collector",
                 "slug" => "SK-collector",

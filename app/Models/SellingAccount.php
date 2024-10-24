@@ -29,9 +29,9 @@ class SellingAccount extends Model
     //     return $value ? Crypt::decryptString($value) : null;
     // }
 
-    public function hashtags()
+    public function skins()
     {
-        return $this->belongsToMany(Hashtag::class, 'hashtag_selling_account');
+        return $this->belongsToMany(Skin::class, 'selling_account_skin');
     }
     
 

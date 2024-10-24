@@ -2,18 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Hashtag;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Skin;
 use Illuminate\Database\Seeder;
 
-class HashtagSeeder extends Seeder
+class SkinSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Hashtag::insert([
+        Skin::insert([
             [
                 "title" => "Legendary Skin",
                 "slug" => "legendary-skin",

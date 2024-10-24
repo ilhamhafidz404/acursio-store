@@ -35,13 +35,13 @@ import formatRupiah from "../../tools/formatRupiah";
             <div class="flex gap-2 flex-wrap">
                 <span
                     class="text-warning md:text-sm text-xs italic -mt-3 mb-1 cursor-pointer"
-                    v-for="(hastag, index) in account.hashtags"
-                    :key="hastag.id"
-                    @click="requestFilterHastag(hastag.slug)"
+                    v-for="(skin, index) in account.skins"
+                    :key="skin.id"
+                    @click="requestFilterSkin(skin.slug)"
                 >
-                    <span v-if="index < 2"> #{{ hastag.title }} </span>
+                    <span v-if="index < 2"> #{{ skin.title }} </span>
                     <span class="text-gray-400" v-else-if="index === 2">
-                        & +{{ account.hashtags.length - 2 }} lainnya
+                        & +{{ account.skins.length - 2 }} lainnya
                     </span>
                 </span>
             </div>
@@ -87,8 +87,8 @@ export default {
         account: Object,
     },
     methods: {
-        requestFilterHastag(slug) {
-            this.$emit("handleFilterHastag", slug);
+        requestFilterSkin(slug) {
+            this.$emit("handleFilterSkin", slug);
         },
     },
 };

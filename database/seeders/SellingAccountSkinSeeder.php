@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Hashtag;
 use App\Models\SellingAccount;
+use App\Models\Skin;
 use Illuminate\Database\Seeder;
 
-class HashtagSellingAccountSeeder extends Seeder
+class SellingAccountSkinSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,15 +15,15 @@ class HashtagSellingAccountSeeder extends Seeder
     {
         // Ambil semua akun penjualan dan hashtag
         $sellingAccounts = SellingAccount::all();
-        $hashtags = Hashtag::all();
+        $randomSkins = Skin::all();
 
         // Assign beberapa hashtag ke setiap akun penjualan
         foreach ($sellingAccounts as $sellingAccount) {
             // Ambil hashtag secara acak
-            $randomHashtags = $hashtags->random(rand(1, 5)); // Misal assign 1 sampai 3 hashtag per akun
+            $randomSkins = $randomSkins->random(rand(1,2)); // Misal assign 1 sampai 3 hashtag per akun
             
             // Attach hashtag ke sellingAccount menggunakan attach()
-            $sellingAccount->hashtags()->attach($randomHashtags->pluck('id')->toArray());
+            $sellingAccount->skins()->attach($randomSkins->pluck('id')->toArray());
         }
     }
 }

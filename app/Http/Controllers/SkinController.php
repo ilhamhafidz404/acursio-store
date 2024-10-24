@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hashtag;
+use App\Models\Skin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class HashtagController extends Controller
+class SkinController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,14 +18,14 @@ class HashtagController extends Controller
             $limit = request('limit', 9);
             $category = request('category');
 
-            $hashtags = Hashtag::query()
+            $skins = Skin::query()
                 ->when($category, function ($query, $category) {
                     $query->whereHas('skinCategory', function ($q) use ($category) {
                         $q->where('slug', $category);
                     });
                 })
                 ->with("skinCategory")
-                ->withCount('sellingAccounts')
+                ->withCount('skinCategory')
                 ->latest()
                 ->paginate($limit);
 
@@ -35,7 +35,7 @@ class HashtagController extends Controller
                 "code" => "ACSO-001",
                 "success" => true,
                 "message" => "success",
-                "result" => $hashtags,
+                "result" => $skins,
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -62,7 +62,7 @@ class HashtagController extends Controller
     {
         try {
             
-            $hashtag= Hashtag::create([
+            $hashtag= Skin::create([
                 "title" => Str::slug($request->title),
                 "slug" => $request->slug,
                 "description" => $request->description,
@@ -115,7 +115,7 @@ class HashtagController extends Controller
     public function destroy(string $id)
     {
         try {
-            $data = Hashtag::find($id);
+            $data = Skin::find($id);
             
             if (!$data) {
                 return response()->json([

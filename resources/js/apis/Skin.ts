@@ -1,10 +1,10 @@
 import axios from "axios";
 
-async function getHashtags() {
+async function getSkins() {
     try {
         const res = await axios.get(
             // `https://jubel-acursio.store/api/hashtags/`,
-            `http://127.0.0.1:8000/api/hashtags/`,
+            `http://127.0.0.1:8000/api/skins/`,
             {
                 params: {
                     limit: 10000000,
@@ -19,4 +19,4 @@ async function getHashtags() {
     }
 }
 
-export { getHashtags };
+export { getSkins };
