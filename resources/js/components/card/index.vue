@@ -22,7 +22,10 @@ import formatRupiah from "../../tools/formatRupiah";
         <router-link :to="'/account-store/' + account.slug">
             <figure>
                 <img
-                    :src="'https://genzedu.id/images/' + account.image1"
+                    :src="
+                        'https://jubel-acursio.store/storage/images/' +
+                        account.image1
+                    "
                     alt="Jubel Akun ML"
                     class="w-full h-[200px] md:h-[300px] object-cover"
                 />

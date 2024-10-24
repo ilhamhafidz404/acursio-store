@@ -15,4 +15,9 @@ class Hashtag extends Model
     {
         return $this->belongsToMany(SellingAccount::class, 'hashtag_selling_account');
     }
+    
+    public function skinCategory()
+    {
+        return $this->belongsTo(SkinCategories::class, 'skin_category_id');
+    }
 }

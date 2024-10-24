@@ -16,23 +16,28 @@ class HashtagSeeder extends Seeder
         Hashtag::insert([
             [
                 "title" => "Legendary Skin",
-                "slug" => "legendary-skin"
+                "slug" => "legendary-skin",
+                "skin_category_id" => 1
             ],
             [
                 "title" => "Epic Skin",
-                "slug" => "epic-skin"
+                "slug" => "epic-skin",
+                "skin_category_id" => 2
             ],
             [
                 "title" => "Elite Skin",
-                "slug" => "elite-skin"
+                "slug" => "elite-skin",
+                "skin_category_id" => 2
             ],
             [
                 "title" => "Collector Skin",
-                "slug" => "collector-skin"
+                "slug" => "collector-skin",
+                "skin_category_id" => 1
             ],
             [
                 "title" => "Special Skin",
-                "slug" => "special-skin"
+                "slug" => "special-skin",
+                "skin_category_id" => 1
             ],
         ]);        
     }

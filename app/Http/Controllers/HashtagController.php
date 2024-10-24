@@ -15,16 +15,21 @@ class HashtagController extends Controller
     {
         try {
 
-            $limit = request('limit');
+            $limit = request('limit', 9);
+            $category = request('category');
+
+            $hashtags = Hashtag::query()
+                ->when($category, function ($query, $category) {
+                    $query->whereHas('skinCategory', function ($q) use ($category) {
+                        $q->where('slug', $category);
+                    });
+                })
+                ->with("skinCategory")
+                ->withCount('sellingAccounts')
+                ->latest()
+                ->paginate($limit);
 
 
-            $query = Hashtag::query();
-
-            if(!$limit){
-               $limit = 9;
-            }
-
-            $hashtags = $query->withCount('sellingAccounts')->latest()->paginate($limit);
 
             return response()->json([
                 "code" => "ACSO-001",

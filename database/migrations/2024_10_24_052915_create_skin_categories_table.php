@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hashtags', function (Blueprint $table) {
+        Schema::create('skin_categories', function (Blueprint $table) {
             $table->id();
             $table->string("title");
             $table->string("slug")->unique();
-            $table->text("description")->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hashtags');
+        Schema::dropIfExists('skin_categories');
     }
 };

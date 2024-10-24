@@ -29,20 +29,29 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                 class="hidden md:flex md:flex-row flex-col gap-3 justify-evenly"
             >
                 <img
-                    :src="'https://genzedu.id/images/' + accountStore.image1"
+                    :src="
+                        'https://jubel-acursio.store/storage/images/' +
+                        accountStore.image1
+                    "
                     alt=""
                     class="rounded w-full md:w-[400px] h-[300px] object-cover"
                 />
                 <img
                     v-if="accountStore.image2"
-                    :src="'https://genzedu.id/images/' + accountStore.image2"
+                    :src="
+                        'https://jubel-acursio.store/storage/images/' +
+                        accountStore.image2
+                    "
                     alt=""
                     class="rounded w-full md:w-[400px] h-[300px] object-cover"
                 />
             </div>
             <div class="flex md:hidden gap-3 justify-evenly">
                 <img
-                    :src="'https://genzedu.id/images/' + imageActive"
+                    :src="
+                        'https://jubel-acursio.store/storage/images/' +
+                        imageActive
+                    "
                     alt=""
                     class="rounded w-full md:w-[400px] h-[300px] object-cover"
                 />
@@ -59,7 +68,7 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     >
                         <img
                             :src="
-                                'https://genzedu.id/images/' +
+                                'https://jubel-acursio.store/storage/images/' +
                                 accountStore.image1
                             "
                             alt=""
@@ -77,7 +86,7 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                         <img
                             v-if="accountStore.image2"
                             :src="
-                                'https://genzedu.id/images/' +
+                                'https://jubel-acursio.store/storage/images/' +
                                 accountStore.image2
                             "
                             alt=""

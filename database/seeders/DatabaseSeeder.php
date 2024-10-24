@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SellingAccountSeeder::class,
+            SkinCategorySeeder::class,
             HashtagSeeder::class,
             HashtagSellingAccountSeeder::class
         ]);
