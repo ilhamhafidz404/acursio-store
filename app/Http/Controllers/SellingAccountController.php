@@ -16,6 +16,7 @@ class SellingAccountController extends Controller
             $condition = request('condition'); // 1 = semua, 2 = hanya yang diskon
             $skin = request('skin');
             $isFullEmblem = request('isFullEmblem');
+            $isFullHero = request('isFullHero');
 
             $query = SellingAccount::query();
 
@@ -41,6 +42,10 @@ class SellingAccountController extends Controller
             
             if ($isFullEmblem) {
                 $query->where("is_full_emblem", 1);
+            }
+            
+            if ($isFullHero) {
+                $query->where("total_heroes", 124);
             }
 
             $sellingAccounts = $query->latest()->paginate(9);

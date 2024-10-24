@@ -3,7 +3,7 @@ import axios from "axios";
 async function getSkinCategories() {
     try {
         const res = await axios.get(
-            // `https://jubel-acursio.store/api/hashtags/`,
+            // `https://jubel-acursio.store/api/skinCategories/`,
             `http://127.0.0.1:8000/api/skinCategories/`,
             {
                 params: {

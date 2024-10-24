@@ -124,6 +124,17 @@ import formatRupiah from "../../tools/formatRupiah";
                                 />
                             </label>
                         </div>
+                        <div class="mb-1 mt-3">
+                            <label class="label cursor-pointer">
+                                <span class="label-text">Full Hero?</span>
+                                <input
+                                    type="checkbox"
+                                    class="toggle"
+                                    checked="checked"
+                                    v-model="filter.isFullHero"
+                                />
+                            </label>
+                        </div>
                         <div class="mt-7 flex gap-2">
                             <div v-if="isFilterActive" class="w-full">
                                 <button
@@ -233,19 +244,42 @@ import formatRupiah from "../../tools/formatRupiah";
                     <div class="mb-1">
                         <label class="form-control w-full">
                             <div class="label">
-                                <span class="label-text"> Hashtag </span>
+                                <span class="label-text"> Kategori Skin </span>
                             </div>
                             <select
                                 class="select select-bordered w-full"
-                                v-model="filter.hashtag"
+                                v-model="filter.skinCategory"
                             >
-                                <option v-if="filter.hashtag" value=""></option>
                                 <option
-                                    v-for="hashtag in Hashtags"
-                                    :key="hashtag.id"
-                                    :value="hashtag.slug"
+                                    v-if="filter.skinCategory"
+                                    value=""
+                                ></option>
+                                <option
+                                    v-for="category in SkinCategories"
+                                    :key="category.id"
+                                    :value="category.slug"
                                 >
-                                    {{ hashtag.title }}
+                                    {{ category.title }}
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="mb-1" v-if="filter.skinCategory">
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text"> Skin </span>
+                            </div>
+                            <select
+                                class="select select-bordered w-full"
+                                v-model="filter.skin"
+                            >
+                                <option v-if="filteredSkin" value=""></option>
+                                <option
+                                    v-for="skin in filteredSkin"
+                                    :key="skin.id"
+                                    :value="skin.slug"
+                                >
+                                    {{ skin.title }}
                                 </option>
                             </select>
                         </label>
@@ -258,6 +292,17 @@ import formatRupiah from "../../tools/formatRupiah";
                                 class="toggle"
                                 checked="checked"
                                 v-model="filter.isFullEmblem"
+                            />
+                        </label>
+                    </div>
+                    <div class="mb-1 mt-3">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Full Hero?</span>
+                            <input
+                                type="checkbox"
+                                class="toggle"
+                                checked="checked"
+                                v-model="filter.isFullHero"
                             />
                         </label>
                     </div>
@@ -348,6 +393,7 @@ export default {
                 skinCategory: "",
                 skin: "",
                 isFullEmblem: false,
+                isFullHero: false,
             },
             pagination: {
                 page: 1,
@@ -370,7 +416,8 @@ export default {
             skin = "",
             minPrice = "",
             maxPrice = "",
-            isFullEmblem = false
+            isFullEmblem = false,
+            isFullHero = false
         ) {
             this.isLoading = true;
             this.alertContent.isShow = false;
@@ -402,6 +449,10 @@ export default {
 
             if (isFullEmblem) {
                 query.isFullEmblem = true;
+            }
+
+            if (isFullHero) {
+                query.isFullHero = true;
             }
 
             // Lakukan push ke router hanya jika query tidak kosong
@@ -489,7 +540,8 @@ export default {
                 this.filter.skin,
                 this.filter.minPrice,
                 this.filter.maxPrice,
-                this.filter.isFullEmblem
+                this.filter.isFullEmblem,
+                this.filter.isFullHero
             );
         },
         filterSkin(slug) {

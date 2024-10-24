@@ -138,11 +138,11 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
             </div>
             <div class="mt-5 flex flex-wrap gap-3">
                 <span
-                    v-for="(hashtag, index) in accountStore.hashtags"
+                    v-for="(skin, index) in accountStore.skins"
                     :key="index"
                     class="italic text-warning -mt-2"
                 >
-                    #{{ hashtag.title }}
+                    #{{ skin.title }}
                 </span>
             </div>
             <div class="mt-5">
@@ -227,9 +227,9 @@ import { getSellingAccountById } from "../../apis/SellingAccount";
                     <div class="mb-1">
                         <label class="form-control w-full">
                             <div class="label">
-                                <span class="label-text md:text-base text-xs"
-                                    >Masukkan No HP</span
-                                >
+                                <span class="label-text md:text-base text-xs">
+                                    Masukkan No HP
+                                </span>
                             </div>
                             <input
                                 type="text"
@@ -328,7 +328,7 @@ export default {
                 total_heroes: Number,
                 total_skin: Number,
                 update_at: String,
-                hashtags: [],
+                skins: [],
             },
             userData: {
                 email: "",
